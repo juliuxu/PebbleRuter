@@ -2,4 +2,5 @@
 # Ignore build generated files
 build
 *pyc
+.lock*
 

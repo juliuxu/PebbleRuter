@@ -1,6 +1,10 @@
 #include <pebble.h>
 #include "../libs/pebble-assist.h"
 
+#include "../pebble_ruter.h"
+
+#include "win-stops.h"
+
 static Window *window;
 static MenuLayer *menu_layer;
 
@@ -8,7 +12,7 @@ static MenuLayer *menu_layer;
 
 #define MENU_SECTION_MAIN 0
 #define MENU_HEADER_HEIGHT 0
-#define MENU_ROWS_MAIN 5
+#define MENU_ROWS_MAIN NUM_TRANSPORT_TYPES
 #define MENU_CELL_HEIGHT 35
 
 #define MENU_ROW_MAIN_METRO 0
@@ -94,18 +98,23 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
       switch (cell_index->row) {
         case MENU_ROW_MAIN_METRO:
+          show_stops_window(METRO, true);        
           break;
 
         case MENU_ROW_MAIN_TRAM:
+          show_stops_window(TRAM, true); 
           break;
 
         case MENU_ROW_MAIN_BUS:
+          show_stops_window(BUS, true); 
           break;
 
         case MENU_ROW_MAIN_TRAIN:
+          show_stops_window(TRAIN, true); 
           break;
 
         case MENU_ROW_MAIN_FERRY:
+          show_stops_window(FERRY, true); 
           break;
       }
     break;
@@ -135,6 +144,13 @@ static void window_unload(Window* window) {
 
 void create_main_window(void) {
 
+  // Create the different windows
+  int i;
+  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+    create_stops_window(i);
+  }
+
+
   window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
@@ -144,6 +160,12 @@ void create_main_window(void) {
 }
 
 void destroy_main_window(void) {
+  // Destroy the different windows
+  int i;
+  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+    destroy_stops_window(i);
+  }
+
   window_destroy(window);
 }
 
