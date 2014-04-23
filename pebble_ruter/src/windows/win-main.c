@@ -24,11 +24,11 @@ static MenuLayer *menu_layer;
 /** 
  * Callback functions
  */
-static uint16_t menu_get_num_sections_callback(MenuLayer* me, void* data) {
+static uint16_t menu_get_num_sections_callback(MenuLayer *menu_layer, void* callback_context) {
   return MENU_SECTIONS;
 }
 
-static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *data) {
+static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void* callback_context) {
   switch (section_index) {
 
     case MENU_SECTION_MAIN:
@@ -39,7 +39,7 @@ static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t secti
   }
 }
 
-static int16_t menu_get_header_height_callback(MenuLayer* me, uint16_t section_index, void* data) {
+static int16_t menu_get_header_height_callback(MenuLayer *menu_layer, uint16_t section_index, void* callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
       return MENU_HEADER_HEIGHT;
@@ -47,11 +47,11 @@ static int16_t menu_get_header_height_callback(MenuLayer* me, uint16_t section_i
   return 0;
 }
 
-static int16_t menu_get_cell_height_callback(MenuLayer* me, MenuIndex* cell_index, void* data) {
+static int16_t menu_get_cell_height_callback(MenuLayer *menu_layer, MenuIndex* cell_index, void* callback_context) {
   return MENU_CELL_HEIGHT;
 }
 
-static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, uint16_t section_index, void* data) {
+static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, uint16_t section_index, void* callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
       // menu_cell_basic_header_draw(ctx, cell_layer, "Hello, Header!");
@@ -59,7 +59,7 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
   }
 }
 
-static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *data) {
+static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void* callback_context) {
   // Determine which section we're going to draw in
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
