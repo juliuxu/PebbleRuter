@@ -101,7 +101,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
   }
 }
 
-static void menu_select_click_callback(MenuLayer* menu_layernu_layer, MenuIndex* cell_index, void* callback_context) {
+static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
@@ -115,7 +115,7 @@ static void menu_select_click_callback(MenuLayer* menu_layernu_layer, MenuIndex*
 static void window_load(Window *window) {
 
   MenuLayer *menu_layer = menu_layer_create_fullscreen(window);
-  menu_layer_set_callbacks(menu_layer, NULL, (MenuLayerCallbacks){
+  menu_layer_set_callbacks(menu_layer, TRANSPORT_TYPE_FROM_WINDOW_TODO, (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
     .get_header_height = menu_get_header_height_callback,
