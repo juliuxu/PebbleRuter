@@ -207,8 +207,8 @@ if __name__ == '__main__':
 
     # print json.dumps(stop_getcloseststopsbycoordinates(596762, 6644420, 5), indent=2)
 
-    print json.dumps(realtime_getalldepartures(3010030), indent=2)
-    print len(realtime_getalldepartures(3010030))
+    # print json.dumps(realtime_getalldepartures(3010030), indent=2)
+    # print len(realtime_getalldepartures(3010030))
 
     # print json.dumps(realtime_getrealtimedata(3010312)[:3], indent=2)
     # print len(realtime_getrealtimedata(3010312))
@@ -221,6 +221,6 @@ if __name__ == '__main__':
 
     # print json.dumps(get_nearest_metros(596762, 6644420), indent=2)
 
-    # print json.dumps(get_realtime_by_transport_type(3010312, REALTIME_TRANSPORT_TYPES['tram']), indent=2)
+    print json.dumps(get_realtime_by_transport_type(3010312, REALTIME_TRANSPORT_TYPES['tram']), indent=2)
 
     # show_realtime_by_transport_type(3010312, REALTIME_TRANSPORT_TYPES['tram'], 1)
