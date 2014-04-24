@@ -3,6 +3,8 @@
 
 #include "../pebble_ruter.h"
 
+#include "win-departures.h"
+
 #define MENU_SECTIONS 1
 
 #define MENU_SECTION_MAIN 0
@@ -28,28 +30,6 @@ static int8_t get_transport_type_from_window(Window *window) {
 
   }
   return -1;
-}
-static int8_t get_transport_type_from_menulayer(MenuLayer *menu_layer) {
-  int i;
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
-    if (transport_type_to_menulayer_map[i] == menu_layer) {
-      return i;
-    }
-
-  }
-  return -1;
-}
-
-/**
- * Is init really needed? probably not..
- */
-void window_stops_init(void) {
-  int i;
-
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
-    transport_type_to_window_map[i] = NULL;
-    transport_type_to_menulayer_map[i] = NULL;
-  }
 }
 
 /** 
@@ -92,16 +72,44 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
 }
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
-  // Determine which section we're going to draw in
+  
+  transport_type_t *ttype = (transport_type_t *) callback_context;
+
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      // TODO
-      menu_cell_basic_draw(ctx, cell_layer, "Stoppe sted", "Info om stoppested", NULL);
+      
+      switch (*ttype) {
+        case BUS:
+          menu_cell_basic_draw(ctx, cell_layer, "Bislett buss", "bislett buss", NULL);
+          break;
+
+        case FERRY:
+          menu_cell_basic_draw(ctx, cell_layer, "Aker Brygge", "baat", NULL);
+          break;
+
+        case TRAIN:
+          menu_cell_basic_draw(ctx, cell_layer, "Nationaltheatret", "nationaltheatret tog", NULL);
+          break;
+
+        case TRAM:
+          menu_cell_basic_draw(ctx, cell_layer, "Bislett trikk", "bislett trikk", NULL);
+          break;
+
+        case METRO:
+          menu_cell_basic_draw(ctx, cell_layer, "Bislett tbane", "bislett tbane", NULL);
+          break;
+
+
+        break;
+      }
+
       break;
   }
 }
 
 static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
+
+  transport_type_t *ttype = (transport_type_t *) callback_context;
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
@@ -114,8 +122,10 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
 static void window_load(Window *window) {
 
+  int ttype = get_transport_type_from_window(window);
+
   MenuLayer *menu_layer = menu_layer_create_fullscreen(window);
-  menu_layer_set_callbacks(menu_layer, TRANSPORT_TYPE_FROM_WINDOW_TODO, (MenuLayerCallbacks){
+  menu_layer_set_callbacks(menu_layer, (void *) &transport_types[ttype], (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
     .get_header_height = menu_get_header_height_callback,
@@ -128,14 +138,14 @@ static void window_load(Window *window) {
   menu_layer_add_to_window(menu_layer, window);
 
   // Set menu layer
-  transport_type_to_menulayer_map[get_transport_type_from_window(window)] = menu_layer;
+  transport_type_to_menulayer_map[ttype] = menu_layer;
 }
 
 static void window_unload(Window *window) {
   menu_layer_destroy(transport_type_to_menulayer_map[get_transport_type_from_window(window)]);
 }
 
-void create_stops_window(transport_type ttype) {
+void create_stops_window(transport_type_t ttype) {
 
   Window *window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
@@ -147,11 +157,11 @@ void create_stops_window(transport_type ttype) {
 
 }
 
-void destroy_stops_window(transport_type ttype) {
+void destroy_stops_window(transport_type_t ttype) {
   window_destroy(transport_type_to_window_map[ttype]);
   transport_type_to_window_map[ttype] = NULL;
 }
 
-void show_stops_window(transport_type ttype, bool animated) {
+void show_stops_window(transport_type_t ttype, bool animated) {
   window_stack_push(transport_type_to_window_map[ttype], animated);
 }
