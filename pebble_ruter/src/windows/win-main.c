@@ -143,13 +143,11 @@ static void window_unload(Window* window) {
 }
 
 void create_main_window(void) {
-
   // Create the stops windows
   int i;
   for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
     create_stops_window(i);
   }
-
 
   window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {

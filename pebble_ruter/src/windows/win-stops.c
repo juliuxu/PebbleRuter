@@ -146,7 +146,6 @@ static void window_unload(Window *window) {
 }
 
 void create_stops_window(transport_type_t ttype) {
-
   // Create departures windows
   int i;
   for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
