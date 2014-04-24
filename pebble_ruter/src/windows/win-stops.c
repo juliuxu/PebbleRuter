@@ -2,6 +2,7 @@
 #include "../libs/pebble-assist.h"
 
 #include "../pebble_ruter.h"
+#include "../stops.h"
 
 #include "win-departures.h"
 
@@ -96,7 +97,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
           break;
 
         case METRO:
-          menu_cell_basic_draw(ctx, cell_layer, "Bislett tbane", "bislett tbane", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "Majorstuen [T-Bane]", "majorstuen tbane", NULL);
           break;
 
 
@@ -113,7 +114,8 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      // TODO
+      // Call with stopid
+      show_departures_window(*ttype, true);
     break;
 
   }
@@ -146,11 +148,9 @@ static void window_unload(Window *window) {
 }
 
 void create_stops_window(transport_type_t ttype) {
-  // Create departures windows
-  int i;
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
-    create_departures_window(i);
-  }
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Create stops windows %d", ttype);
+
+  create_departures_window(ttype);
 
   Window *window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
@@ -163,11 +163,9 @@ void create_stops_window(transport_type_t ttype) {
 }
 
 void destroy_stops_window(transport_type_t ttype) {
-  // Destroy departures windows
-  int i;
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
-    destroy_departures_window(i);
-  }
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy stops windows %d", ttype);
+
+  destroy_departures_window(ttype);
 
   window_destroy(transport_type_to_window_map[ttype]);
 }

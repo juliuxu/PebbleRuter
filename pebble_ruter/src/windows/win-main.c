@@ -148,23 +148,27 @@ void create_main_window(void) {
   for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
     create_stops_window(i);
   }
-
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Created all stops");
   window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
     .unload = window_unload,
   });
-
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "Created main window");
 }
 
 void destroy_main_window(void) {
+
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Destorying stops");
+
   // Destroy the stops windows
   int i;
   for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
     destroy_stops_window(i);
   }
-
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroyed all stops");
   window_destroy(window);
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroyed main window");
 }
 
 void show_main_window(bool animated) {

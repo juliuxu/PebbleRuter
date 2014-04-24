@@ -94,7 +94,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
           break;
 
         case METRO:
-          menu_cell_basic_draw(ctx, cell_layer, "Bislett tbane", "bislett tbane", NULL);
+          menu_cell_basic_draw(ctx, cell_layer, "6 Sognsvann", "2 min - 9 min - 17:48", NULL);
           break;
 
 
@@ -144,7 +144,7 @@ static void window_unload(Window *window) {
 }
 
 void create_departures_window(transport_type_t ttype) {
-
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Create departure window %d", ttype);
   Window *window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
@@ -156,8 +156,8 @@ void create_departures_window(transport_type_t ttype) {
 }
 
 void destroy_departures_window(transport_type_t ttype) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy departure window %d", ttype);
   window_destroy(transport_type_to_window_map[ttype]);
-  transport_type_to_window_map[ttype] = NULL;
 }
 
 void show_departures_window(transport_type_t ttype, bool animated) {

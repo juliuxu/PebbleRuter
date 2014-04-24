@@ -11,6 +11,7 @@
   "appKeys": {
     "dummy": 0
   },
+  "capabilities": ["location"],
   "resources": {
     "media": []
   }
