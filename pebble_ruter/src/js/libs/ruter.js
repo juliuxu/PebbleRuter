@@ -42,6 +42,8 @@ var Ruter = (function() {
      */
     function get(url, query, callback) {
 
+      console.log("Get url: " + url + " + query: " + JSON.stringify(query, null, 4));
+
       function serialize(obj) {
         var str = [];
         for(var p in obj) {
@@ -108,6 +110,7 @@ var Ruter = (function() {
      * Get realtime data for stopid
      */
     my.GetRealTimeData = function (stopid, callback) {
+      console.log("GetRealTimeData " + stopid);
       get(base_url + 'RealTime/GetRealTimeData/' + stopid, {}, callback)
     };
 
@@ -154,10 +157,10 @@ var Ruter = (function() {
     };
 
     /**
-     * Get Nearest stops by transportation type
+     * Get Closest stops by transportation type
      * Use types from TRAVEL_TRANSPORT_TYPES
      */
-     my.GetNearestStopsByTransportType = function(ttype, callback) {
+     my.GetClosestStopsByTransportType = function(ttype, callback) {
 
       my.GetClosestStops(function(err, data) {
 
@@ -204,32 +207,37 @@ var Ruter = (function() {
 
      /**
       * Group realtime departures by line and direction
+      * If ttype is not null, only depatures with ttype transport type will be returned
       */
-     my.GetRealTimeDataGrouped = function(stopid, callback) {
+     my.GetRealTimeDataGrouped = function(stopid, ttype, callback) {
+        console.log("GetRealTimeDataGrouped " + stopid);
 
-      my.GetRealTimeData(stopid, function(err, data) {
-
-        var departures = {};
-
-        for (var departure in data) {
-
-          // Concat direction linename and destination to create a unique key
-          var key = data[departure].DirectionRef + data[departure].PublishedLineName + data[departure].DestinationDisplay;
-
-          console.log(key);
-
-          if (departures.hasOwnProperty(key)) {
-            departures[key].push(data[departure]);
-          }
-          else {
-            departures[key] = [data[departure]];            
-          }
-
+        if (ttype === null) {
+          my.GetRealTimeData(stopid, group);          
+        }
+        else {
+          my.GetRealTimeDataByTransportType(stopid, ttype, group)
         }
 
-        callback(err, departures);
+        function group(err, data) {
+          console.log("Group data: " + JSON.stringify(data, null, 4));
+          var departures = {};
+          for (var departure in data) {
 
-      });
+            // Concat direction linename and destination to create a unique key
+            var key = data[departure].DirectionRef + data[departure].PublishedLineName + data[departure].DestinationDisplay;
+
+            console.log(key);
+
+            if (departures.hasOwnProperty(key)) {
+              departures[key].push(data[departure]);
+            }
+            else {
+              departures[key] = [data[departure]];            
+            }
+          }
+          callback(err, departures);
+        }
 
      };
 
