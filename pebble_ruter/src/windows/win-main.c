@@ -144,7 +144,7 @@ static void window_unload(Window* window) {
 
 void create_main_window(void) {
 
-  // Create the different windows
+  // Create the stops windows
   int i;
   for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
     create_stops_window(i);
@@ -160,7 +160,7 @@ void create_main_window(void) {
 }
 
 void destroy_main_window(void) {
-  // Destroy the different windows
+  // Destroy the stops windows
   int i;
   for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
     destroy_stops_window(i);

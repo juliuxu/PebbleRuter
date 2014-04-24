@@ -147,6 +147,12 @@ static void window_unload(Window *window) {
 
 void create_stops_window(transport_type_t ttype) {
 
+  // Create departures windows
+  int i;
+  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+    create_departures_window(i);
+  }
+
   Window *window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
@@ -158,8 +164,13 @@ void create_stops_window(transport_type_t ttype) {
 }
 
 void destroy_stops_window(transport_type_t ttype) {
+  // Destroy departures windows
+  int i;
+  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+    destroy_departures_window(i);
+  }
+
   window_destroy(transport_type_to_window_map[ttype]);
-  transport_type_to_window_map[ttype] = NULL;
 }
 
 void show_stops_window(transport_type_t ttype, bool animated) {
