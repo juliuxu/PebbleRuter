@@ -15,8 +15,8 @@
 /**
  * Array of pointers to all the stops windows, indexed by transport type
  */
-static Window *transport_type_to_window_map[NUM_TRANSPORT_TYPES];
-static MenuLayer *transport_type_to_menulayer_map[NUM_TRANSPORT_TYPES];
+static Window *transport_type_to_window_map[NUM_REALTIME_TRANSPORT_TYPES];
+static MenuLayer *transport_type_to_menulayer_map[NUM_REALTIME_TRANSPORT_TYPES];
 
 /**
  * Get transport type from window pointer,
@@ -24,7 +24,7 @@ static MenuLayer *transport_type_to_menulayer_map[NUM_TRANSPORT_TYPES];
  */
 static int8_t get_transport_type_from_window(Window *window) {
   int i;
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+  for (i=0;i<NUM_REALTIME_TRANSPORT_TYPES;i++) {
     if (transport_type_to_window_map[i] == window) {
       return i;
     }
@@ -74,29 +74,29 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   
-  transport_type_t *ttype = (transport_type_t *) callback_context;
+  realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
       
       switch (*ttype) {
-        case BUS:
+        case R_BUS:
           menu_cell_basic_draw(ctx, cell_layer, "Bislett buss", "bislett buss", NULL);
           break;
 
-        case FERRY:
+        case R_FERRY:
           menu_cell_basic_draw(ctx, cell_layer, "Aker Brygge", "baat", NULL);
           break;
 
-        case TRAIN:
+        case R_TRAIN:
           menu_cell_basic_draw(ctx, cell_layer, "Nationaltheatret", "nationaltheatret tog", NULL);
           break;
 
-        case TRAM:
+        case R_TRAM:
           menu_cell_basic_draw(ctx, cell_layer, "Bislett trikk", "bislett trikk", NULL);
           break;
 
-        case METRO:
+        case R_METRO:
           menu_cell_basic_draw(ctx, cell_layer, "Majorstuen [T-Bane]", "majorstuen tbane", NULL);
           break;
 
@@ -110,7 +110,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
 
 static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
 
-  transport_type_t *ttype = (transport_type_t *) callback_context;
+  realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
@@ -127,7 +127,7 @@ static void window_load(Window *window) {
   int ttype = get_transport_type_from_window(window);
 
   MenuLayer *menu_layer = menu_layer_create_fullscreen(window);
-  menu_layer_set_callbacks(menu_layer, (void *) &transport_types[ttype], (MenuLayerCallbacks){
+  menu_layer_set_callbacks(menu_layer, (void *) &realtime_transport_types[ttype], (MenuLayerCallbacks){
     .get_num_sections = menu_get_num_sections_callback,
     .get_num_rows = menu_get_num_rows_callback,
     .get_header_height = menu_get_header_height_callback,
@@ -147,7 +147,7 @@ static void window_unload(Window *window) {
   menu_layer_destroy(transport_type_to_menulayer_map[get_transport_type_from_window(window)]);
 }
 
-void create_stops_window(transport_type_t ttype) {
+void create_stops_window(realtime_transport_type_t ttype) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Create stops windows %d", ttype);
 
   create_departures_window(ttype);
@@ -162,7 +162,7 @@ void create_stops_window(transport_type_t ttype) {
 
 }
 
-void destroy_stops_window(transport_type_t ttype) {
+void destroy_stops_window(realtime_transport_type_t ttype) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy stops windows %d", ttype);
 
   destroy_departures_window(ttype);
@@ -170,6 +170,6 @@ void destroy_stops_window(transport_type_t ttype) {
   window_destroy(transport_type_to_window_map[ttype]);
 }
 
-void show_stops_window(transport_type_t ttype, bool animated) {
+void show_stops_window(realtime_transport_type_t ttype, bool animated) {
   window_stack_push(transport_type_to_window_map[ttype], animated);
 }

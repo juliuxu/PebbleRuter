@@ -12,7 +12,7 @@ static MenuLayer *menu_layer;
 
 #define MENU_SECTION_MAIN 0
 #define MENU_HEADER_HEIGHT 0
-#define MENU_ROWS_MAIN NUM_TRANSPORT_TYPES
+#define MENU_ROWS_MAIN NUM_REALTIME_TRANSPORT_TYPES
 #define MENU_CELL_HEIGHT 35
 
 #define MENU_ROW_MAIN_METRO 0
@@ -98,23 +98,23 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
       switch (cell_index->row) {
         case MENU_ROW_MAIN_METRO:
-          show_stops_window(METRO, true);        
+          show_stops_window(R_METRO, true);        
           break;
 
         case MENU_ROW_MAIN_TRAM:
-          show_stops_window(TRAM, true); 
+          show_stops_window(R_TRAM, true); 
           break;
 
         case MENU_ROW_MAIN_BUS:
-          show_stops_window(BUS, true); 
+          show_stops_window(R_BUS, true); 
           break;
 
         case MENU_ROW_MAIN_TRAIN:
-          show_stops_window(TRAIN, true); 
+          show_stops_window(R_TRAIN, true); 
           break;
 
         case MENU_ROW_MAIN_FERRY:
-          show_stops_window(FERRY, true); 
+          show_stops_window(R_FERRY, true); 
           break;
       }
     break;
@@ -145,7 +145,7 @@ static void window_unload(Window* window) {
 void create_main_window(void) {
   // Create the stops windows
   int i;
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+  for (i=0;i<NUM_REALTIME_TRANSPORT_TYPES;i++) {
     create_stops_window(i);
   }
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Created all stops");
@@ -163,7 +163,7 @@ void destroy_main_window(void) {
 
   // Destroy the stops windows
   int i;
-  for (i=0;i<NUM_TRANSPORT_TYPES;i++) {
+  for (i=0;i<NUM_REALTIME_TRANSPORT_TYPES;i++) {
     destroy_stops_window(i);
   }
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroyed all stops");
