@@ -165,113 +165,115 @@ var Ruter = (function() {
      * Get Closest stops by transportation type
      * Use types from TRAVEL_TRANSPORT_TYPES
      */
-     my.GetClosestStopsByTransportType = function(ttype, callback) {
+    my.GetClosestStopsByTransportType = function(ttype, callback) {
 
-      my.GetClosestStops(function(err, data) {
+    my.GetClosestStops(function(err, data) {
 
-        var stops = [];
-        for (var stop in data) {
-          //console.log("stop: " + stop + " Name: " + data[stop].Name);
+      var stops = [];
+      for (var stop in data) {
+        //console.log("stop: " + stop + " Name: " + data[stop].Name);
 
-          // Go trough all lines to determine if this stop has any lines with ttype transport type
-          for (var line in data[stop].Lines) {
-            if (data[stop].Lines[line].Transportation == ttype) {
-              stops.push(data[stop]);
-              break;
-            }
-          }
-
-        }
-
-        callback(err, stops);
-
-      });
-
-     };
-
-     /**
-      * Get Realtime Data from by transport type
-      * Use REALTIME_TRANSPORT_TYPES
-      */
-     my.GetRealTimeDataByTransportType = function(stopid, ttype, callback) {
-
-      my.GetRealTimeData(stopid, function(err, data) {
-
-        var departures = [];
-        for (var departure in data) {
-          if (data[departure].VehicleMode == ttype) {
-            departures.push(data[departure]);
+        // Go trough all lines to determine if this stop has any lines with ttype transport type
+        for (var line in data[stop].Lines) {
+          if (data[stop].Lines[line].Transportation == ttype) {
+            stops.push(data[stop]);
+            break;
           }
         }
 
-        callback(err, departures);
+      }
 
-      });
+      callback(err, stops);
 
-     };
+    });
 
-     /**
-      * Group realtime departures by line and direction
-      * If ttype is not null, only departures with ttype transport type will be returned
-      */
-     my.GetRealTimeDataGrouped = function(stopid, ttype, callback) {
-        console.log("GetRealTimeDataGrouped " + stopid);
+    };
 
-        if (ttype === null) {
-          my.GetRealTimeData(stopid, group);          
+    /**
+    * Get Realtime Data from by transport type
+    * Use REALTIME_TRANSPORT_TYPES
+    */
+    my.GetRealTimeDataByTransportType = function(stopid, ttype, callback) {
+
+    my.GetRealTimeData(stopid, function(err, data) {
+
+      var departures = [];
+      for (var departure in data) {
+        if (data[departure].VehicleMode == ttype) {
+          departures.push(data[departure]);
         }
-        else {
-          my.GetRealTimeDataByTransportType(stopid, ttype, group)
-        }
+      }
 
-        function group(err, data) {
-          //console.log("Group data: " + JSON.stringify(data, null, 4));
-          var departures = {};
-          for (var departure in data) {
+      callback(err, departures);
 
-            // Concat direction linename and destination to create a unique key
-            var key = data[departure].DirectionRef + data[departure].PublishedLineName + data[departure].DestinationDisplay;
+    });
 
-            console.log(key);
+    };
 
-            if (departures.hasOwnProperty(key)) {
-              departures[key].push(data[departure]);
-            }
-            else {
-              departures[key] = [data[departure]];            
-            }
-          }
-          callback(err, departures);
-        }
+    /**
+    * Group realtime departures by line and direction
+    * If ttype is not null, only departures with ttype transport type will be returned
+    */
+    my.GetRealTimeDataGrouped = function(stopid, ttype, callback) {
+      console.log("GetRealTimeDataGrouped " + stopid);
 
-     };
+      if (ttype === null) {
+        my.GetRealTimeData(stopid, group);          
+      }
+      else {
+        my.GetRealTimeDataByTransportType(stopid, ttype, group)
+      }
 
-     /**
-      * Group Realtime Data by Direction (and lines)
-      */
-     my.GetRealTimeDataGroupedByDirection = function(stopid, ttype, callback) {
-      console.log("GetRealTimeDataGroupedByDirection " + stopid);
-
-      my.GetRealTimeDataGrouped(stopid, ttype, function(err, data){
+      function group(err, data) {
+        //console.log("Group data: " + JSON.stringify(data, null, 4));
         var departures = {};
-        for (var line in data) {
+        for (var departure in data) {
 
-          var key = data[line][0].DirectionRef;
+          // Concat direction linename and destination to create a unique key
+          var key = data[departure].DirectionRef + data[departure].PublishedLineName + data[departure].DestinationDisplay;
 
           console.log(key);
 
           if (departures.hasOwnProperty(key)) {
-            departures[key].push(data[line]);
+            departures[key].push(data[departure]);
           }
           else {
-            departures[key] = [data[line]];            
+            departures[key] = [data[departure]];            
           }
         }
-
         callback(err, departures);
-      });
+      }
 
-     }
+    };
+
+    /**
+    * Group Realtime Data by Direction (and lines)
+    */
+    my.GetRealTimeDataGroupedByDirection = function(stopid, ttype, callback) {
+    console.log("GetRealTimeDataGroupedByDirection " + stopid);
+
+    my.GetRealTimeDataGrouped(stopid, ttype, function(err, data){
+      var departures = {};
+      for (var line in data) {
+
+        var key = data[line][0].DirectionRef;
+
+        console.log(key);
+
+        if (departures.hasOwnProperty(key)) {
+          departures[key].push(data[line]);
+        }
+        else {
+          departures[key] = [data[line]];            
+        }
+      }
+
+      callback(err, departures);
+    });
+
+    };
+
+
 
     return my;
 
