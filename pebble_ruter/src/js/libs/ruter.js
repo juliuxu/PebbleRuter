@@ -207,7 +207,7 @@ var Ruter = (function() {
 
      /**
       * Group realtime departures by line and direction
-      * If ttype is not null, only depatures with ttype transport type will be returned
+      * If ttype is not null, only departures with ttype transport type will be returned
       */
      my.GetRealTimeDataGrouped = function(stopid, ttype, callback) {
         console.log("GetRealTimeDataGrouped " + stopid);
@@ -240,6 +240,32 @@ var Ruter = (function() {
         }
 
      };
+
+     /**
+      * Group Realtime Data by Direction (and lines)
+      */
+     my.GetRealTimeDataGroupedByDirection = function(stopid, ttype, callback) {
+
+      my.GetRealTimeDataGrouped(stopid, ttype, function(err, data){
+        var departures = {};
+        for (var line in data) {
+
+          var key = data[line][0].DirectionRef;
+
+          console.log(key);
+
+          if (departures.hasOwnProperty(key)) {
+            departures[key].push(data[line]);
+          }
+          else {
+            departures[key] = [data[line]];            
+          }
+        }
+
+        callback(err, departures);
+      });
+
+     }
 
     return my;
 
