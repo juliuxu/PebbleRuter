@@ -250,7 +250,7 @@ var Ruter = (function() {
     * Group Realtime Data by Direction (and lines)
     */
     my.GetRealTimeDataGroupedByDirection = function(stopid, ttype, callback) {
-    console.log("GetRealTimeDataGroupedByDirection " + stopid);
+      console.log("GetRealTimeDataGroupedByDirection " + stopid);
 
       my.GetRealTimeDataGrouped(stopid, ttype, function(err, data){
         var departures = {};
@@ -273,7 +273,56 @@ var Ruter = (function() {
 
     };
 
+    /**
+     * Get Ordered Depatures in a simple format
+     */
+    my.SimpleGetOrderedDepatures = function(stopid, ttype, callback) {
+      console.log("SimpleGetOrderedDepatures " + stopid);
 
+      my.GetRealTimeDataGroupedByDirection(stopid, ttype, function(err, data) {
+        //console.log(JSON.stringify(data, null, 4));
+        var res = {};
+        for (var dir in data) {
+          res[dir] = [];
+
+          for (var line in data[dir]) {
+
+            console.log(data[dir][line][0].PublishedLineName + " " + data[dir][line][0].DestinationDisplay);
+
+            depature_times = [];
+            depature_timestamps = [];
+
+            for (var depature in data[dir][line]) {
+              // Convert asp.net date to js date
+              var server_date = data[dir][line][depature].ExpectedDepartureTime;
+              var d = new Date(parseFloat(server_date.replace("/Date(", "").replace(")/", "")));
+
+              depature_times.push(my.GetRuterTime(d.getTime()))
+              depature_timestamps.push(d.getTime());
+            }
+            console.log(JSON.stringify(depature_times, null, 4));
+
+            res[dir].push(
+              {
+                'PublishedLineName': data[dir][line][0].PublishedLineName,
+                'DestinationDisplay': data[dir][line][0].DestinationDisplay,
+                'DepatureTimes': depature_times,
+                'DepatureTimestamps': depature_timestamps,
+
+                // Extra
+                'DestinationName': data[dir][line][0].DestinationName,
+                'LineRef': data[dir][line][0].LineRef,
+              }
+            );
+
+          }
+
+          callback(err, res);
+
+        }
+      });
+
+    };
 
     return my;
 
