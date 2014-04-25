@@ -124,7 +124,7 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
 static void window_load(Window *window) {
 
-  int ttype = get_transport_type_from_window(window);
+  realtime_transport_type_t ttype = get_transport_type_from_window(window);
 
   MenuLayer *menu_layer = menu_layer_create_fullscreen(window);
   menu_layer_set_callbacks(menu_layer, (void *) &realtime_transport_types[ttype], (MenuLayerCallbacks){

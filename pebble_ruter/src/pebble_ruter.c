@@ -42,9 +42,58 @@ const travel_transport_type_t realtime_to_travel[NUM_REALTIME_TRANSPORT_TYPES] =
   T_METRO
 };
 
+/**
+ * AppMessage Handlers
+ */
 
+static void out_sent_handler(DictionaryIterator *sent, void *context) {
+ // outgoing message was delivered
+}
+
+
+static void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
+ APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Failed to Send!");
+}
+
+
+static void in_received_handler(DictionaryIterator *received, void *context) {
+ APP_LOG(APP_LOG_LEVEL_DEBUG, "Received a message!");
+
+ Tuple *text_tuple;
+
+ if ( (text_tuple = dict_find(received, PUT_STOPS)) ) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
+ }
+ else if ( (text_tuple = dict_find(received, PUT_DEPATURES)) ) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPATURES");
+
+ }
+ else {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Invalid message!");
+ }
+
+}
+
+
+static void in_dropped_handler(AppMessageResult reason, void *context) {
+ APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Dropped!");
+}
+
+static void app_message_init(void) {
+  // Register message handlers
+  app_message_register_inbox_received(in_received_handler);
+  app_message_register_inbox_dropped(in_dropped_handler);
+  app_message_register_outbox_failed(out_failed_handler);
+  app_message_register_outbox_sent(out_sent_handler);
+
+  // Init buffers
+  app_message_open(64, 64);
+
+}
 
 static void init(void) {
+  app_message_init();
+
   create_main_window();
   show_main_window(true);
 }

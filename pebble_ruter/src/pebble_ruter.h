@@ -3,8 +3,27 @@
 
 #include <pebble.h>
 
+// Used for static string allocation
+// TODO: Use malloc and free instead!
+#define STRING_DATA_SIZE 60
+
 #define NUM_REALTIME_TRANSPORT_TYPES 5
 #define NUM_TRAVEL_TRANSPORT_TYPES 9
+
+/**
+ * The Different messages we can send and receive via AppMessage
+ */
+typedef enum {
+
+	// For sending
+	GET_STOPS,
+	GET_DEPATURES,
+
+	// For receving
+	PUT_STOPS,
+	PUT_DEPATURES,
+
+} appmessage_type_t;
 
 /**
  * The different realtime transport types
