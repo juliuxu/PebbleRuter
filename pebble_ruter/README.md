@@ -9,4 +9,8 @@
 * Refresh Manually
 * Refresh Automaticly (each minute)
 
-* Conformt to Ruter Standards (ca, deviations, etc..)
+* Conform to Ruter Standards (ca, deviations, etc..)
+
+* Document ruter.js better
+
+* Use timezone correctly
