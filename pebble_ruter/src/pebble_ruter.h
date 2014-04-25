@@ -37,6 +37,7 @@ typedef enum {
 	R_METRO = 4,
 } realtime_transport_type_t;
 
+//Get rid of this, let javascript deal with it
 /**
  * The diffrent travel transport types
  */

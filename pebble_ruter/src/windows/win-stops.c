@@ -171,5 +171,6 @@ void destroy_stops_window(realtime_transport_type_t ttype) {
 }
 
 void show_stops_window(realtime_transport_type_t ttype, bool animated) {
+  update_stops(ttype);
   window_stack_push(transport_type_to_window_map[ttype], animated);
 }

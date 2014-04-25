@@ -1,7 +1,12 @@
 #include <pebble.h>
 #include "pebble_ruter.h"
+#include "stops.h"
+#include "departures.h"
 #include "windows/win-main.h"
 
+/**
+ * Init transport enum info
+ */
 const realtime_transport_type_t realtime_transport_types[NUM_REALTIME_TRANSPORT_TYPES] = {
   R_BUS,
   R_FERRY,
@@ -45,9 +50,8 @@ const travel_transport_type_t realtime_to_travel[NUM_REALTIME_TRANSPORT_TYPES] =
 /**
  * AppMessage Handlers
  */
-
 static void out_sent_handler(DictionaryIterator *sent, void *context) {
- // outgoing message was delivered
+ APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sent!");
 }
 
 
@@ -79,6 +83,10 @@ static void in_dropped_handler(AppMessageResult reason, void *context) {
  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Dropped!");
 }
 
+
+/**
+ * Init
+ */
 static void app_message_init(void) {
   // Register message handlers
   app_message_register_inbox_received(in_received_handler);
