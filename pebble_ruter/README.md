@@ -1,5 +1,8 @@
 # Pebble Ruter APP
 
+## Notes
+Important that phone time is correct!
+
 ## Todo
 * Add icons
 * Nicer menu
