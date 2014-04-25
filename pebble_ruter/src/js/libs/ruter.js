@@ -94,13 +94,18 @@ var Ruter = (function() {
       }
       else if (remaining > 584) {
         var date = new Date(timestamp);
-        return date.getHours() + ":" + date.getMinutes();
+        var hourminute;
+        hourminute = (date.getHours()<10?'0':'') + date.getHours();
+        hourminute += ":";
+        hourminute += (date.getMinutes()<10?'0':'') + date.getMinutes();
+
+        return hourminute;
       }
       else {
         var start = 45;
         for (var i=1;i<10;i++) {
           if (remaining < (start + (i * 60)) ) {
-            return i + "min";
+            return i + " min";
           }
         }
       }
@@ -166,7 +171,7 @@ var Ruter = (function() {
 
         var stops = [];
         for (var stop in data) {
-          console.log("stop: " + stop + " Name: " + data[stop].Name);
+          //console.log("stop: " + stop + " Name: " + data[stop].Name);
 
           // Go trough all lines to determine if this stop has any lines with ttype transport type
           for (var line in data[stop].Lines) {
@@ -220,7 +225,7 @@ var Ruter = (function() {
         }
 
         function group(err, data) {
-          console.log("Group data: " + JSON.stringify(data, null, 4));
+          //console.log("Group data: " + JSON.stringify(data, null, 4));
           var departures = {};
           for (var departure in data) {
 
@@ -245,6 +250,7 @@ var Ruter = (function() {
       * Group Realtime Data by Direction (and lines)
       */
      my.GetRealTimeDataGroupedByDirection = function(stopid, ttype, callback) {
+      console.log("GetRealTimeDataGroupedByDirection " + stopid);
 
       my.GetRealTimeDataGrouped(stopid, ttype, function(err, data){
         var departures = {};
