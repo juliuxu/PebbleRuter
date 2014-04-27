@@ -9,7 +9,11 @@
     "watchface": false
   },
   "appKeys": {
-    "dummy": 0
+    "GET_STOPS": 0,
+    "GET_DEPATURES": 1,
+
+    "PUT_STOPS": 2,
+    "PUT_DEPATURES": 3
   },
   "capabilities": ["location"],
   "resources": {
