@@ -17,3 +17,5 @@ Important that phone time is correct!
 * Document ruter.js better
 
 * Use timezone correctly
+
+* Use less memory, dynamicly allocate just what we need
