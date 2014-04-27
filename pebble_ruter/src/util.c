@@ -34,3 +34,23 @@ char **splittoarray(char *text, int length, char delim, int *amount) {
 
 	return strings;
 }
+
+/**
+ * Stack Overflow atoi, because I am not sure if pebble support atoi or not...
+ * http://stackoverflow.com/questions/7957557/understanding-an-atoi-function/7957656#7957656
+ */
+int satoi(char* str)
+{
+    if(!str)
+        printf("Enter valid string");
+
+    int number = 0;
+    char* p = str;
+
+    while((*p >= '0') && (*p <= '9'))
+    {
+        number = number * 10 + (*p - '0');
+        p++;
+    } 
+    return number;
+}

@@ -5,19 +5,19 @@ function putStops(ttype) {
 	var travel_type = Ruter.REALTIME_TO_TRAVEL[ttype];
 	Ruter.GetClosestStopsByTransportType(travel_type, function(err, data) {
 
-		if (err == null) { 
+		if (err === null) { 
 			//console.log("putStops: " + JSON.stringify(data, null, 4));
 
 			stopsdata = [];
 			for (var stop in data) {
 				console.log(data[stop].Name + data[stop].ID);
-				stopsdata.push(data[stop].ID + "|" + data[stop].Name);
-				
+				stopsdata.push(data[stop].ID);
+				stopsdata.push(data[stop].Name);
+
 			}
-			else if {
-				// 3242424|Bislett~432424|Dalsberg~2334324|Majorstuen
-				Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")});
-			}
+			stopsdata.unshift(data.length);
+			// 3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
+			Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("|")});
 
 		}
 		else {

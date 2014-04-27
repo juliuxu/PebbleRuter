@@ -64,7 +64,7 @@ static void app_message_init(void) {
   app_message_register_outbox_sent(out_sent_handler);
 
   // Init buffers
-  app_message_open(64, 64);
+  app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 
 }
 

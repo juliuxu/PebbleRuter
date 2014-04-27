@@ -4,6 +4,7 @@
 
 #include "pebble_ruter.h"
 #include "stops.h"
+#include "util.h"
 
 static uint8_t num_ruter_stops = 0;
 static stop_t ruter_stops[MAX_STOPS];
@@ -27,15 +28,24 @@ void get_stops(realtime_transport_type_t ttype) {
 
 void handle_put_stops(Tuple *tuple) {
 	int length = tuple->length;
-	char *text = tuple->value->cstring;
+	char *text = malloc(length);
+	strcpy(text, tuple->value->cstring);
 
-	int part_length = 0;
-	char *part_start = text;
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "handle_put_stops: %s", text);
+
+	int num_strings;
+	char **strings = splittoarray(text, length, '~', &num_strings);
+
+	num_ruter_stops = satoi(strings[0]);
 
 	int i;
-	for (i=0;i < length;i++) {
-		if(part_start+part_length)
+	int strings_index = 1;
+	for (i=0;i<num_ruter_stops;i++) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "stop: %s %s", strings[strings_index++], strings[strings_index++]);
 	}
+
+	free(strings);
+	free(text);
 
 }
 
@@ -54,9 +64,10 @@ stop_t *get_stop(uint8_t index) {
 }
 
 void destroy_stops(void) {
-	// int i;
-	// for (i=0;i<num_ruter_stops;i++) {
-	// 	ruter_stops[i];
-	// }
+	uint8_t i;
+	for (i=0;i<num_ruter_stops;i++) {
+		free(ruter_stops[i].name);
+		free(ruter_stops[i].id);
+	}
 	num_ruter_stops = 0;
 }

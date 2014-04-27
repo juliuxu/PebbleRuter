@@ -161,7 +161,7 @@ var Ruter = (function() {
 
       function error(err) {
         console.warn('ERROR(' + err.code + '): ' + err.message);
-        callback(new Error('ERROR(' + err.code + '): ' + err.message));
+        callback('ERROR(' + err.code + '): ' + err.message);
       };
 
       console.log('Get Location');

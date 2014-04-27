@@ -7,8 +7,8 @@
 
 struct Stop {
 
-	char name[STRING_DATA_SIZE];
-	char id[STRING_DATA_SIZE];
+	char *name;
+	char *id;
 
 	// For now just name and id is sufficent
 
