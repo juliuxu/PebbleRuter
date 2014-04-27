@@ -25,6 +25,20 @@ void get_stops(realtime_transport_type_t ttype) {
 	return;
 }
 
+void handle_put_stops(Tuple *tuple) {
+	int length = tuple->length;
+	char *text = tuple->value->cstring;
+
+	int part_length = 0;
+	char *part_start = text;
+
+	int i;
+	for (i=0;i < length;i++) {
+		if(part_start+part_length)
+	}
+
+}
+
 /**
  * Window callback functions
  */

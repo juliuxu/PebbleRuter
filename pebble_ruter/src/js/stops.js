@@ -7,14 +7,16 @@ function putStops(ttype) {
 
 		if (err == null) { 
 			//console.log("putStops: " + JSON.stringify(data, null, 4));
+
+			stopsdata = [];
 			for (var stop in data) {
 				console.log(data[stop].Name + data[stop].ID);
-			}
-			if (data.length == 0) {
-				// No elements returned
+				stopsdata.push(data[stop].ID + "|" + data[stop].Name);
+				
 			}
 			else if {
-				Pebble.sendAppMessage({"PUT_STOPS"});
+				// 3242424|Bislett~432424|Dalsberg~2334324|Majorstuen
+				Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")});
 			}
 
 		}

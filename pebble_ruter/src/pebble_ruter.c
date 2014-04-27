@@ -31,12 +31,13 @@ static void out_failed_handler(DictionaryIterator *failed, AppMessageResult reas
 static void in_received_handler(DictionaryIterator *received, void *context) {
  APP_LOG(APP_LOG_LEVEL_DEBUG, "Received a message!");
 
- Tuple *text_tuple;
+ Tuple *tuple;
 
- if ( (text_tuple = dict_find(received, PUT_STOPS)) ) {
+ if ( (tuple = dict_find(received, PUT_STOPS)) ) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
+  handle_put_stops(tuple);
  }
- else if ( (text_tuple = dict_find(received, PUT_DEPATURES)) ) {
+ else if ( (tuple = dict_find(received, PUT_DEPATURES)) ) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPATURES");
 
  }

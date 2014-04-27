@@ -5,8 +5,7 @@
 
 struct LineDestination {
 
-	char line[STRING_DATA_SIZE];
-	char destination[STRING_DATA_SIZE];
+	char line_destination[STRING_DATA_SIZE];
 
 	// Let the JS on the phone compile the depature times string
 	// If we later need to dynamicly update depature times without talking to ruter
