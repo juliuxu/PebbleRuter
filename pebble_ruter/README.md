@@ -7,6 +7,8 @@ Important that phone time is correct!
 * Add icons
 * Nicer menu
 
+* Loading screen
+
 * Figure out smart ways to have text
 
 * Refresh Manually
