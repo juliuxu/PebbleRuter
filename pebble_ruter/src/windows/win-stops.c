@@ -38,6 +38,8 @@ static int8_t get_transport_type_from_window(Window *window) {
  */
 void refresh_stops_window(realtime_transport_type_t ttype) {
 
+  menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
+
 }
 
 /** 
@@ -154,6 +156,6 @@ void destroy_stops_window(realtime_transport_type_t ttype) {
 }
 
 void show_stops_window(realtime_transport_type_t ttype, bool animated) {
-  get_stops(ttype);
+  handle_get_stops(ttype);
   window_stack_push(transport_type_to_window_map[ttype], animated);
 }

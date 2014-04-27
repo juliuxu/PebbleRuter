@@ -13,7 +13,7 @@ static realtime_transport_type_t current_transport_type;
 /**
  * Get nearby stops
  */
-void get_stops(realtime_transport_type_t ttype) {
+void handle_get_stops(realtime_transport_type_t ttype) {
 
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting update of stops of type: %d", ttype);
 

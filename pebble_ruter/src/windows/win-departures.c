@@ -107,11 +107,9 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
 
 static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
 
-  realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
-
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      // TODO
+      // Maybe refresh?
     break;
 
   }
