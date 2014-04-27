@@ -8,6 +8,7 @@
 
 static uint8_t num_ruter_stops = 0;
 static stop_t ruter_stops[MAX_STOPS];
+static realtime_transport_type_t current_transport_type;
 
 /**
  * Get nearby stops
@@ -23,10 +24,15 @@ void get_stops(realtime_transport_type_t ttype) {
 
  	app_message_outbox_send();
 
+ 	current_transport_type = ttype;
+
 	return;
 }
 
 void handle_put_stops(Tuple *tuple) {
+
+	destroy_stops();
+
 	int length = tuple->length;
 	char *text = malloc(length);
 	strcpy(text, tuple->value->cstring);
@@ -39,13 +45,23 @@ void handle_put_stops(Tuple *tuple) {
 	num_ruter_stops = satoi(strings[0]);
 
 	int i;
-	int strings_index = 1;
-	for (i=0;i<num_ruter_stops;i++) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "stop: %s %s", strings[strings_index++], strings[strings_index++]);
+	int strings_index;
+	for (i=0, strings_index=1;i<num_ruter_stops && i<MAX_STOPS;i++, strings_index+=2) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Add Stop: %s %s", strings[strings_index], strings[strings_index+1]);
+
+		ruter_stops[i].id = malloc(strlen(strings[strings_index]));
+		ruter_stops[i].name = malloc(strlen(strings[strings_index+1]));
+
+		strcpy(ruter_stops[i].id, strings[strings_index]);
+		strcpy(ruter_stops[i].name, strings[strings_index+1]);
+
 	}
 
 	free(strings);
 	free(text);
+
+	// Call window update
+	refresh_stops_window(current_transport_type);
 
 }
 

@@ -7,8 +7,8 @@
 
 struct Stop {
 
-	char *name;
 	char *id;
+	char *name;
 
 	// For now just name and id is sufficent
 
@@ -20,5 +20,7 @@ stop_t *get_stop(uint8_t index);
 
 void get_stops(realtime_transport_type_t ttype);
 void handle_put_stops(Tuple *tuple);
+void destroy_stops(void);
+void refresh_stops_window(realtime_transport_type_t ttype);
 
 #endif

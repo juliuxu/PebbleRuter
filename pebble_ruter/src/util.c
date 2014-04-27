@@ -21,12 +21,12 @@ char **splittoarray(char *text, int length, char delim, int *amount) {
 	// Allocate our array
 	char **strings = malloc(sizeof(char *) * (*amount));
 
+
 	// Fill up strings
 	int index = 0;
 	char *part = text;
 	for (i=0;i<=length;i++) {
-
-		if (*(text+i) == '\0' && index < *amount) {
+		if ((i == length || *(text+i) == '\0' ) && index < *amount) {
 			strings[index++] = part;
 			part = text+i+1;
 		}
@@ -42,7 +42,7 @@ char **splittoarray(char *text, int length, char delim, int *amount) {
 int satoi(char* str)
 {
     if(!str)
-        printf("Enter valid string");
+        return 0;
 
     int number = 0;
     char* p = str;

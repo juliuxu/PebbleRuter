@@ -33,8 +33,15 @@ static int8_t get_transport_type_from_window(Window *window) {
   return -1;
 }
 
+/**
+ * Refresh
+ */
+void refresh_stops_window(realtime_transport_type_t ttype) {
+
+}
+
 /** 
- * Callback functions
+ * Window Callback functions
  */
 static uint16_t menu_get_num_sections_callback(MenuLayer* menu_layer, void *callback_context) {
   return MENU_SECTIONS;
@@ -44,8 +51,7 @@ static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t secti
   switch (section_index) {
     case MENU_SECTION_MAIN:
 
-      // TODO
-      return 6;
+      return get_num_stops();
 
     default:
       return 0;
@@ -74,36 +80,13 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   
-  realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
-
+  stop_t *stop;
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
+
+      stop = get_stop(cell_index->row);
+      menu_cell_basic_draw(ctx, cell_layer, stop->name, stop->id, NULL);
       
-      switch (*ttype) {
-        case R_BUS:
-          menu_cell_basic_draw(ctx, cell_layer, "Bislett buss", "bislett buss", NULL);
-          break;
-
-        case R_FERRY:
-          menu_cell_basic_draw(ctx, cell_layer, "Aker Brygge", "baat", NULL);
-          break;
-
-        case R_TRAIN:
-          menu_cell_basic_draw(ctx, cell_layer, "Nationaltheatret", "nationaltheatret tog", NULL);
-          break;
-
-        case R_TRAM:
-          menu_cell_basic_draw(ctx, cell_layer, "Bislett trikk", "bislett trikk", NULL);
-          break;
-
-        case R_METRO:
-          menu_cell_basic_draw(ctx, cell_layer, "Majorstuen [T-Bane]", "majorstuen tbane", NULL);
-          break;
-
-
-        break;
-      }
-
       break;
   }
 }

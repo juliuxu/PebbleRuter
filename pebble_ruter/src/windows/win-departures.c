@@ -31,7 +31,7 @@ static int8_t get_transport_type_from_window(Window *window) {
 }
 
 /** 
- * Callback functions
+ * Window Callback functions
  */
 static uint16_t menu_get_num_sections_callback(MenuLayer* menu_layer, void *callback_context) {
   return MENU_SECTIONS;

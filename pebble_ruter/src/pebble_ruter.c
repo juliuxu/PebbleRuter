@@ -76,7 +76,7 @@ static void init(void) {
 }
 
 static void deinit(void) {
-  // Cleanup code here
+  destroy_stops();
   destroy_main_window();
 }
 
