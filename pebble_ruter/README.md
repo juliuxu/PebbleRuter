@@ -9,6 +9,8 @@ Important that phone time is correct!
 
 * Loading screen
 
+* Handle empty stops/depatures
+
 * Figure out smart ways to have text
 
 * Refresh Manually
