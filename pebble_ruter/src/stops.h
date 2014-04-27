@@ -15,6 +15,6 @@ struct Stop {
 };
 typedef struct Stop stop_t;
 
-void update_stops(realtime_transport_type_t ttype);
+void get_stops(realtime_transport_type_t ttype);
 
 #endif

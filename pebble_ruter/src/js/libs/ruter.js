@@ -37,6 +37,14 @@ var Ruter = (function() {
         'metro': 8,
     };
 
+    my.REALTIME_TO_TRAVEL = {
+      0: 2,
+      1: 5,
+      2: 6,
+      3: 7,
+      4: 8,
+    };
+
     /**
      * Get json data from an url + parameters
      */
