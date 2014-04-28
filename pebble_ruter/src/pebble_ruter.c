@@ -20,38 +20,37 @@ const realtime_transport_type_t realtime_transport_types[NUM_REALTIME_TRANSPORT_
  * AppMessage Handlers
  */
 static void out_sent_handler(DictionaryIterator *sent, void *context) {
- APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sent!");
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sent!");
 }
 
 
 static void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
- APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Failed to Send!: %s", translate_error(reason));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Failed to Send!: %s", translate_error(reason));
 }
 
 
 static void in_received_handler(DictionaryIterator *received, void *context) {
- APP_LOG(APP_LOG_LEVEL_DEBUG, "Received a message!");
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Received a message!");
 
- Tuple *tuple;
+  Tuple *tuple;
 
- if ( (tuple = dict_find(received, PUT_STOPS)) ) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
-  handle_put_stops(tuple);
- }
- else if ( (tuple = dict_find(received, PUT_DEPARTURE)) ) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURE");
-  handle_put_departure(received);
-
- }
- else {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Invalid message!");
- }
+  if ( (tuple = dict_find(received, PUT_STOPS)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
+   handle_put_stops(tuple);
+  }
+  else if ( (tuple = dict_find(received, PUT_DEPARTURE)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURE");
+   handle_put_departure(received);
+  }
+  else {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "Invalid message!");
+  }
 
 }
 
 
 static void in_dropped_handler(AppMessageResult reason, void *context) {
- APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message In Dropped!: %s", translate_error(reason));
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message In Dropped!: %s", translate_error(reason));
 }
 
 
