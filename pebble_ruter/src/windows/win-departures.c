@@ -40,7 +40,6 @@ void refresh_departures_window(realtime_transport_type_t ttype) {
   }
 
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
-
 }
 
 /** 
@@ -89,6 +88,9 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
       linedest = get_departure(cell_index->row);
+      if (linedest == NULL) {
+        return;
+      }
 
       snprintf(departure_title, 64, "%s %s", linedest->line, linedest->destination);
 

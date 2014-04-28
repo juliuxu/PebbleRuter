@@ -82,6 +82,7 @@ stop_t *get_stop(uint8_t index) {
 }
 
 void destroy_stops(void) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy stops: %d", num_ruter_stops);
 	uint8_t i;
 	for (i=0;i<num_ruter_stops;i++) {
 		free(ruter_stops[i].name);

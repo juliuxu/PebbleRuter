@@ -160,7 +160,6 @@ void create_main_window(void) {
 void destroy_main_window(void) {
 
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Destorying stops");
-
   // Destroy the stops windows
   int i;
   for (i=0;i<NUM_REALTIME_TRANSPORT_TYPES;i++) {

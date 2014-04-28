@@ -85,10 +85,12 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
   stop_t *stop;
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-
       stop = get_stop(cell_index->row);
+      if (stop == NULL) {
+        return;
+      }
+
       menu_cell_basic_draw(ctx, cell_layer, stop->name, NULL, NULL);
-      
       break;
   }
 }
@@ -101,8 +103,12 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
       stop = get_stop(cell_index->row);
+      if (stop == NULL) {
+        return;
+      }
+
       show_departures_window(stop->id, *ttype, true);
-    break;
+      break;
 
   }
 }
