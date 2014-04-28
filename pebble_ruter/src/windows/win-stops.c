@@ -37,6 +37,9 @@ static int8_t get_transport_type_from_window(Window *window) {
  * Refresh
  */
 void refresh_stops_window(realtime_transport_type_t ttype) {
+  if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
+    return;
+  }
 
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
 
@@ -52,9 +55,7 @@ static uint16_t menu_get_num_sections_callback(MenuLayer* menu_layer, void *call
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
-
       return get_num_stops();
-
     default:
       return 0;
   }
@@ -101,6 +102,11 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
       stop = get_stop(cell_index->row);
+
+      if (stop == NULL) {
+        return;
+      }
+
       show_departures_window(stop->id, *ttype, true);
     break;
 

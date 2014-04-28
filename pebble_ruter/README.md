@@ -29,3 +29,5 @@ Important that phone time is correct!
 * Make safer c code, check stuff
 
 * Use less memory, dynamicly allocate just what we need
+
+* Countdown timer for departure

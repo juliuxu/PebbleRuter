@@ -35,6 +35,9 @@ static int8_t get_transport_type_from_window(Window *window) {
  * Refresh
  */
 void refresh_departures_window(realtime_transport_type_t ttype) {
+  if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
+    return;
+  }
 
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
 
