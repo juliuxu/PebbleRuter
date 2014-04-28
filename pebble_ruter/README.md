@@ -22,4 +22,6 @@ Important that phone time is correct!
 
 * Use timezone correctly
 
+* Make safer c code, check stuff
+
 * Use less memory, dynamicly allocate just what we need
