@@ -48,8 +48,8 @@ void handle_put_departure(DictionaryIterator *iter) {
 	Tuple* t_departure_index = dict_find(iter, PUT_DEPARTURE_INDEX);
 	Tuple* t_departure_length = dict_find(iter, PUT_DEPARTURE_LENGTH);
 
-	uint8_t index = t_departure_index->value->int8;
-	uint8_t length = t_departure_length->value->int8;
+	uint8_t index = t_departure_index->value->uint8;
+	uint8_t length = t_departure_length->value->uint8;
 
 
 	// Check if this is the first of more to come
