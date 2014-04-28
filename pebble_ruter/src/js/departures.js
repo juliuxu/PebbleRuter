@@ -40,7 +40,7 @@ function putDepartures(stopid, ttype) {
 				//console.log(JSON.stringify(messageDict));
 				Pebble.sendAppMessage(messageDict,
 					function(e) {
-						sendArray(index+1, departuresdata, appkey, appkey_index, appkey_length);
+						sendArray(index+1);
 					},
 					function(e) {
 						console.log("An error occured trying to send message!");

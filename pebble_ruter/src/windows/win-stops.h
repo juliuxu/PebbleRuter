@@ -6,5 +6,6 @@
 void create_stops_window(realtime_transport_type_t ttype);
 void destroy_stops_window(realtime_transport_type_t ttype);
 void show_stops_window(realtime_transport_type_t ttype, bool animated);
+void refresh_stops_window(realtime_transport_type_t ttype);
 
 #endif

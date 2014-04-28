@@ -2,6 +2,8 @@
 
 #include "libs/pebble-assist.h"
 
+#include "windows/win-stops.h"
+
 #include "pebble_ruter.h"
 #include "stops.h"
 #include "util.h"

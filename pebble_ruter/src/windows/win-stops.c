@@ -10,7 +10,7 @@
 
 #define MENU_SECTION_MAIN 0
 #define MENU_HEADER_HEIGHT 0
-#define MENU_CELL_HEIGHT 35
+#define MENU_CELL_HEIGHT 44
 
 /**
  * Array of pointers to all the stops windows, indexed by transport type
@@ -87,7 +87,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
     case MENU_SECTION_MAIN:
 
       stop = get_stop(cell_index->row);
-      menu_cell_basic_draw(ctx, cell_layer, stop->name, stop->id, NULL);
+      menu_cell_basic_draw(ctx, cell_layer, stop->name, NULL, NULL);
       
       break;
   }

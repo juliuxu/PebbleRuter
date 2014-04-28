@@ -2,6 +2,8 @@
 
 #include "libs/pebble-assist.h"
 
+#include "windows/win-departures.h"
+
 #include "pebble_ruter.h"
 #include "departures.h"
 #include "util.h"
@@ -30,6 +32,15 @@ void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
  	current_stopid = stopid;
 
 	return;
+}
+
+/**
+ * Refresh departures
+ */
+void refresh_departures(void) {
+
+	handle_get_departures(current_stopid, current_transport_type);
+
 }
 
 void handle_put_departure(DictionaryIterator *iter) {

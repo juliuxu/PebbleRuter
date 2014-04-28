@@ -99,7 +99,9 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      // Maybe refresh?
+      
+      refresh_departures();
+
     break;
 
   }
