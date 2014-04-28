@@ -14,7 +14,7 @@
     "GET_DEPARTURES_STOPID": 2,
 
     "PUT_STOPS": 3,
-    "PUT_DEPARTURES": 4
+    "PUT_DEPARTURES": 4,
   },
   "capabilities": ["location"],
   "resources": {

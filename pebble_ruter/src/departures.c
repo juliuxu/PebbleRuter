@@ -40,17 +40,18 @@ void handle_put_departures(Tuple *tuple) {
 	char *text = malloc(length);
 	strcpy(text, tuple->value->cstring);
 
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "handle_put_departures: %s", text);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "handle_put_departures(%d): %s", length, text);
 
 	int num_strings;
 	char **strings = splittoarray(text, length, '~', &num_strings);
 
 	num_ruter_departures = satoi(strings[0]);
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "num_ruter_departures: %d", num_ruter_departures);
 
 	int i;
 	int strings_index;
 	for (i=0, strings_index=1;i<num_ruter_departures && i<MAX_DEPARTURES;i++, strings_index+=3) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "Add line_destination_t: %s %s", strings[strings_index], strings[strings_index+1]);
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "Add line_destination_t: %s %s %s", strings[strings_index], strings[strings_index+1], strings[strings_index+2]);
 
 		ruter_departures[i].line = malloc(strlen(strings[strings_index]));
 		ruter_departures[i].destination = malloc(strlen(strings[strings_index+1]));

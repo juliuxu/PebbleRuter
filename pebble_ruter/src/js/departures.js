@@ -17,12 +17,13 @@ function putDepartures(stopid, ttype) {
 				departuresdata[0] += data[dir].length;
 
 			}
-			console.log("Send message: " + departuresdata.join("~"));
-			Pebble.sendAppMessage({"PUT_DEPARTURES": departuresdata.join("~")});
+			message = departuresdata.join("~");
+			console.log("Send message("+message.length+"): " + message);
+			Pebble.sendAppMessage({"PUT_DEPARTURES": message});
 
 		}
 		else {
-			console.log("An error occured getting stops");
+			console.log("An error occured getting departures");
 			console.log(err);
 		}
 	});

@@ -50,7 +50,7 @@ static uint16_t menu_get_num_sections_callback(MenuLayer* menu_layer, void *call
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
-      get_num_departures();
+      return get_num_departures();
     default:
       return 0;
   }
@@ -85,7 +85,6 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      
       linedest = get_departure(cell_index->row);
 
       snprintf(departure_title, 64, "%s %s", linedest->line, linedest->destination);
