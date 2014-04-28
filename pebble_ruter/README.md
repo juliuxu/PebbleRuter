@@ -9,8 +9,6 @@ Important that phone time is correct!
 
 * Loading screen
 
-* Handle unicode characters
-
 * Handle timeouts, and other errors
 
 * Handle empty stops/departures
