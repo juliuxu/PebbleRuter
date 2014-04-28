@@ -99,12 +99,18 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
 }
 
 static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
-
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      
-      refresh_departures();
+      //refresh_departures();
+    break;
 
+  }
+}
+
+static void menu_select_long_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
+  switch (cell_index->section) {
+    case MENU_SECTION_MAIN:
+      refresh_departures();
     break;
 
   }
@@ -123,7 +129,8 @@ static void window_load(Window *window) {
     .get_cell_height = menu_get_cell_height_callback,
     .draw_header = menu_draw_header_callback,
     .draw_row = menu_draw_row_callback,
-    .select_click = menu_select_click_callback
+    .select_click = menu_select_click_callback,
+    .select_long_click = menu_select_long_click_callback
   });
   menu_layer_set_click_config_onto_window(menu_layer, window);
   menu_layer_add_to_window(menu_layer, window);
