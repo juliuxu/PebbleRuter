@@ -16,7 +16,7 @@ function putStops(ttype) {
 
 			}
 			stopsdata.unshift(data.length);
-			// 3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
+			// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
 			Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")});
 
 		}
