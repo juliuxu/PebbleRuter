@@ -16,6 +16,11 @@ function putStops(ttype) {
 
 			}
 			stopsdata.unshift(data.length);
+
+			if (data.length == 0) {
+				// Send empty message?
+			}
+
 			// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
 			Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")});
 

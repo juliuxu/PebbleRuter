@@ -9,8 +9,8 @@ function putDepartures(stopid, ttype) {
 			departuresdata = [];
 			for (var dir in data) {
 				for (var departure in data[dir]) {
-					console.log(data[dir][departure].PublishedLineName + data[dir][departure].DestinationDisplay);
-					
+					console.log(data[dir][departure].PublishedLineName + " " + data[dir][departure].DestinationDisplay);
+
 					departuresdata.push([
 						data[dir][departure].PublishedLineName,
 						data[dir][departure].DestinationDisplay,
@@ -19,6 +19,11 @@ function putDepartures(stopid, ttype) {
 					);
 				}
 
+			}
+
+			if (departuresdata.length == 0) {
+				// Send empty message?
+				return;
 			}
 
 			/**
