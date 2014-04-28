@@ -1,4 +1,5 @@
 #include <pebble.h>
+#include "util.h"
 #include "pebble_ruter.h"
 #include "stops.h"
 #include "departures.h"
@@ -24,7 +25,7 @@ static void out_sent_handler(DictionaryIterator *sent, void *context) {
 
 
 static void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
- APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Failed to Send!");
+ APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Failed to Send!: %s", translate_error(reason));
 }
 
 
@@ -50,7 +51,7 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
 
 
 static void in_dropped_handler(AppMessageResult reason, void *context) {
- APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Dropped!");
+ APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message In Dropped!: %s", translate_error(reason));
 }
 
 
