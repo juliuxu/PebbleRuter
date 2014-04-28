@@ -97,6 +97,9 @@ void handle_put_departure(DictionaryIterator *iter) {
 		num_ruter_departures = length;
 		refresh_departures_window(current_transport_type);
 	}
+	else {
+		num_ruter_departures = index + 1;
+	}
 
 }
 
