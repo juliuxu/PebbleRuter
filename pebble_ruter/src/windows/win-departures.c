@@ -8,7 +8,7 @@
 
 #define MENU_SECTION_MAIN 0
 #define MENU_HEADER_HEIGHT 0
-#define MENU_CELL_HEIGHT 35
+#define MENU_CELL_HEIGHT 44
 
 /**
  * Array of pointers to all the stops windows, indexed by transport type
