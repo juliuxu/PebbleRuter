@@ -78,7 +78,7 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
 
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   
-  realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
+  //realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
   line_destination_t *linedest;
 
   char departure_title[64];
