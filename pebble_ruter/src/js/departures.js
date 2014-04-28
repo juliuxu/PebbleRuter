@@ -12,13 +12,13 @@ function putDepartures(stopid, ttype) {
 					console.log(data[dir][departure].PublishedLineName + data[dir][departure].DestinationDisplay);
 					departuresdata.push(data[dir][departure].PublishedLineName);
 					departuresdata.push(data[dir][departure].DestinationDisplay);
-					departuresdata.push(data[dir][departure].DepartureTimes);
+					departuresdata.push(data[dir][departure].DepartureTimes.join(" "));
 				}
 				departuresdata[0] += data[dir].length;
 
 			}
 			console.log("Send message: " + departuresdata.join("~"));
-			Pebble.sendAppMessage({"PUT_DEPArTURES": departuresdata.join("~")});
+			Pebble.sendAppMessage({"PUT_DEPARTURES": departuresdata.join("~")});
 
 		}
 		else {

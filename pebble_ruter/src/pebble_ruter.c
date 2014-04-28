@@ -39,6 +39,7 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
  }
  else if ( (tuple = dict_find(received, PUT_DEPARTURES)) ) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURES");
+  handle_put_depatures(tuple);
 
  }
  else {
