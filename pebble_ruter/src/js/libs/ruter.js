@@ -325,9 +325,10 @@ var Ruter = (function() {
 
           }
 
-          callback(err, res);
-
         }
+        callback(err, res);
+
+
       });
 
     };
