@@ -282,10 +282,10 @@ var Ruter = (function() {
     };
 
     /**
-     * Get Ordered Depatures in a simple format
+     * Get Ordered Departures in a simple format
      */
-    my.SimpleGetOrderedDepatures = function(stopid, ttype, callback) {
-      console.log("SimpleGetOrderedDepatures " + stopid);
+    my.SimpleGetOrderedDepartures = function(stopid, ttype, callback) {
+      console.log("SimpleGetOrderedDepartures " + stopid);
 
       my.GetRealTimeDataGroupedByDirection(stopid, ttype, function(err, data) {
         //console.log(JSON.stringify(data, null, 4));
@@ -297,25 +297,25 @@ var Ruter = (function() {
 
             console.log(data[dir][line][0].PublishedLineName + " " + data[dir][line][0].DestinationDisplay);
 
-            depature_times = [];
-            depature_timestamps = [];
+            departure_times = [];
+            departure_timestamps = [];
 
-            for (var depature in data[dir][line]) {
+            for (var departure in data[dir][line]) {
               // Convert asp.net date to js date
-              var server_date = data[dir][line][depature].ExpectedDepartureTime;
+              var server_date = data[dir][line][departure].ExpectedDepartureTime;
               var d = new Date(parseFloat(server_date.replace("/Date(", "").replace(")/", "")));
 
-              depature_times.push(my.GetRuterTime(d.getTime()))
-              depature_timestamps.push(d.getTime());
+              departure_times.push(my.GetRuterTime(d.getTime()))
+              departure_timestamps.push(d.getTime());
             }
-            console.log(JSON.stringify(depature_times, null, 4));
+            console.log(JSON.stringify(departure_times, null, 4));
 
             res[dir].push(
               {
                 'PublishedLineName': data[dir][line][0].PublishedLineName,
                 'DestinationDisplay': data[dir][line][0].DestinationDisplay,
-                'DepatureTimes': depature_times,
-                'DepatureTimestamps': depature_timestamps,
+                'DepartureTimes': departure_times,
+                'DepartureTimestamps': departure_timestamps,
 
                 // Extra
                 'DestinationName': data[dir][line][0].DestinationName,

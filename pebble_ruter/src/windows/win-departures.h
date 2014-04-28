@@ -5,6 +5,6 @@
 
 void create_departures_window(realtime_transport_type_t ttype);
 void destroy_departures_window(realtime_transport_type_t ttype);
-void show_departures_window(realtime_transport_type_t ttype, bool animated);
+void show_departures_window(char *stopid, realtime_transport_type_t ttype, bool animated);
 
 #endif

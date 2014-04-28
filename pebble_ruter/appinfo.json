@@ -10,10 +10,11 @@
   },
   "appKeys": {
     "GET_STOPS": 0,
-    "GET_DEPATURES": 1,
+    "GET_DEPARTURES": 1,
+    "GET_DEPARTURES_STOPID": 2,
 
-    "PUT_STOPS": 2,
-    "PUT_DEPATURES": 3
+    "PUT_STOPS": 3,
+    "PUT_DEPARTURES": 4
   },
   "capabilities": ["location"],
   "resources": {

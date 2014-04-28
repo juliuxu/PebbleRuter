@@ -37,8 +37,8 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
   handle_put_stops(tuple);
  }
- else if ( (tuple = dict_find(received, PUT_DEPATURES)) ) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPATURES");
+ else if ( (tuple = dict_find(received, PUT_DEPARTURES)) ) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURES");
 
  }
  else {
@@ -76,6 +76,7 @@ static void init(void) {
 }
 
 static void deinit(void) {
+  destroy_departures();
   destroy_stops();
   destroy_main_window();
 }

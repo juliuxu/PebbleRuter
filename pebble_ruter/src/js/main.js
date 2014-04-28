@@ -13,9 +13,9 @@ Pebble.addEventListener("appmessage",
       console.log("GET_STOPS");
       putStops(e.payload["GET_STOPS"]);
     }
-    if(e.payload.hasOwnProperty("GET_DEPATURES")) {
-      console.log("GET_DEPATURES");
-      //putDepatures(e.payload["GET_DEPATURES"]);
+    if(e.payload.hasOwnProperty("GET_DEPARTURES")) {
+      console.log("GET_DEPARTURES");
+      putDepartures(e.payload["GET_DEPARTURES_STOPID"], e.payload["GET_DEPARTURES"]);
     }
 
   }

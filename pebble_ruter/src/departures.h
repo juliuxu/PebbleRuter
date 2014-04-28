@@ -3,26 +3,29 @@
 
 #include "pebble_ruter.h"
 
+#define MAX_DEPARTURES 10
+
 struct LineDestination {
 
-	char *line_destination;
+	char *line;
+	char *destination;
 
-	// Let the JS on the phone compile the depature times string
-	// If we later need to dynamicly update depature times without talking to ruter
-	// We need to store a list of depature times
+	// Let the JS on the phone compile the departure times string
+	// If we later need to dynamicly update departure times without talking to ruter
+	// We need to store a list of departure times
 	// But for now it's just this:
-	// A simple string of depature times, e.g. "now 1 min 4 min 17:32"
-	char *depaturetimes;
+	// A simple string of departure times, e.g. "now 1 min 4 min 17:32"
+	char *departuretimes;
 
 };
 typedef struct LineDestination line_destination_t;
 
-uint16_t get_num_depatures();
-stop_t *get_depature(uint8_t index);
+uint16_t get_num_departures();
+line_destination_t *get_departure(uint8_t index);
 
-void get_depatures(realtime_transport_type_t ttype);
-void handle_put_depatures(Tuple *tuple);
-void destroy_depatures(void);
-void refresh_depatures_window(realtime_transport_type_t ttype);
+void handle_get_departures(char *stopid, realtime_transport_type_t ttype);
+void handle_put_departures(Tuple *tuple);
+void destroy_departures(void);
+void refresh_departures_window(realtime_transport_type_t ttype);
 
 #endif

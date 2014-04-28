@@ -97,10 +97,11 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
   realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
 
+  stop_t *stop;
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      // Call with stopid
-      show_departures_window(*ttype, true);
+      stop = get_stop(cell_index->row);
+      show_departures_window(stop->id, *ttype, true);
     break;
 
   }

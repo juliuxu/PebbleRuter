@@ -2,6 +2,7 @@
 #include "../libs/pebble-assist.h"
 
 #include "../pebble_ruter.h"
+#include "../departures.h"
 
 #define MENU_SECTIONS 1
 
@@ -40,10 +41,7 @@ static uint16_t menu_get_num_sections_callback(MenuLayer* menu_layer, void *call
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
-
-      // TODO
-      return 3;
-
+      get_num_departures();
     default:
       return 0;
   }
@@ -72,34 +70,18 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
 static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   
   realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
+  line_destination_t *linedest;
+
+  char departure_title[64];
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
       
-      switch (*ttype) {
-        case R_BUS:
-          menu_cell_basic_draw(ctx, cell_layer, "17 Forskingsparken", "Now - 1 min - 2 min", NULL);
-          break;
+      linedest = get_departure(cell_index->row);
 
-        case R_FERRY:
-          menu_cell_basic_draw(ctx, cell_layer, "Aker Brygge", "baat", NULL);
-          break;
+      snprintf(departure_title, 64, "%s %s", linedest->line, linedest->destination);
 
-        case R_TRAIN:
-          menu_cell_basic_draw(ctx, cell_layer, "Nationaltheatret", "nationaltheatret tog", NULL);
-          break;
-
-        case R_TRAM:
-          menu_cell_basic_draw(ctx, cell_layer, "Bislett trikk", "bislett trikk", NULL);
-          break;
-
-        case R_METRO:
-          menu_cell_basic_draw(ctx, cell_layer, "6 Sognsvann", "2 min - 9 min - 17:48", NULL);
-          break;
-
-
-        break;
-      }
+      menu_cell_basic_draw(ctx, cell_layer, departure_title, linedest->departuretimes, NULL);
 
       break;
   }
@@ -158,6 +140,7 @@ void destroy_departures_window(realtime_transport_type_t ttype) {
   window_destroy(transport_type_to_window_map[ttype]);
 }
 
-void show_departures_window(realtime_transport_type_t ttype, bool animated) {
+void show_departures_window(char *stopid, realtime_transport_type_t ttype, bool animated) {
+  handle_get_departures(stopid, ttype);
   window_stack_push(transport_type_to_window_map[ttype], animated);
 }

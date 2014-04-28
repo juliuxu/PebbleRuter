@@ -3,10 +3,6 @@
 
 #include <pebble.h>
 
-// Used for static string allocation
-// TODO: Use malloc and free instead!
-#define STRING_DATA_SIZE 60
-
 #define NUM_REALTIME_TRANSPORT_TYPES 5
 
 /**
@@ -16,11 +12,12 @@ typedef enum {
 
 	// For sending
 	GET_STOPS,
-	GET_DEPATURES,
+	GET_DEPARTURES,
+	GET_DEPARTURES_STOPID,
 
 	// For receving
 	PUT_STOPS,
-	PUT_DEPATURES,
+	PUT_DEPARTURES,
 
 } appmessage_type_t;
 

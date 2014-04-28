@@ -9,7 +9,7 @@ Important that phone time is correct!
 
 * Loading screen
 
-* Handle empty stops/depatures
+* Handle empty stops/departures
 
 * Figure out smart ways to have text
 
