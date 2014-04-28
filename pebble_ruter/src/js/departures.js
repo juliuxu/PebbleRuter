@@ -6,20 +6,49 @@ function putDepartures(stopid, ttype) {
 		if (err === null) { 
 			console.log("putDepartures: " + JSON.stringify(data, null, 4));
 
-			departuresdata = [0];
+			departuresdata = [];
 			for (var dir in data) {
 				for (var departure in data[dir]) {
 					console.log(data[dir][departure].PublishedLineName + data[dir][departure].DestinationDisplay);
-					departuresdata.push(data[dir][departure].PublishedLineName);
-					departuresdata.push(data[dir][departure].DestinationDisplay);
-					departuresdata.push(data[dir][departure].DepartureTimes.join(" "));
+					
+					departuresdata.push([
+						data[dir][departure].PublishedLineName,
+						data[dir][departure].DestinationDisplay,
+						data[dir][departure].DepartureTimes.join(" ")
+						].join("~")
+					);
 				}
-				departuresdata[0] += data[dir].length;
 
 			}
-			message = departuresdata.join("~");
-			console.log("Send message("+message.length+"): " + message);
-			Pebble.sendAppMessage({"PUT_DEPARTURES": message});
+
+			/**
+			 * Send an array to pebble
+			 */
+			function sendArray(index) {
+
+				if (index == departuresdata.length) {
+					return;
+				}
+
+				//console.log("Sending Message(" + index + "): " + departuresdata[index]);
+
+				messageDict = {}
+				messageDict["PUT_DEPARTURE"] = departuresdata[index];
+				messageDict["PUT_DEPARTURE_INDEX"] = index;
+				messageDict["PUT_DEPARTURE_LENGTH"] = departuresdata.length;
+
+				//console.log(JSON.stringify(messageDict));
+				Pebble.sendAppMessage(messageDict,
+					function(e) {
+						sendArray(index+1, departuresdata, appkey, appkey_index, appkey_length);
+					},
+					function(e) {
+						console.log("An error occured trying to send message!");
+						// Error occured, try again?
+					});
+
+			}
+			sendArray(0);
 
 		}
 		else {

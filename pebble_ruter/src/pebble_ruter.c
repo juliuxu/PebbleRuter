@@ -37,9 +37,9 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
   handle_put_stops(tuple);
  }
- else if ( (tuple = dict_find(received, PUT_DEPARTURES)) ) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURES");
-  handle_put_departures(tuple);
+ else if ( (tuple = dict_find(received, PUT_DEPARTURE)) ) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURE");
+  handle_put_departure(received);
 
  }
  else {
@@ -64,6 +64,8 @@ static void app_message_init(void) {
   app_message_register_outbox_failed(out_failed_handler);
   app_message_register_outbox_sent(out_sent_handler);
 
+
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "max inbox: %d max outbox: %d", (int) app_message_inbox_size_maximum(), (int) app_message_outbox_size_maximum());
   // Init buffers
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 

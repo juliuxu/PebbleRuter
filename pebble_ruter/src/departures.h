@@ -24,7 +24,7 @@ uint16_t get_num_departures();
 line_destination_t *get_departure(uint8_t index);
 
 void handle_get_departures(char *stopid, realtime_transport_type_t ttype);
-void handle_put_departures(Tuple *tuple);
+void handle_put_departure(DictionaryIterator *iter);
 void destroy_departures(void);
 void refresh_departures_window(realtime_transport_type_t ttype);
 

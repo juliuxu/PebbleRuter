@@ -32,42 +32,60 @@ void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
 	return;
 }
 
-void handle_put_departures(Tuple *tuple) {
+void handle_put_departure(DictionaryIterator *iter) {
+	Tuple* t_departure = dict_find(iter, PUT_DEPARTURE);
+	Tuple* t_departure_index = dict_find(iter, PUT_DEPARTURE_INDEX);
+	Tuple* t_departure_length = dict_find(iter, PUT_DEPARTURE_LENGTH);
 
-	destroy_departures();
+	uint8_t index = t_departure_index->value->int8;
+	uint8_t length = t_departure_length->value->int8;
 
-	int length = tuple->length;
-	char *text = malloc(length);
-	strcpy(text, tuple->value->cstring);
 
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "handle_put_departures(%d): %s", length, text);
+	// Check if this is the first of more to come
+	if (index == 0) {
+		// If so we can destroy our departures
+		destroy_departures();
+	}
+	else if (index >= MAX_DEPARTURES) {
+		// To high cannot accept
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "To high index %d", index);
+		return;
+	}
+
+	int text_length = t_departure->length;
+	char *text = malloc(text_length);
+	strcpy(text, t_departure->value->cstring);
 
 	int num_strings;
-	char **strings = splittoarray(text, length, '~', &num_strings);
-
-	num_ruter_departures = satoi(strings[0]);
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "num_ruter_departures: %d", num_ruter_departures);
-
-	int i;
-	int strings_index;
-	for (i=0, strings_index=1;i<num_ruter_departures && i<MAX_DEPARTURES;i++, strings_index+=3) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "Add line_destination_t: %s %s %s", strings[strings_index], strings[strings_index+1], strings[strings_index+2]);
-
-		ruter_departures[i].line = malloc(strlen(strings[strings_index]));
-		ruter_departures[i].destination = malloc(strlen(strings[strings_index+1]));
-		ruter_departures[i].departuretimes = malloc(strlen(strings[strings_index+2]));
-
-		strcpy(ruter_departures[i].line, strings[strings_index]);
-		strcpy(ruter_departures[i].destination, strings[strings_index+1]);
-		strcpy(ruter_departures[i].departuretimes, strings[strings_index+2]);
-
+	char **strings = splittoarray(text, text_length, '~', &num_strings);
+	if (num_strings != 3) {
+		free(strings);
+		free(text);
+		return;
 	}
+
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Add line_destination_t: %s %s %s", strings[0], strings[1], strings[2]);
+
+	ruter_departures[index].line = malloc(strlen(strings[0]));
+	ruter_departures[index].destination = malloc(strlen(strings[1]));
+	ruter_departures[index].departuretimes = malloc(strlen(strings[2]));
+
+	strcpy(ruter_departures[index].line, strings[0]);
+	strcpy(ruter_departures[index].destination, strings[1]);
+	strcpy(ruter_departures[index].departuretimes, strings[2]);
 
 	free(strings);
 	free(text);
 
-	// Call window update
-	refresh_departures_window(current_transport_type);
+	// Check if this was the last departure
+	// Or if we cannot accept any more
+	if (index + 1 == length ||
+		index + 1 == MAX_DEPARTURES
+		) {
+		// Time to update window
+		num_ruter_departures = length;
+		refresh_departures_window(current_transport_type);
+	}
 
 }
 

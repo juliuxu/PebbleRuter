@@ -17,7 +17,10 @@ typedef enum {
 
 	// For receving
 	PUT_STOPS,
-	PUT_DEPARTURES,
+	
+	PUT_DEPARTURE,
+	PUT_DEPARTURE_INDEX,
+	PUT_DEPARTURE_LENGTH,
 
 } appmessage_type_t;
 
