@@ -62,6 +62,11 @@ void handle_put_departure(DictionaryIterator *iter) {
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "To high index %d", index);
 		return;
 	}
+	else if (ruter_departures[index].line != NULL) {
+		// We are overwriting an existing entry
+		// Probably a duplicate, so we can just return
+		return;
+	}
 
 	int text_length = t_departure->length;
 	char *text = malloc(text_length);
@@ -118,11 +123,17 @@ line_destination_t *get_departure(uint8_t index) {
 }
 
 void destroy_departures(void) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy departures %d", num_ruter_departures);
 	uint8_t i;
 	for (i=0;i<num_ruter_departures;i++) {
 		free(ruter_departures[i].line);
 		free(ruter_departures[i].destination);
 		free(ruter_departures[i].departuretimes);
+
+		/* Null out */
+		ruter_departures[i].line = NULL;
+		ruter_departures[i].destination = NULL;
+		ruter_departures[i].departuretimes = NULL;
 	}
 	num_ruter_departures = 0;
 }
