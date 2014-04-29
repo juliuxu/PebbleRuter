@@ -7,8 +7,6 @@ Important that phone time is correct!
 * Add icons
 * Nicer menu
 
-* Loading screen
-
 * Handle timeouts, and other errors
 
 * Handle empty stops/departures
