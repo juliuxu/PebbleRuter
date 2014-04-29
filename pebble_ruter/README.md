@@ -13,6 +13,9 @@ Important that phone time is correct!
 
 * Figure out smart ways to have text
 
+* More user friendly
+  - More verbose (i.e. update when location is found)
+
 * Refresh Manually
 * Refresh Automaticly (each minute)
 
