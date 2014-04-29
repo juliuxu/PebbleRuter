@@ -4,6 +4,8 @@
 #include "../pebble_ruter.h"
 #include "../stops.h"
 
+#include "../layers/layer-loading.h"
+
 #include "win-departures.h"
 
 #define MENU_SECTIONS 1
@@ -13,10 +15,11 @@
 #define MENU_CELL_HEIGHT 44
 
 /**
- * Array of pointers to all the stops windows, indexed by transport type
+ * Array of pointers to all the stops windows and layers, indexed by transport type
  */
 static Window *transport_type_to_window_map[NUM_REALTIME_TRANSPORT_TYPES];
 static MenuLayer *transport_type_to_menulayer_map[NUM_REALTIME_TRANSPORT_TYPES];
+static LoadingLayer *transport_type_to_loadinglayer_map[NUM_REALTIME_TRANSPORT_TYPES];
 
 /**
  * Get transport type from window pointer,
@@ -37,9 +40,12 @@ static int8_t get_transport_type_from_window(Window *window) {
  * Refresh
  */
 void refresh_stops_window(realtime_transport_type_t ttype) {
+  if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
+    return;
+  }
 
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
-
+  layer_hide(transport_type_to_loadinglayer_map[ttype]);
 }
 
 /** 
@@ -133,10 +139,17 @@ static void window_load(Window *window) {
 
   // Set menu layer
   transport_type_to_menulayer_map[ttype] = menu_layer;
+
+  // Set loading layer
+  LoadingLayer *loading_layer = loading_layer_create(window);
+  loading_layer_set_text(loading_layer, "Getting Location and Loading stops");
+  transport_type_to_loadinglayer_map[ttype] = loading_layer;
 }
 
 static void window_unload(Window *window) {
-  menu_layer_destroy(transport_type_to_menulayer_map[get_transport_type_from_window(window)]);
+  realtime_transport_type_t ttype = get_transport_type_from_window(window);
+  menu_layer_destroy(transport_type_to_menulayer_map[ttype]);
+  loading_layer_destroy(transport_type_to_loadinglayer_map[ttype]);
 }
 
 void create_stops_window(realtime_transport_type_t ttype) {
@@ -165,4 +178,5 @@ void destroy_stops_window(realtime_transport_type_t ttype) {
 void show_stops_window(realtime_transport_type_t ttype, bool animated) {
   handle_get_stops(ttype);
   window_stack_push(transport_type_to_window_map[ttype], animated);
+  layer_show(transport_type_to_loadinglayer_map[ttype]);
 }
