@@ -29,6 +29,7 @@ function putDepartures(stopid, ttype) {
 			/**
 			 * Send an array to pebble
 			 */
+			var retries = 0;
 			function sendArray(index) {
 
 				if (index == departuresdata.length) {
@@ -45,11 +46,17 @@ function putDepartures(stopid, ttype) {
 				//console.log(JSON.stringify(messageDict));
 				Pebble.sendAppMessage(messageDict,
 					function(e) {
+						// Reset retries
+						retries = 0;
+
 						sendArray(index+1);
 					},
 					function(e) {
 						console.log("An error occured trying to send message!");
-						// Error occured, try again?
+						if (retries++ < 3) {
+							console.log("Try to send again!");
+							sendArray(index);
+						}
 					});
 
 			}
