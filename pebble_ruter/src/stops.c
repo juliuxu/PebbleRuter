@@ -22,6 +22,11 @@ void handle_get_stops(realtime_transport_type_t ttype) {
 	DictionaryIterator *iter;
  	app_message_outbox_begin(&iter);
 
+ 	if (iter == NULL) {
+ 		APP_LOG(APP_LOG_LEVEL_DEBUG, "iter is null");
+ 		return;
+ 	}
+
  	dict_write_uint8(iter, GET_STOPS, ttype);
 
  	app_message_outbox_send();

@@ -23,6 +23,11 @@ void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
 	DictionaryIterator *iter;
  	app_message_outbox_begin(&iter);
 
+ 	if (iter == NULL) {
+ 		APP_LOG(APP_LOG_LEVEL_DEBUG, "iter is null");
+ 		return;
+ 	}
+
  	dict_write_cstring(iter, GET_DEPARTURES_STOPID, stopid);
  	dict_write_uint8(iter, GET_DEPARTURES, ttype);
 
