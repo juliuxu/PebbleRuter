@@ -1,4 +1,4 @@
-function putStops(ttype) {
+function putStops(ttype, successCb, failureCb) {
 	console.log("putStops " + ttype);
 
 	// Convert the realtime type to travel type
@@ -10,7 +10,7 @@ function putStops(ttype) {
 
 			stopsdata = [];
 			for (var stop in data) {
-				console.log(data[stop].Name + data[stop].ID);
+				console.log(data[stop].ID + " " + data[stop].Name);
 				stopsdata.push(data[stop].ID);
 				stopsdata.push(data[stop].Name);
 
@@ -22,12 +22,20 @@ function putStops(ttype) {
 			}
 
 			// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
-			Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")});
+			Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
+				function(e){
+					successCb(e);
+				},
+				function(e){
+					failureCb(e);
+				}
+			);
 
 		}
 		else {
 			console.log("An error occured getting stops");
 			console.log(err);
+			failureCb(err)
 		}
 	});
 

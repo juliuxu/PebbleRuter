@@ -1,4 +1,4 @@
-function putDepartures(stopid, ttype) {
+function putDepartures(stopid, ttype, successCb, failureCb) {
 	console.log("putDepartures " + ttype);
 
 	Ruter.SimpleGetOrderedDepartures(stopid, ttype, function(err, data) {
@@ -23,6 +23,7 @@ function putDepartures(stopid, ttype) {
 
 			if (departuresdata.length == 0) {
 				// Send empty message?
+				successCb(null);
 				return;
 			}
 
@@ -30,13 +31,15 @@ function putDepartures(stopid, ttype) {
 			 * Send an array to pebble
 			 */
 			var retries = 0;
-			function sendArray(index) {
+			var sendArray = function(index) {
 
 				if (index == departuresdata.length) {
+					console.log("Reached end of array");
+					successCb(null);
 					return;
 				}
 
-				//console.log("Sending Message(" + index + "): " + departuresdata[index]);
+				console.log("Sending Message(" + index + "): " + departuresdata[index]);
 
 				messageDict = {}
 				messageDict["PUT_DEPARTURE"] = departuresdata[index];
@@ -46,6 +49,7 @@ function putDepartures(stopid, ttype) {
 				//console.log(JSON.stringify(messageDict));
 				Pebble.sendAppMessage(messageDict,
 					function(e) {
+						console.log("Send next message: " + (index + 1));
 						// Reset retries
 						retries = 0;
 
@@ -57,15 +61,19 @@ function putDepartures(stopid, ttype) {
 							console.log("Try to send again!");
 							sendArray(index);
 						}
+						else {
+							failureCb(e);
+						}
 					});
 
-			}
+			};
 			sendArray(0);
 
 		}
 		else {
 			console.log("An error occured getting departures");
 			console.log(err);
+			failureCb(err);
 		}
 	});
 

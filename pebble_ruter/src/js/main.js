@@ -16,9 +16,9 @@ Pebble.addEventListener("appmessage",
     console.log("Received message: " + JSON.stringify(e.payload, null, 4));
 
     if (proccessingCommand) {
-      console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+      console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       console.log("proccessingCommand is true! cannot do two things at the same time");
-      console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+      console.log("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       return;
     }
     else {
