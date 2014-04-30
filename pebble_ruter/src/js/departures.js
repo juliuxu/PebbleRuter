@@ -6,7 +6,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 		if (err === null) { 
 			console.log("putDepartures: " + JSON.stringify(data, null, 4));
 
-			departuresdata = [];
+			var departuresdata = [];
 			for (var dir in data) {
 				for (var departure in data[dir]) {
 					console.log(data[dir][departure].PublishedLineName + " " + data[dir][departure].DestinationDisplay);
@@ -31,7 +31,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 			 * Send an array to pebble
 			 */
 			var retries = 0;
-			var sendArray = function(index) {
+			sendArray = function(index) {
 
 				if (index == departuresdata.length) {
 					console.log("Reached end of array");

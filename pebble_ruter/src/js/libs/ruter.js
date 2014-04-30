@@ -13,7 +13,7 @@ var Ruter = (function() {
     
     var location_options = {
       enableHighAccuracy: false,
-      timeout: 5000,
+      timeout: 7000,
       maximumAge: 0
     };
 
@@ -160,7 +160,7 @@ var Ruter = (function() {
       };
 
       function error(err) {
-        console.warn('ERROR(' + err.code + '): ' + err.message);
+        console.warn('getCurrentPosition ERROR(' + err.code + '): ' + err.message);
         callback('ERROR(' + err.code + '): ' + err.message);
       };
 

@@ -8,7 +8,7 @@ function putStops(ttype, successCb, failureCb) {
 		if (err === null) { 
 			//console.log("putStops: " + JSON.stringify(data, null, 4));
 
-			stopsdata = [];
+			var stopsdata = [];
 			for (var stop in data) {
 				console.log(data[stop].ID + " " + data[stop].Name);
 				stopsdata.push(data[stop].ID);

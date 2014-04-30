@@ -105,6 +105,11 @@ static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_in
 
   realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
 
+  if (!layer_get_hidden(transport_type_to_loadinglayer_map[*ttype])) {
+    APP_LOG(APP_LOG_LEVEL_DEBUG, "No clicks allowed while loading layer is visible");
+    return;
+  }
+
   stop_t *stop;
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:

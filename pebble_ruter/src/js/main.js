@@ -25,11 +25,11 @@ Pebble.addEventListener("appmessage",
       proccessingCommand = true;
     }
 
-    var successCb = function(e) {
+    var successCb = function(res) {
       console.log("Function returned successfully!");
       proccessingCommand = false;
     }
-    var failureCb = function(e) {
+    var failureCb = function(res) {
       console.log("Function returned failed!");
       proccessingCommand = false;
     }
