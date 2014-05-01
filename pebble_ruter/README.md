@@ -7,9 +7,7 @@ Important that phone time is correct!
 * Add icons
 * Nicer menu
 
-* Handle timeouts, and other errors
-
-* Handle empty stops/departures
+* Handle other errors
 
 * Figure out smart ways to have text
 
@@ -18,6 +16,7 @@ Important that phone time is correct!
 
 * Refresh Manually
 * Refresh Automaticly (each minute)
+* Last refresh time in header
 
 * Conform to Ruter Standards (ca, deviations, etc..)
 
