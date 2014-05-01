@@ -53,6 +53,10 @@ void refresh_stops_window(realtime_transport_type_t ttype) {
  */
 
 void update_stops_loading_text(realtime_transport_type_t ttype, char *text) {
+  if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
+    return;
+  }
+
   loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
 }
 
