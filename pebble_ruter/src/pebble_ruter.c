@@ -34,14 +34,63 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
 
   Tuple *tuple;
 
+
+  /**
+   * Put stops
+   */
   if ( (tuple = dict_find(received, PUT_STOPS)) ) {
    APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS");
    handle_put_stops(tuple);
   }
+
+  /**
+   * Location status
+   */
+  else if ( (tuple = dict_find(received, PUT_STOPS_LOCATION_SUCCESS)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS_LOCATION_SUCCESS");
+   handle_put_stops_location_success(tuple);
+  }
+  else if ( (tuple = dict_find(received, PUT_STOPS_LOCATION_ERROR)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS_LOCATION_ERROR");
+   handle_put_stops_location_error(tuple);
+  }
+
+  /**
+   * Put stops status
+   */
+  else if ( (tuple = dict_find(received, PUT_STOPS_EMPTY)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS_EMPTY");
+   handle_put_stops_empty(tuple);
+  }
+  else if ( (tuple = dict_find(received, PUT_STOPS_ERROR)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_STOPS_ERROR");
+   handle_put_stops_error(tuple);
+  }
+
+
+  /**
+   * Put Departure
+   */
   else if ( (tuple = dict_find(received, PUT_DEPARTURE)) ) {
    APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURE");
    handle_put_departure(received);
   }
+
+  /**
+   * Put departure status
+   */
+  else if ( (tuple = dict_find(received, PUT_DEPARTURE_EMPTY)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURE_EMPTY");
+   handle_put_departure_empty(tuple);
+  }
+  else if ( (tuple = dict_find(received, PUT_DEPARTURE_ERROR)) ) {
+   APP_LOG(APP_LOG_LEVEL_DEBUG, "PUT_DEPARTURE_ERROR");
+   handle_put_departure_error(tuple);
+  }
+
+  /**
+   * Invalid message
+   */
   else {
    APP_LOG(APP_LOG_LEVEL_DEBUG, "Invalid message!");
   }

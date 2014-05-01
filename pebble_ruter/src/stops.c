@@ -72,6 +72,23 @@ void handle_put_stops(Tuple *tuple) {
 
 }
 
+
+void handle_put_stops_location_success(Tuple *tuple) {
+
+}
+void handle_put_stops_location_error(Tuple *tuple) {
+
+}
+
+
+void handle_put_stops_empty(Tuple *tuple) {
+
+}
+void handle_put_stops_error(Tuple *tuple) {
+
+}
+
+
 /**
  * Window callback functions
  */

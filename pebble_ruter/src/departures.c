@@ -43,9 +43,7 @@ void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
  * Refresh departures
  */
 void refresh_departures(void) {
-
 	handle_get_departures(current_stopid, current_transport_type);
-
 }
 
 void handle_put_departure(DictionaryIterator *iter) {
@@ -111,6 +109,13 @@ void handle_put_departure(DictionaryIterator *iter) {
 		num_ruter_departures = index + 1;
 	}
 
+}
+
+void handle_put_departure_empty(Tuple *tuple) {
+	
+}
+void handle_put_departure_error(Tuple *tuple) {
+	
 }
 
 /**

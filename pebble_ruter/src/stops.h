@@ -20,6 +20,13 @@ stop_t *get_stop(uint8_t index);
 
 void handle_get_stops(realtime_transport_type_t ttype);
 void handle_put_stops(Tuple *tuple);
+
+void handle_put_stops_location_success(Tuple *tuple);
+void handle_put_stops_location_error(Tuple *tuple);
+void handle_put_stops_empty(Tuple *tuple);
+void handle_put_stops_error(Tuple *tuple);
+
+
 void destroy_stops(void);
 
 #endif
