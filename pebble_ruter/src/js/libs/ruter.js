@@ -140,9 +140,9 @@ var Ruter = (function() {
     };
 
     /**
-     * Get current location, convert to UTM32 and get the closest stops
+     * Get the current location in utm32 coordinates
      */
-    my.GetClosestStops = function(callback) {
+    my.GetUTM32Location = function(callback) {
 
       // Get location
       function success(position) {
@@ -155,7 +155,7 @@ var Ruter = (function() {
 
         console.log('UTM32 X: ' + X + ' Y: ' + Y);
 
-        my.GetClosestStopsByCoordinates(X, Y, callback);
+        callback(null, X, Y);
 
       };
 
@@ -173,9 +173,9 @@ var Ruter = (function() {
      * Get Closest stops by transportation type
      * Use types from TRAVEL_TRANSPORT_TYPES
      */
-    my.GetClosestStopsByTransportType = function(ttype, callback) {
+    my.GetClosestStopsByTransportType = function(X, Y, ttype, callback) {
 
-      my.GetClosestStops(function(err, data) {
+      my.GetClosestStopsByCoordinates(X, Y, function(err, data) {
 
         var stops = [];
         for (var stop in data) {
