@@ -9,7 +9,7 @@
 #define MENU_SECTIONS 1
 
 #define MENU_SECTION_MAIN 0
-#define MENU_HEADER_HEIGHT 0
+#define MENU_HEADER_HEIGHT 16
 #define MENU_CELL_HEIGHT 44
 
 /**
@@ -35,7 +35,7 @@ static int8_t get_transport_type_from_window(Window *window) {
 }
 
 /**
- * Refresh
+ * Refresh Window
  */
 void refresh_departures_window(realtime_transport_type_t ttype) {
   if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
@@ -51,6 +51,10 @@ void refresh_departures_window(realtime_transport_type_t ttype) {
  */
 
 void update_departures_loading_text(realtime_transport_type_t ttype, char *text) {
+  if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
+    return;
+  }
+
   loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
 }
 
@@ -85,7 +89,7 @@ static int16_t menu_get_cell_height_callback(MenuLayer* menu_layer, MenuIndex* c
 static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, uint16_t section_index, void *callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
-      // menu_cell_basic_header_draw(ctx, cell_layer, "Hello, Header!");
+     //      menu_cell_basic_header_draw(ctx, cell_layer, "Refresh: 16:06");
     break;
   }
 }
@@ -172,12 +176,31 @@ static void window_unload(Window *window) {
   loading_layer_destroy(transport_type_to_loadinglayer_map[ttype]);
 }
 
+/**
+ * Update every minute
+ */
+static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Automaticly Refreshing Departures");
+  refresh_departures();
+}
+
+static void window_appear(Window *window) {
+  tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
+}
+
+static void window_disappear(Window *window) {
+  tick_timer_service_unsubscribe();
+}
+
+
 void create_departures_window(realtime_transport_type_t ttype) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Create departure window %d", ttype);
   Window *window = window_create();
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
+    .appear = window_appear,
     .unload = window_unload,
+    .disappear = window_disappear
   });
 
   transport_type_to_window_map[ttype] = window;
