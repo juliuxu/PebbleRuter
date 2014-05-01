@@ -14,6 +14,14 @@ Important that phone time is correct!
 * More user friendly
   - More verbose (i.e. update when location is found)
 
+* Make updated header always visible, and Make background black?
+
+* Add Norwegian text
+
+* Add settings
+
+* Add favorites that are easy and fast accessible
+
 * Conform to Ruter Standards (ca, deviations, etc..)
 
 * Document ruter.js better
