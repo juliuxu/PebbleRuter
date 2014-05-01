@@ -23,6 +23,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 
 			if (departuresdata.length == 0) {
 				// Send empty message?
+				Pebble.sendAppMessage({"PUT_DEPARTURE_EMPTY": ttype});
 				successCb(null);
 				return;
 			}
@@ -73,6 +74,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 		else {
 			console.log("An error occured getting departures");
 			console.log(err);
+			Pebble.sendAppMessage({"PUT_DEPARTURE_ERROR": ttype});
 			failureCb(err);
 		}
 	});
