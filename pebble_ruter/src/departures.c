@@ -101,6 +101,19 @@ void handle_put_departure(DictionaryIterator *iter) {
 	if (index + 1 == length ||
 		index + 1 == MAX_DEPARTURES
 		) {
+
+		// See if the timestamp is set
+		Tuple* t_departure_time = dict_find(iter, PUT_DEPARTURE_TIME);
+		if (t_departure_time) {
+			// Update the last refresh time
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "Last Refresh Time: %s", t_departure_time->value->cstring);
+			update_last_refresh_time(t_departure_time->value->cstring);
+		}
+		else {
+			// Set the last update time to n/a
+			update_last_refresh_time("n/a");
+		}
+
 		// Time to update window
 		num_ruter_departures = length;
 		refresh_departures_window(current_transport_type);
@@ -136,6 +149,10 @@ void destroy_departures(void) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy departures %d", num_ruter_departures);
 	uint8_t i;
 	for (i=0;i<num_ruter_departures;i++) {
+		if (ruter_departures[i].line == NULL) {
+			continue;
+		}
+
 		free(ruter_departures[i].line);
 		free(ruter_departures[i].destination);
 		free(ruter_departures[i].departuretimes);

@@ -20,6 +20,11 @@ static MenuLayer *transport_type_to_menulayer_map[NUM_REALTIME_TRANSPORT_TYPES];
 static LoadingLayer *transport_type_to_loadinglayer_map[NUM_REALTIME_TRANSPORT_TYPES];
 
 /**
+ * The last time the departures where updated
+ */
+static char last_refresh_time[6] = "n/a";
+
+/**
  * Get transport type from window pointer,
  * used by callback functions to know what kind of window they are dealing with
  */
@@ -58,6 +63,13 @@ void update_departures_loading_text(realtime_transport_type_t ttype, char *text)
   loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
 }
 
+/**
+ * Update last refresh time text
+ */
+void update_last_refresh_time(char *text) {
+  strncpy(last_refresh_time, text, sizeof(last_refresh_time));
+}
+
 /** 
  * Window Callback functions
  */
@@ -87,9 +99,13 @@ static int16_t menu_get_cell_height_callback(MenuLayer* menu_layer, MenuIndex* c
 }
 
 static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, uint16_t section_index, void *callback_context) {
+
+  char refresh_text[24];
+
   switch (section_index) {
     case MENU_SECTION_MAIN:
-           menu_cell_basic_header_draw(ctx, cell_layer, "Refresh: 16:06");
+      snprintf(refresh_text, sizeof(refresh_text), "Updated: %s", last_refresh_time);
+      menu_cell_basic_header_draw(ctx, cell_layer, refresh_text);
     break;
   }
 }
@@ -108,7 +124,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
         return;
       }
 
-      snprintf(departure_title, 48, "%s %s", linedest->line, linedest->destination);
+      snprintf(departure_title, sizeof(departure_title), "%s %s", linedest->line, linedest->destination);
 
       menu_cell_basic_draw(ctx, cell_layer, departure_title, linedest->departuretimes, NULL);
 

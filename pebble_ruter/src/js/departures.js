@@ -47,6 +47,19 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 				messageDict["PUT_DEPARTURE_INDEX"] = index;
 				messageDict["PUT_DEPARTURE_LENGTH"] = departuresdata.length;
 
+				// Add the time on the last departure we send
+				if (index == departuresdata.length-1) {
+					var hourminute;
+					var date = new Date();
+			        hourminute = (date.getHours()<10?'0':'') + date.getHours();
+			        hourminute += ":";
+			        hourminute += (date.getMinutes()<10?'0':'') + date.getMinutes();
+
+					messageDict["PUT_DEPARTURE_TIME"] = hourminute;
+					console.log("Time Now: " + hourminute);
+
+				}
+
 				//console.log(JSON.stringify(messageDict));
 				Pebble.sendAppMessage(messageDict,
 					function(e) {
