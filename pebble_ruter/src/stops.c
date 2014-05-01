@@ -107,6 +107,10 @@ void destroy_stops(void) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroy stops: %d", num_ruter_stops);
 	uint8_t i;
 	for (i=0;i<num_ruter_stops;i++) {
+		if (ruter_stops[i].name == NULL) {
+			continue;
+		}
+
 		free(ruter_stops[i].name);
 		free(ruter_stops[i].id);
 	}
