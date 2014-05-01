@@ -8,6 +8,9 @@ function putStops(ttype, successCb, failureCb) {
 	Ruter.GetUTM32Location(function(err, X, Y) {
 		if (err === null) {
 
+			// Notify that we got location
+			// Pebble.sendAppMessage({});
+
 			// Get the closest stops
 			Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
 
@@ -48,7 +51,7 @@ function putStops(ttype, successCb, failureCb) {
 
 		}
 		else {
-			console.log("Ann error occured getting location");
+			console.log("An error occured getting location");
 			failureCb(err);
 		}
 

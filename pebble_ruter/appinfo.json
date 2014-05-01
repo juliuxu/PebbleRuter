@@ -9,15 +9,26 @@
     "watchface": false
   },
   "appKeys": {
+
     "GET_STOPS": 0,
     "GET_DEPARTURES": 1,
     "GET_DEPARTURES_STOPID": 2,
 
     "PUT_STOPS": 3,
 
-    "PUT_DEPARTURE": 4,
-    "PUT_DEPARTURE_INDEX": 5,
-    "PUT_DEPARTURE_LENGTH": 6
+    "PUT_STOPS_LOCATION_SUCCESS": 4,
+    "PUT_STOPS_LOCATION_ERROR": 5,
+
+    "PUT_STOPS_EMPTY": 6,
+    "PUT_STOPS_ERROR": 7,
+
+    "PUT_DEPARTURE": 8,
+    "PUT_DEPARTURE_INDEX": 9,
+    "PUT_DEPARTURE_LENGTH": 10,
+
+    "PUT_DEPARTURE_EMPTY": 11,
+    "PUT_DEPARTURE_ERROR": 12
+
   },
   "capabilities": ["location"],
   "resources": {
