@@ -14,10 +14,6 @@ Important that phone time is correct!
 * More user friendly
   - More verbose (i.e. update when location is found)
 
-* Refresh Manually
-* Refresh Automaticly (each minute)
-* Last refresh time in header
-
 * Conform to Ruter Standards (ca, deviations, etc..)
 
 * Document ruter.js better
