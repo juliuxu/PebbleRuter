@@ -112,10 +112,10 @@ void handle_put_departure(DictionaryIterator *iter) {
 }
 
 void handle_put_departure_empty(Tuple *tuple) {
-	
+	update_departures_loading_text(tuple->value->uint8, "No Departures");
 }
 void handle_put_departure_error(Tuple *tuple) {
-	
+	update_departures_loading_text(tuple->value->uint8, "Error Getting Departures");
 }
 
 /**

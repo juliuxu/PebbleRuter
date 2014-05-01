@@ -9,7 +9,7 @@ function putStops(ttype, successCb, failureCb) {
 		if (err === null) {
 
 			// Notify that we got the current location
-			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": 1});
+			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype});
 
 			// Get the closest stops
 			Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
@@ -28,7 +28,7 @@ function putStops(ttype, successCb, failureCb) {
 
 					if (data.length == 0) {
 						// Notify that we got no stops
-						Pebble.sendAppMessage({"PUT_STOPS_EMPTY": 1});
+						Pebble.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
 						successCb(null);
 
 					}
@@ -49,7 +49,7 @@ function putStops(ttype, successCb, failureCb) {
 					console.log("An error occured getting stops");
 
 					// Notify that an error occurred
-					Pebble.sendAppMessage({"PUT_STOPS_ERROR": 1});
+					Pebble.sendAppMessage({"PUT_STOPS_ERROR": ttype});
 
 					console.log(err2);
 					failureCb(err2)
@@ -62,7 +62,7 @@ function putStops(ttype, successCb, failureCb) {
 			console.log("An error occured getting location");
 
 			// Notify that we didn't get the current location
-			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_ERROR": 1});
+			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_ERROR": ttype});
 
 			failureCb(err);
 		}

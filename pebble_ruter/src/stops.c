@@ -74,18 +74,18 @@ void handle_put_stops(Tuple *tuple) {
 
 
 void handle_put_stops_location_success(Tuple *tuple) {
-
+	update_stops_loading_text(tuple->value->uint8, "Getting Closest Stops");
 }
 void handle_put_stops_location_error(Tuple *tuple) {
-
+	update_stops_loading_text(tuple->value->uint8, "Error Getting Location");
 }
 
 
 void handle_put_stops_empty(Tuple *tuple) {
-
+	update_stops_loading_text(tuple->value->uint8, "No Close Stops Found");
 }
 void handle_put_stops_error(Tuple *tuple) {
-
+	update_stops_loading_text(tuple->value->uint8, "Error Getting Closest Stops");
 }
 
 

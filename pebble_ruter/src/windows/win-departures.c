@@ -46,6 +46,14 @@ void refresh_departures_window(realtime_transport_type_t ttype) {
   layer_hide(transport_type_to_loadinglayer_map[ttype]);
 }
 
+/**
+ * Update loading layer text
+ */
+
+void update_departures_loading_text(realtime_transport_type_t ttype, char *text) {
+  loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
+}
+
 /** 
  * Window Callback functions
  */

@@ -48,6 +48,14 @@ void refresh_stops_window(realtime_transport_type_t ttype) {
   layer_hide(transport_type_to_loadinglayer_map[ttype]);
 }
 
+/**
+ * Update loading layer text
+ */
+
+void update_stops_loading_text(realtime_transport_type_t ttype, char *text) {
+  loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
+}
+
 /** 
  * Window Callback functions
  */
@@ -147,7 +155,7 @@ static void window_load(Window *window) {
 
   // Set loading layer
   LoadingLayer *loading_layer = loading_layer_create(window);
-  loading_layer_set_text(loading_layer, "Getting Location and Loading stops");
+  loading_layer_set_text(loading_layer, "Getting Location");
   transport_type_to_loadinglayer_map[ttype] = loading_layer;
 }
 
