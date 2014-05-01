@@ -11,4 +11,6 @@ void destroy_departures_window(realtime_transport_type_t ttype);
 void show_departures_window(char *stopid, realtime_transport_type_t ttype, bool animated);
 void refresh_departures_window(realtime_transport_type_t ttype);
 
+void reload_menu_data(realtime_transport_type_t ttype);
+
 #endif
