@@ -4,7 +4,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 	Ruter.SimpleGetOrderedDepartures(stopid, ttype, function(err, data) {
 
 		if (err === null) { 
-			console.log("putDepartures: " + JSON.stringify(data, null, 4));
+			// console.log("putDepartures: " + JSON.stringify(data, null, 4));
 
 			var departuresdata = [];
 			for (var dir in data) {

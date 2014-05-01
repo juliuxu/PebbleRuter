@@ -1,5 +1,5 @@
 function putStops(ttype, successCb, failureCb) {
-	console.log("putStops " + ttype);
+	// console.log("putStops " + ttype);
 
 	// Convert the realtime type to travel type
 	var travel_type = Ruter.REALTIME_TO_TRAVEL[ttype];
@@ -8,54 +8,55 @@ function putStops(ttype, successCb, failureCb) {
 	Ruter.GetUTM32Location(function(err, X, Y) {
 		if (err === null) {
 
-			// Notify that we got the current location
-			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype});
+			function f(e) {
+				// Get the closest stops
+				Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
 
-			// Get the closest stops
-			Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
+					if (err2 === null) { 
+						//console.log("putStops: " + JSON.stringify(data, null, 4));
 
-				if (err2 === null) { 
-					//console.log("putStops: " + JSON.stringify(data, null, 4));
+						var stopsdata = [];
+						for (var stop in data) {
+							console.log(data[stop].ID + " " + data[stop].Name);
+							stopsdata.push(data[stop].ID);
+							stopsdata.push(data[stop].Name);
 
-					var stopsdata = [];
-					for (var stop in data) {
-						console.log(data[stop].ID + " " + data[stop].Name);
-						stopsdata.push(data[stop].ID);
-						stopsdata.push(data[stop].Name);
+						}
+						stopsdata.unshift(data.length);
 
-					}
-					stopsdata.unshift(data.length);
+						if (data.length == 0) {
+							// Notify that we got no stops
+							Pebble.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
+							successCb(null);
 
-					if (data.length == 0) {
-						// Notify that we got no stops
-						Pebble.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
-						successCb(null);
+						}
+						else {
+							// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
+							Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
+								function(e2){
+									successCb(e2);
+								},
+								function(e2){
+									failureCb(e2);
+								}
+							);
+						}
 
 					}
 					else {
-						// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
-						Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
-							function(e){
-								successCb(e);
-							},
-							function(e){
-								failureCb(e);
-							}
-						);
+						console.log("An error occured getting stops");
+
+						// Notify that an error occurred
+						Pebble.sendAppMessage({"PUT_STOPS_ERROR": ttype});
+
+						console.log(err2);
+						failureCb(err2)
 					}
+				});
+			}
 
-				}
-				else {
-					console.log("An error occured getting stops");
-
-					// Notify that an error occurred
-					Pebble.sendAppMessage({"PUT_STOPS_ERROR": ttype});
-
-					console.log(err2);
-					failureCb(err2)
-				}
-			});
-
+			// Notify that we got the current location
+			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype}, f, f);
 
 		}
 		else {

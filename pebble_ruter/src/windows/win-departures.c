@@ -89,7 +89,7 @@ static int16_t menu_get_cell_height_callback(MenuLayer* menu_layer, MenuIndex* c
 static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, uint16_t section_index, void *callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
-     //      menu_cell_basic_header_draw(ctx, cell_layer, "Refresh: 16:06");
+           menu_cell_basic_header_draw(ctx, cell_layer, "Refresh: 16:06");
     break;
   }
 }
@@ -99,7 +99,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
   //realtime_transport_type_t *ttype = (realtime_transport_type_t *) callback_context;
   line_destination_t *linedest;
 
-  char departure_title[64];
+  char departure_title[48];
 
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
@@ -108,7 +108,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
         return;
       }
 
-      snprintf(departure_title, 64, "%s %s", linedest->line, linedest->destination);
+      snprintf(departure_title, 48, "%s %s", linedest->line, linedest->destination);
 
       menu_cell_basic_draw(ctx, cell_layer, departure_title, linedest->departuretimes, NULL);
 
