@@ -2,6 +2,8 @@
 
 #include "libs/pebble-assist.h"
 
+#include "language.h"
+
 #include "windows/win-departures.h"
 
 #include "pebble_ruter.h"
@@ -125,11 +127,11 @@ void handle_put_departure(DictionaryIterator *iter) {
 }
 
 void handle_put_departure_empty(Tuple *tuple) {
-	update_departures_loading_text(tuple->value->uint8, "No Departures");
+	update_departures_loading_text(tuple->value->uint8, get_language_string(12));
 	reload_menu_data(current_transport_type);
 }
 void handle_put_departure_error(Tuple *tuple) {
-	update_departures_loading_text(tuple->value->uint8, "Error Getting Departures");
+	update_departures_loading_text(tuple->value->uint8, get_language_string(13));
 	reload_menu_data(current_transport_type);
 }
 

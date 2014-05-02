@@ -1,6 +1,8 @@
 #include <pebble.h>
 #include "../libs/pebble-assist.h"
 
+#include "../language.h"
+
 #include "../pebble_ruter.h"
 #include "../stops.h"
 
@@ -159,7 +161,7 @@ static void window_load(Window *window) {
 
   // Set loading layer
   LoadingLayer *loading_layer = loading_layer_create(window);
-  loading_layer_set_text(loading_layer, "Getting Location");
+  loading_layer_set_text(loading_layer, get_language_string(5));
   transport_type_to_loadinglayer_map[ttype] = loading_layer;
 }
 

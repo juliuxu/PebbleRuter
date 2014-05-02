@@ -3,6 +3,7 @@
 #include "../libs/bitmap-loader.h"
 
 #include "../pebble_ruter.h"
+#include "../language.h"
 
 #include "win-stops.h"
 
@@ -67,23 +68,23 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
       // Use the row to specify which item we'll draw
       switch (cell_index->row) {
         case MENU_ROW_MAIN_METRO:
-          menu_cell_basic_draw(ctx, cell_layer, "Metro", NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_METRO));
+          menu_cell_basic_draw(ctx, cell_layer, get_language_string(0), NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_METRO));
           break;
 
         case MENU_ROW_MAIN_TRAM:
-          menu_cell_basic_draw(ctx, cell_layer, "Tram", NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_TRAM));
+          menu_cell_basic_draw(ctx, cell_layer, get_language_string(1), NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_TRAM));
           break;
 
         case MENU_ROW_MAIN_BUS:
-              menu_cell_basic_draw(ctx, cell_layer, "Bus", NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_BUS));
+              menu_cell_basic_draw(ctx, cell_layer, get_language_string(2), NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_BUS));
               break;
 
         case MENU_ROW_MAIN_TRAIN:
-              menu_cell_basic_draw(ctx, cell_layer, "Train", NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_TRAIN));
+              menu_cell_basic_draw(ctx, cell_layer, get_language_string(3), NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_TRAIN));
               break;
 
         case MENU_ROW_MAIN_FERRY:
-              menu_cell_basic_draw(ctx, cell_layer, "Ferry", NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_FERRY));
+              menu_cell_basic_draw(ctx, cell_layer, get_language_string(4), NULL, bitmaps_get_bitmap(RESOURCE_ID_MENU_FERRY));
               break;
         
 

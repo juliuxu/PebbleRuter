@@ -1,6 +1,8 @@
 #include <pebble.h>
 #include "../libs/pebble-assist.h"
 
+#include "../language.h"
+
 #include "../layers/layer-loading.h"
 
 #include "../pebble_ruter.h"
@@ -115,7 +117,7 @@ static void menu_draw_header_callback(GContext* ctx, const Layer* cell_layer, ui
 
   switch (section_index) {
     case MENU_SECTION_MAIN:
-      snprintf(refresh_text, sizeof(refresh_text), "Updated: %s", last_refresh_time);
+      snprintf(refresh_text, sizeof(refresh_text), get_language_string(10), last_refresh_time);
       menu_cell_basic_header_draw(ctx, cell_layer, refresh_text);
     break;
   }
@@ -193,7 +195,7 @@ static void window_load(Window *window) {
 
   // Set loading layer
   LoadingLayer *loading_layer = loading_layer_create(window);
-  loading_layer_set_text(loading_layer, "Getting Departures");
+  loading_layer_set_text(loading_layer, get_language_string(11));
   transport_type_to_loadinglayer_map[ttype] = loading_layer;  
 }
 
