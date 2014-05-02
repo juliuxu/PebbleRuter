@@ -242,7 +242,7 @@ var Ruter = (function() {
           // Concat direction linename and destination to create a unique key
           var key = data[departure].DirectionRef + data[departure].PublishedLineName + data[departure].DestinationDisplay;
 
-          console.log(key);
+         // console.log(key);
 
           if (departures.hasOwnProperty(key)) {
             departures[key].push(data[departure]);
