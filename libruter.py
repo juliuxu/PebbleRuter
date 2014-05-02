@@ -1,12 +1,12 @@
-import urllib
+"""
+libruter.py: Simple library to talk to the ruter api
+"""
+__author__ = "Julian Jark"
+
 import urllib2
 import json
-import sys
 import re
 import time
-
-from datetime import datetime
-
 
 API_BASE_URL = 'http://api.ruter.no/ReisRest/'
 
@@ -197,7 +197,6 @@ def show_realtime_by_transport_type(stopid, type, outputtype=0):
 # * Ca when not from realtime
 #
 
-
 if __name__ == '__main__':
     pass
     #if len(sys.argv) < 3:
@@ -205,12 +204,12 @@ if __name__ == '__main__':
 
     # print json.dumps(place_findplaces("Nationall"), indent=2)
 
-    print json.dumps(stop_getcloseststopsbycoordinates(596762, 6644420, 5), indent=2)
+    print json.dumps(stop_getcloseststopsbycoordinates(575327, 6623414, 5), indent=2)
 
     # print json.dumps(realtime_getalldepartures(3010030), indent=2)
     # print len(realtime_getalldepartures(3010030))
 
-    # print json.dumps(realtime_getrealtimedata(3010312)[:3], indent=2)
+    # print json.dumps(realtime_getrealtimedata(6274360)[:3], indent=2)
     # print len(realtime_getrealtimedata(3010312))
 
     # print json.dumps(place_findplacesbycounties("Bislett", ['Oslo']), indent=2)
