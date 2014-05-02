@@ -1,4 +1,7 @@
-# Pebble Ruter APP
+# Pebble Ruter
+## English Name: Ruter Realtime
+
+## Norwegian Name: Ruter Sanntid
 
 ## Notes
 Important that phone time is correct!
@@ -18,8 +21,6 @@ Important that phone time is correct!
 	  - Or set a timer
 
 * Better status text
-
-* Beter app name
 
 * Make updated header always visible, and Make background black?
 
