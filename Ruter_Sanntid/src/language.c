@@ -13,16 +13,16 @@ static const char *language_no[] = {
 	"Henter Lokasjon",
 	// stops.c
 	"Henter Nærmeste Stoppesteder",
-	"Kunne ikke hente lokasjon",
-	"Ingen nærme stoppesder funnet",
-	"Kunne ikke hente stoppesder",
+	"Kunne Ikke Hente Lokasjon",
+	"Ingen Nærme Stoppesder Funnet",
+	"Kunne Ikke Hente Stoppesder",
 
 	// win-departures.c
 	"Oppdatert: %s",
-	"Henter avganger",
+	"Henter Avganger",
 	// departures.c
-	"Ingen avganger for øyeblikket",
-	"Kunne ikke hente avganger"
+	"Ingen Avganger For Øyeblikket",
+	"Kunne Ikke Hente Avganger"
 
 };
 
@@ -39,16 +39,16 @@ static const char *language_en[] = {
 	"Getting Location",
 	// stops.c
 	"Getting Closest Stops",
-	"Could not get location",
-	"No close stops found",
-	"Could not get stops",
+	"Could Not Get Location",
+	"No Close Stops Found",
+	"Could Not Get Stops",
 
 	// win-departures.c
 	"Updated: %s",
-	"Getting departures",
+	"Getting Departures",
 	// departures.c
-	"No departures at the moment",
-	"Could not get departures"
+	"No Departures At The moment",
+	"Could Not Get Departures"
 
 };
 
