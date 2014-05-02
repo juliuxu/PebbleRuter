@@ -14,8 +14,8 @@ static const char *language_no[] = {
 	// stops.c
 	"Henter Nærmeste Stoppesteder",
 	"Kunne Ikke Hente Lokasjon",
-	"Ingen Nærme Stoppesder Funnet",
-	"Kunne Ikke Hente Stoppesder",
+	"Ingen Nærme Stoppesteder Funnet",
+	"Kunne Ikke Hente Stoppesteder",
 
 	// win-departures.c
 	"Oppdatert: %s",
