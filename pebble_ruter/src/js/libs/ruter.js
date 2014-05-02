@@ -9,7 +9,7 @@
 var Ruter = (function() {
     var my = {};
     
-    var base_url = 'http://api.ruter.no/ReisRest/';
+    var base_url = 'http://api.ruter.no/reisrestnational/';
     
     var location_options = {
       enableHighAccuracy: false,
