@@ -33,6 +33,39 @@
   },
   "capabilities": ["location"],
   "resources": {
-    "media": []
+    "media": [
+      {
+        "menuIcon": true,
+        "type": "png",
+        "name": "MENU_ICON",
+        "file": "images/Ruter_symbol_hel_SH.png"
+      },
+      {
+        "type": "png",
+        "name": "MENU_BUS",
+        "file": "images/drift_buss_SORT.png"
+      },
+      {
+        "type": "png",
+        "name": "MENU_FERRY",
+        "file": "images/drift_baat_SORT.png"
+      },
+      {
+        "type": "png",
+        "name": "MENU_TRAIN",
+        "file": "images/drift_tog_SORT.png"
+      },
+      {
+        "type": "png",
+        "name": "MENU_TRAM",
+        "file": "images/drift_trikk_SORT.png"
+      },
+      {
+        "type": "png",
+        "name": "MENU_METRO",
+        "file": "images/drift_T-bane_SORT.png"
+      }
+
+    ]
   }
 }

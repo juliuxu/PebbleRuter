@@ -5,6 +5,8 @@
 #include "departures.h"
 #include "windows/win-main.h"
 
+#include "libs/bitmap-loader.h"
+
 /**
  * Init transport enum info
  */
@@ -123,11 +125,16 @@ static void app_message_init(void) {
 static void init(void) {
   app_message_init();
 
+  bitmaps_init();
+
   create_main_window();
   show_main_window(true);
 }
 
 static void deinit(void) {
+
+  bitmaps_cleanup();
+
   destroy_departures();
   destroy_stops();
   destroy_main_window();
