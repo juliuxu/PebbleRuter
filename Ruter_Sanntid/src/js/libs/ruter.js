@@ -91,7 +91,7 @@ var Ruter = (function() {
      */
     my.GetRuterTime = function(timestamp) {
       remaining = timestamp - Date.now();
-      remaining = remaining / 1000;
+      remaining = Math.floor(remaining / 1000);
 
       if (remaining < 0) {
         return "";
@@ -266,7 +266,7 @@ var Ruter = (function() {
 
           var key = data[line][0].DirectionRef;
 
-          console.log(key);
+          // console.log(key);
 
           if (departures.hasOwnProperty(key)) {
             departures[key].push(data[line]);
@@ -295,7 +295,7 @@ var Ruter = (function() {
 
           for (var line in data[dir]) {
 
-            console.log(data[dir][line][0].PublishedLineName + " " + data[dir][line][0].DestinationDisplay);
+           // console.log(data[dir][line][0].PublishedLineName + " " + data[dir][line][0].DestinationDisplay);
 
             departure_times = [];
             departure_timestamps = [];
@@ -308,7 +308,7 @@ var Ruter = (function() {
               departure_times.push(my.GetRuterTime(d.getTime()))
               departure_timestamps.push(d.getTime());
             }
-            console.log(JSON.stringify(departure_times, null, 4));
+            // console.log(JSON.stringify(departure_times, null, 4));
 
             res[dir].push(
               {

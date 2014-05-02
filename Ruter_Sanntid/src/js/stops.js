@@ -26,13 +26,13 @@ function putStops(ttype, successCb, failureCb) {
 
 						if (data.length == 0) {
 							// Notify that we got no stops
-							Pebble.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
+							MessageQueue.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
 							successCb(null);
 
 						}
 						else {
 							// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
-							Pebble.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
+							MessageQueue.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
 								function(e2){
 									successCb(e2);
 								},
@@ -47,7 +47,7 @@ function putStops(ttype, successCb, failureCb) {
 						console.log("An error occured getting stops");
 
 						// Notify that an error occurred
-						Pebble.sendAppMessage({"PUT_STOPS_ERROR": ttype});
+						MessageQueue.sendAppMessage({"PUT_STOPS_ERROR": ttype});
 
 						console.log(err2);
 						failureCb(err2)
@@ -56,14 +56,14 @@ function putStops(ttype, successCb, failureCb) {
 			}
 
 			// Notify that we got the current location
-			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype}, f, f);
+			MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype}, f, f);
 
 		}
 		else {
 			console.log("An error occured getting location");
 
 			// Notify that we didn't get the current location
-			Pebble.sendAppMessage({"PUT_STOPS_LOCATION_ERROR": ttype});
+			MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_ERROR": ttype});
 
 			failureCb(err);
 		}

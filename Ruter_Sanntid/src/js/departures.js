@@ -23,7 +23,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 
 			if (departuresdata.length == 0) {
 				// Send empty message?
-				Pebble.sendAppMessage({"PUT_DEPARTURE_EMPTY": ttype});
+				MessageQueue.sendAppMessage({"PUT_DEPARTURE_EMPTY": ttype});
 				successCb(null);
 				return;
 			}
@@ -31,7 +31,6 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 			/**
 			 * Send an array to pebble
 			 */
-			var retries = 0;
 			sendArray = function(index) {
 
 				if (index == departuresdata.length) {
@@ -61,23 +60,14 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 				}
 
 				//console.log(JSON.stringify(messageDict));
-				Pebble.sendAppMessage(messageDict,
+				MessageQueue.sendAppMessage(messageDict,
 					function(e) {
 						console.log("Send next message: " + (index + 1));
-						// Reset retries
-						retries = 0;
-
 						sendArray(index+1);
 					},
 					function(e) {
 						console.log("An error occured trying to send message!");
-						if (retries++ < 3) {
-							console.log("Try to send again!");
-							sendArray(index);
-						}
-						else {
-							failureCb(e);
-						}
+						failureCb(e);
 					});
 
 			};
@@ -87,7 +77,7 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 		else {
 			console.log("An error occured getting departures");
 			console.log(err);
-			Pebble.sendAppMessage({"PUT_DEPARTURE_ERROR": ttype});
+			MessageQueue.sendAppMessage({"PUT_DEPARTURE_ERROR": ttype});
 			failureCb(err);
 		}
 	});
