@@ -4,15 +4,18 @@
 Important that phone time is correct!
 
 ## Todo
-* Add icons
-* Nicer menu
+
+* Optimize stop text
+	- Make it scroll to read the whole text 
 
 * Handle other errors
-
-* Figure out smart ways to have text
+	- Unable to send message to phone
+		- Resend
 
 * More user friendly
-  - More verbose (i.e. update when location is found)
+	- Handle javascript not returning a status
+	  - Either make sure it always does
+	  - Or set a timer
 
 * Make updated header always visible, and Make background black?
 
