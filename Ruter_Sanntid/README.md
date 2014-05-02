@@ -15,6 +15,8 @@ Important that phone time is correct!
 	- Unable to send message to phone
 		- Resend
 
+* Use timezone correctly
+
 * More user friendly
 	- Handle javascript not returning a status
 	  - Either make sure it always does
@@ -29,8 +31,6 @@ Important that phone time is correct!
 * Conform to Ruter Standards (ca, deviations, etc..)
 
 * Document ruter.js better
-
-* Use timezone correctly
 
 * Make safer c code, check stuff
 
