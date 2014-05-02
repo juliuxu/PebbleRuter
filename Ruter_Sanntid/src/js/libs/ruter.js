@@ -13,8 +13,8 @@ var Ruter = (function() {
     
     var location_options = {
       enableHighAccuracy: false,
-      timeout: 7000,
-      maximumAge: 0
+      timeout: 5000,
+      maximumAge: 6000
     };
 
     my.REALTIME_TRANSPORT_TYPES = {
@@ -81,6 +81,8 @@ var Ruter = (function() {
           return callback(new Error('NOT_CONNECTED'));
         case 404:
           return callback(new Error('NOT_FOUND'));
+        default:
+          return callback(new ERROR('ERROR: ' + req.status));
         }
       };
       req.send();
@@ -327,7 +329,6 @@ var Ruter = (function() {
 
         }
         callback(err, res);
-
 
       });
 
