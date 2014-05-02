@@ -8,55 +8,53 @@ function putStops(ttype, successCb, failureCb) {
 	Ruter.GetUTM32Location(function(err, X, Y) {
 		if (err === null) {
 
-			function f(e) {
-				// Get the closest stops
-				Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
+			// Notify that we got the location
+			MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype});
 
-					if (err2 === null) { 
-						//console.log("putStops: " + JSON.stringify(data, null, 4));
+			// Get the closest stops
+			Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
 
-						var stopsdata = [];
-						for (var stop in data) {
-							console.log(data[stop].ID + " " + data[stop].Name);
-							stopsdata.push(data[stop].ID);
-							stopsdata.push(data[stop].Name);
+				if (err2 === null) { 
+					//console.log("putStops: " + JSON.stringify(data, null, 4));
 
-						}
-						stopsdata.unshift(data.length);
+					var stopsdata = [];
+					for (var stop in data) {
+						console.log(data[stop].ID + " " + data[stop].Name);
+						stopsdata.push(data[stop].ID);
+						stopsdata.push(data[stop].Name);
 
-						if (data.length == 0) {
-							// Notify that we got no stops
-							MessageQueue.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
-							successCb(null);
+					}
+					stopsdata.unshift(data.length);
 
-						}
-						else {
-							// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
-							MessageQueue.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
-								function(e2){
-									successCb(e2);
-								},
-								function(e2){
-									failureCb(e2);
-								}
-							);
-						}
+					if (data.length == 0) {
+						// Notify that we got no stops
+						MessageQueue.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
+						successCb(null);
 
 					}
 					else {
-						console.log("An error occured getting stops");
-
-						// Notify that an error occurred
-						MessageQueue.sendAppMessage({"PUT_STOPS_ERROR": ttype});
-
-						console.log(err2);
-						failureCb(err2)
+						// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
+						MessageQueue.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
+							function(e2){
+								successCb(e2);
+							},
+							function(e2){
+								failureCb(e2);
+							}
+						);
 					}
-				});
-			}
 
-			// Notify that we got the current location
-			MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype}, f, f);
+				}
+				else {
+					console.log("An error occured getting stops");
+
+					// Notify that an error occurred
+					MessageQueue.sendAppMessage({"PUT_STOPS_ERROR": ttype});
+
+					console.log(err2);
+					failureCb(err2)
+				}
+			});
 
 		}
 		else {
