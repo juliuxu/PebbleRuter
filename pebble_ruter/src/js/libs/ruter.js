@@ -98,7 +98,7 @@ var Ruter = (function() {
       }
       else if (remaining < 44) {
         //return "now";
-        return "nå";
+        return "n\u00E5";
       }
       else if (remaining > 584) {
         var date = new Date(timestamp);
