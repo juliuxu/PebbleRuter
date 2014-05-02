@@ -43,22 +43,22 @@
       {
         "type": "png",
         "name": "MENU_BUS",
-        "file": "images/drift_buss_SORT.png"
+        "file": "images/buss_fri_SORT.png"
       },
       {
         "type": "png",
         "name": "MENU_FERRY",
-        "file": "images/drift_baat_SORT.png"
+        "file": "images/baat_fri_SORT.png"
       },
       {
         "type": "png",
         "name": "MENU_TRAIN",
-        "file": "images/drift_tog_SORT.png"
+        "file": "images/tog_fri_SORT.png"
       },
       {
         "type": "png",
         "name": "MENU_TRAM",
-        "file": "images/drift_trikk_SORT.png"
+        "file": "images/trikk_fri_SORT.png"
       },
       {
         "type": "png",
