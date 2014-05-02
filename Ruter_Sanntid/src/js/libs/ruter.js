@@ -14,7 +14,7 @@ var Ruter = (function() {
     var location_options = {
       enableHighAccuracy: false,
       timeout: 5000,
-      maximumAge: 6000
+      maximumAge: 60000
     };
 
     my.REALTIME_TRANSPORT_TYPES = {
