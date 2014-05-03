@@ -28,7 +28,7 @@ static const char *language_no[] = {
 	"Kunne ikke snakke med mobilen",
 
 	// Command Timeout text
-	"Fikk ikke svar fra mobilen",
+	"Fikk ikke svar fra mobilen"
 
 };
 
@@ -60,7 +60,7 @@ static const char *language_en[] = {
 	"Error Sending Message To Phone",
 
 	// Command Timeout text
-	"Did not receive an answer from the phone",
+	"Did not receive an answer from the phone"
 
 };
 
