@@ -208,12 +208,20 @@ static void window_unload(Window *window) {
 /**
  * Update every minute
  */
+static bool first_minute_tick = true;
+
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
+  if (first_minute_tick) {
+    first_minute_tick = false;
+    return;
+  }
+
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Automaticly Refreshing Departures");
   refresh_departures();
 }
 
 static void window_appear(Window *window) {
+  first_minute_tick = true;
   tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 }
 
