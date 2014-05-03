@@ -242,7 +242,7 @@ void destroy_departures_window(realtime_transport_type_t ttype) {
 }
 
 void show_departures_window(char *stopid, realtime_transport_type_t ttype, bool animated) {
-  handle_get_departures(stopid, ttype);
   window_stack_push(transport_type_to_window_map[ttype], animated);
   layer_show(transport_type_to_loadinglayer_map[ttype]);
+  handle_get_departures(stopid, ttype);
 }

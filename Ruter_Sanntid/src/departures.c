@@ -28,8 +28,10 @@ void handle_get_departures_failure(void) {
  * Get departures
  */
 void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
-
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting update of departures of type: %d", ttype);
+
+ 	current_transport_type = ttype;
+ 	current_stopid = stopid;
 
 	dict_entry_t **dicts = dict_entries_create(2);
 
@@ -42,9 +44,6 @@ void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
 	dicts[1]->value.uint8 = ttype;
 
 	send_message(dicts, 2, NULL, handle_get_departures_failure);
-
- 	current_transport_type = ttype;
- 	current_stopid = stopid;
 
 	return;
 }

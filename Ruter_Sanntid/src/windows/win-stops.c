@@ -195,7 +195,7 @@ void destroy_stops_window(realtime_transport_type_t ttype) {
 }
 
 void show_stops_window(realtime_transport_type_t ttype, bool animated) {
-  handle_get_stops(ttype);
   window_stack_push(transport_type_to_window_map[ttype], animated);
   layer_show(transport_type_to_loadinglayer_map[ttype]);
+  handle_get_stops(ttype);
 }
