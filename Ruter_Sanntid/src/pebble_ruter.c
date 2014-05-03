@@ -22,15 +22,6 @@ const realtime_transport_type_t realtime_transport_types[NUM_REALTIME_TRANSPORT_
 /**
  * AppMessage Handlers
  */
-static void out_sent_handler(DictionaryIterator *sent, void *context) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sent!");
-}
-
-
-static void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Failed to Send!: %s", translate_error(reason));
-}
-
 
 static void in_received_handler(DictionaryIterator *received, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Received a message!");
@@ -100,7 +91,6 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
 
 }
 
-
 static void in_dropped_handler(AppMessageResult reason, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message In Dropped!: %s", translate_error(reason));
 }
@@ -113,8 +103,8 @@ static void app_message_init(void) {
   // Register message handlers
   app_message_register_inbox_received(in_received_handler);
   app_message_register_inbox_dropped(in_dropped_handler);
-  app_message_register_outbox_failed(out_failed_handler);
-  app_message_register_outbox_sent(out_sent_handler);
+  app_message_register_outbox_failed(message_handler_outbox_failed_handler);
+  app_message_register_outbox_sent(message_handler_outbox_sent_handler);
 
 
   APP_LOG(APP_LOG_LEVEL_DEBUG, "max inbox: %d max outbox: %d", (int) app_message_inbox_size_maximum(), (int) app_message_outbox_size_maximum());
@@ -135,6 +125,8 @@ static void init(void) {
 static void deinit(void) {
 
   bitmaps_cleanup();
+
+  destroy_messages();
 
   destroy_departures();
   destroy_stops();

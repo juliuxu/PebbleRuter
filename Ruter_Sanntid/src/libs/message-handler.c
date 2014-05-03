@@ -52,7 +52,13 @@ static void send_next_message(void);
 /**
  * AppMessage Callbacks
  */
-void message_handler_outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+void message_handler_outbox_sent_handler(DictionaryIterator *iterator, void *context) {
+APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
+
+	// Should the message queue be empty, just return
+	if (message_queue == NULL) {
+		return;
+	}
 
 	message_t *message = message_queue;
 
@@ -61,9 +67,6 @@ void message_handler_outbox_sent_callback(DictionaryIterator *iterator, void *co
 
 	// Set the next head message
 	message_queue = message->next;
-	if (message_queue == NULL) {
-		message_queue_tail = NULL;
-	}
 
 	// Call the message success_callback
 	if (message->success_callback != NULL) {
@@ -77,11 +80,12 @@ void message_handler_outbox_sent_callback(DictionaryIterator *iterator, void *co
 	send_next_message();
 }
 
-void message_handler_outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+void message_handler_outbox_failed_handler(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
 	// Set that we are done sending a message
 	messages_sending = false;
 
-	// Continue onto the next message
+	// Try again or continue onto the next message
 	send_next_message();
 }
 
@@ -91,12 +95,21 @@ void message_handler_outbox_failed_callback(DictionaryIterator *iterator, AppMes
  * Add the message to the message queue and try to send it
  */
 void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_callback)(void), void (*failure_callback)(void)) {
+APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
 
 	/**
 	 * Check if there is room in the message queue
 	 */
 	if (!(num_messages < MAX_MESSAGES_IN_QUEUE)) {
 		APP_LOG(APP_LOG_LEVEL_WARNING, "Message Queue Is Full!");
+
+		uint8_t i;
+		for(i=0;i<dicts_length;i++) {
+			if (dicts[i]->type == CSTRING) {
+				free(dicts[i]->value.cstring);
+			}
+		}
+		free(*dicts);
 
 		// Call the failure_callback
 		if (failure_callback != NULL) {
@@ -109,7 +122,7 @@ void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_cal
 	/**
 	 * Store the message
 	 */
-	message_t *message = malloc(sizeof(message_t));
+	message_t *message = (message_t *) malloc(sizeof(message_t));
 
 	message->dicts = dicts;
 	message->dicts_length = dicts_length;
@@ -118,6 +131,8 @@ void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_cal
 
 	message->success_callback = success_callback;
 	message->failure_callback = failure_callback;
+
+	message->next = NULL;
 
 	// Increment the message_queue counter
 	num_messages++;
@@ -146,13 +161,17 @@ void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_cal
  * Destroy a message
  */
 static void destroy_message(message_t *message) {
+APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
+
 	uint8_t i;
 	for(i=0;i<message->dicts_length;i++) {
 		if (message->dicts[i]->type == CSTRING) {
 			free(message->dicts[i]->value.cstring);
 		}
-		free(message->dicts[i]);
 	}
+
+	// Free the dicts and message
+	free( *(message->dicts) );
 	free(message);
 
 	// Decrement the message queue counter
@@ -163,9 +182,10 @@ static void destroy_message(message_t *message) {
  * Destroy all messages in queue
  */ 
 void destroy_messages(void) {
+APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_messages");
 	message_t *message;
 
-	while(message_queue) {
+	while(message_queue != NULL) {
 		message = message_queue;
 		message_queue = message_queue->next;
 		destroy_message(message);
@@ -177,8 +197,7 @@ void destroy_messages(void) {
  * Try to send the next message in queue
  */
 static void send_next_message(void) {
-
- 	uint8_t i;
+APP_LOG(APP_LOG_LEVEL_DEBUG, "send_next_message");
 
 	// Grab the first message in queue
 	message_t *message = message_queue;
@@ -195,11 +214,13 @@ static void send_next_message(void) {
 
 	// See if the current message has anymore retries
 	if (message->retries <= 0) {
-
 		// Call the failure_callback
 		if (message->failure_callback != NULL) {
 			message->failure_callback();
 		}
+
+		// Set the next head message
+		message_queue = message->next;
 
 		// Destroy the message
 		destroy_message(message);
@@ -216,6 +237,7 @@ static void send_next_message(void) {
  	app_message_outbox_begin(&iter);
 
  	// Add our dicts
+ 	uint8_t i;
 	for(i=0;i<message->dicts_length;i++) {
 		if (message->dicts[i]->type == CSTRING) {
  			dict_write_cstring(iter, message->dicts[i]->key, message->dicts[i]->value.cstring);		

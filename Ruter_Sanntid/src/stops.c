@@ -1,6 +1,7 @@
 #include <pebble.h>
 
 #include "libs/pebble-assist.h"
+#include "libs/message-handler.h"
 
 #include "language.h"
 
@@ -21,17 +22,12 @@ void handle_get_stops(realtime_transport_type_t ttype) {
 
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting update of stops of type: %d", ttype);
 
-	DictionaryIterator *iter;
- 	app_message_outbox_begin(&iter);
+	dict_entry_t *dicts = (dict_entry_t *) malloc(sizeof(dict_entry_t) * 1);
+	dicts[0].key = GET_STOPS;
+	dicts[0].type = UINT8;
+	dicts[0].value.uint8 = ttype;
 
- 	if (iter == NULL) {
- 		APP_LOG(APP_LOG_LEVEL_DEBUG, "iter is null");
- 		return;
- 	}
-
- 	dict_write_uint8(iter, GET_STOPS, ttype);
-
- 	app_message_outbox_send();
+	send_message(&dicts, 1, NULL, NULL);
 
  	current_transport_type = ttype;
 
