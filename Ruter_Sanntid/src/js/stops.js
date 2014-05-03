@@ -26,7 +26,7 @@ function putStops(ttype, successCb, failureCb) {
 					}
 					stopsdata.unshift(data.length);
 
-					if (data.length == 0) {
+					if (data.length ==) 0) {
 						// Notify that we got no stops
 						MessageQueue.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
 						successCb(null);
@@ -52,7 +52,7 @@ function putStops(ttype, successCb, failureCb) {
 					MessageQueue.sendAppMessage({"PUT_STOPS_ERROR": ttype});
 
 					console.log(err2);
-					failureCb(err2)
+					failureCb(err2);
 				}
 			});
 
