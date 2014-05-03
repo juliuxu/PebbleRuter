@@ -67,7 +67,7 @@ dict_entry_t **dict_entries_create(uint8_t dicts_length) {
  * AppMessage Callbacks
  */
 void message_handler_outbox_sent_handler(DictionaryIterator *iterator, void *context) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
 
 	// Should the message queue be empty, just return
 	if (message_queue == NULL) {
@@ -95,7 +95,7 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
 }
 
 void message_handler_outbox_failed_handler(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
 	// Set that we are done sending a message
 	messages_sending = false;
 
@@ -109,13 +109,13 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
  * Add the message to the message queue and try to send it
  */
 void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_callback)(void), void (*failure_callback)(void)) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
 
 	/**
 	 * Check if there is room in the message queue
 	 */
 	if (!(num_messages < MAX_MESSAGES_IN_QUEUE)) {
-		APP_LOG(APP_LOG_LEVEL_WARNING, "Message Queue Is Full!");
+		// APP_LOG(APP_LOG_LEVEL_WARNING, "Message Queue Is Full!");
 
 		uint8_t i;
 		for(i=0;i<dicts_length;i++) {
@@ -175,7 +175,7 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
  * Destroy a message
  */
 static void destroy_message(message_t *message) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
 
 	uint8_t i;
 	for(i=0;i<message->dicts_length;i++) {
@@ -199,7 +199,7 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
  * Destroy all messages in queue
  */ 
 void destroy_messages(void) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_messages");
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_messages");
 	message_t *message;
 
 	while(message_queue != NULL) {
@@ -214,7 +214,7 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_messages");
  * Try to send the next message in queue
  */
 static void send_next_message(void) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "send_next_message");
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "send_next_message");
 
 	// Grab the first message in queue
 	message_t *message = message_queue;

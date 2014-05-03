@@ -29,8 +29,6 @@ void handle_get_stops(realtime_transport_type_t ttype) {
 	dicts[0]->type = UINT8;
 	dicts[0]->value.uint8 = ttype;
 
-	APP_LOG(APP_LOG_LEVEL_DEBUG, "dicts malloc: %p", dicts);
-
 	send_message(dicts, 1, NULL, NULL);
 
  	current_transport_type = ttype;
