@@ -16,20 +16,24 @@ static stop_t ruter_stops[MAX_STOPS];
 static realtime_transport_type_t current_transport_type;
 
 /**
+ * Handler for when message could not get sent
+ */
+void handle_get_stops_failure(void) {
+	update_stops_loading_text(current_transport_type, "Error Sending Message To Phone");
+}
+
+/**
  * Get nearby stops
  */
 void handle_get_stops(realtime_transport_type_t ttype) {
-
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting update of stops of type: %d", ttype);
 
-	// Allocate the pointer to the dicts
 	dict_entry_t **dicts = dict_entries_create(1);
-
 	dicts[0]->key = GET_STOPS;
 	dicts[0]->type = UINT8;
 	dicts[0]->value.uint8 = ttype;
 
-	send_message(dicts, 1, NULL, NULL);
+	send_message(dicts, 1, NULL, handle_get_stops_failure);
 
  	current_transport_type = ttype;
 

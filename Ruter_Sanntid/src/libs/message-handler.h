@@ -16,6 +16,8 @@ typedef struct DictEntry {
 
 } dict_entry_t;
 
+char *strdup(const char *str);
+
 dict_entry_t **dict_entries_create(uint8_t dicts_length);
 
 void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_callback)(void), void (*failure_callback)(void));

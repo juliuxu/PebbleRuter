@@ -1,6 +1,7 @@
 #include <pebble.h>
 
 #include "libs/pebble-assist.h"
+#include "libs/message-handler.h"
 
 #include "language.h"
 
@@ -15,6 +16,14 @@ static line_destination_t ruter_departures[MAX_DEPARTURES];
 
 static realtime_transport_type_t current_transport_type;
 static char *current_stopid;
+
+/**
+ * Handler for when message could not get sent
+ */
+void handle_get_departures_failure(void) {
+	update_departures_loading_text(current_transport_type, "Error Sending Message To Phone");
+}
+
 /**
  * Get departures
  */
@@ -22,18 +31,17 @@ void handle_get_departures(char* stopid, realtime_transport_type_t ttype) {
 
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting update of departures of type: %d", ttype);
 
-	DictionaryIterator *iter;
- 	app_message_outbox_begin(&iter);
+	dict_entry_t **dicts = dict_entries_create(2);
 
- 	if (iter == NULL) {
- 		APP_LOG(APP_LOG_LEVEL_DEBUG, "iter is null");
- 		return;
- 	}
+	dicts[0]->key = GET_DEPARTURES_STOPID;
+	dicts[0]->type = CSTRING;
+	dicts[0]->value.cstring = strdup(stopid);
 
- 	dict_write_cstring(iter, GET_DEPARTURES_STOPID, stopid);
- 	dict_write_uint8(iter, GET_DEPARTURES, ttype);
+	dicts[1]->key = GET_DEPARTURES;
+	dicts[1]->type = UINT8;
+	dicts[1]->value.uint8 = ttype;
 
- 	app_message_outbox_send();
+	send_message(dicts, 2, NULL, handle_get_departures_failure);
 
  	current_transport_type = ttype;
  	current_stopid = stopid;

@@ -64,6 +64,18 @@ dict_entry_t **dict_entries_create(uint8_t dicts_length) {
 }
 
 /**
+ * Strdup implementation
+ */
+char *strdup(const char *str) {
+	char *copy;
+	copy = (char *) malloc(strlen(str)+1);
+	if (copy != NULL) {
+		strcpy(copy, str);
+	}
+	return copy;
+}
+
+/**
  * AppMessage Callbacks
  */
 void message_handler_outbox_sent_handler(DictionaryIterator *iterator, void *context) {
