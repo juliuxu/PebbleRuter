@@ -170,8 +170,11 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
 		}
 	}
 
-	// Free the dicts and message
+	// Free the dicts
 	free( *(message->dicts) );
+	// Free the pointer to the dicts
+	free( message->dicts);
+	// Free the message
 	free(message);
 
 	// Decrement the message queue counter
