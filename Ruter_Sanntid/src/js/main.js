@@ -23,11 +23,11 @@ Pebble.addEventListener("appmessage",
     var successCb = function(res) {
       console.log("Function returned successfully!");
       proccessingCommand = false;
-    }
+    };
     var failureCb = function(res) {
       console.log("Function returned failed!");
       proccessingCommand = false;
-    }
+    };
 
 
     if(e.payload.hasOwnProperty("GET_STOPS")) {
