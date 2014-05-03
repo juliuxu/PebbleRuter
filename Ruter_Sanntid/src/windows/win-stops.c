@@ -188,6 +188,13 @@ static void window_unload(Window *window) {
   loading_layer_destroy(transport_type_to_loadinglayer_map[ttype]);
 }
 
+static void window_disappear(Window *window) {
+  if (command_timeout_timer != NULL) {
+    app_timer_cancel(command_timeout_timer);
+    command_timeout_timer = NULL;
+  }
+}
+
 /**
  * Notify the user on command timeout
  */
@@ -207,6 +214,7 @@ void create_stops_window(realtime_transport_type_t ttype) {
   window_set_window_handlers(window, (WindowHandlers) {
     .load = window_load,
     .unload = window_unload,
+    .disappear = window_disappear
   });
 
   transport_type_to_window_map[ttype] = window;

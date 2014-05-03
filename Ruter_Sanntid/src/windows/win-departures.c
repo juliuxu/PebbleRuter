@@ -244,6 +244,12 @@ static void window_appear(Window *window) {
 
 static void window_disappear(Window *window) {
   app_timer_cancel(refresh_timer);
+
+  if (command_timeout_timer != NULL) {
+    app_timer_cancel(command_timeout_timer);
+    command_timeout_timer = NULL;
+  }
+
 }
 
 /**
