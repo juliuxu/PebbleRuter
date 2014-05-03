@@ -6,7 +6,7 @@ Norwegian Name: Ruter Sanntid
 ## Description
 Ruter Sanntid finds the nearest public transportation stop and displays realtime departure times.
 
-**This app is an unoffical ruter app, and is in no way affiliated with Ruter AS.**
+**This app is an unoffical ruter app, and is in no way affiliated with Ruter As.**
 
 ## Notes
 Important that phone time is correct!
