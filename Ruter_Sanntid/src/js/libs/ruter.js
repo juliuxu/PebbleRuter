@@ -4,6 +4,10 @@
  * Depends on jscoord for lat/lon to UTM conversion: http://www.jstott.me.uk/jscoord/
  *
  * Author: Julian Jark <julianj@ifi.uio.no>
+ *
+ * TODO:
+ *   - Use prototypes to filter data
+ *
  */
 
 var Ruter = (function() {
