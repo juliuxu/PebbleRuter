@@ -17,5 +17,6 @@ typedef struct DictEntry {
 } dict_entry_t;
 
 void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_callback)(void), void (*failure_callback)(void));
+void destroy_messages(void);
 
 #endif

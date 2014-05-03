@@ -160,6 +160,20 @@ static void destroy_message(message_t *message) {
 }
 
 /**
+ * Destroy all messages in queue
+ */ 
+void destroy_messages(void) {
+	message_t *message;
+
+	while(message_queue) {
+		message = message_queue;
+		message_queue = message_queue->next;
+		destroy_message(message);
+	}
+
+}
+
+/**
  * Try to send the next message in queue
  */
 static void send_next_message(void) {
