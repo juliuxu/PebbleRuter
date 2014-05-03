@@ -270,14 +270,17 @@ static void send_next_message(void) {
 	DictionaryIterator *iter;
  	app_message_outbox_begin(&iter);
 
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Sending message to phone:");
  	// Add our dicts
  	uint8_t i;
 	for(i=0;i<message->dicts_length;i++) {
 		if (message->dicts[i]->type == CSTRING) {
- 			dict_write_cstring(iter, message->dicts[i]->key, message->dicts[i]->value.cstring);		
+ 			dict_write_cstring(iter, message->dicts[i]->key, message->dicts[i]->value.cstring);
+ 			APP_LOG(APP_LOG_LEVEL_DEBUG, "key: %d cstring: %s", message->dicts[i]->key, message->dicts[i]->value.cstring);	
 		}
 		else if (message->dicts[i]->type == UINT8) {
  			dict_write_uint8(iter, message->dicts[i]->key, message->dicts[i]->value.uint8);
+ 			APP_LOG(APP_LOG_LEVEL_DEBUG, "key: %d uint8: %d", message->dicts[i]->key, message->dicts[i]->value.uint8);	 			
 		}
 	}
 
