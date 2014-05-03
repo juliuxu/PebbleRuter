@@ -19,7 +19,7 @@ static realtime_transport_type_t current_transport_type;
  * Handler for when message could not get sent
  */
 void handle_get_stops_failure(void) {
-	update_stops_loading_text(current_transport_type, "Error Sending Message To Phone");
+	update_stops_loading_text(current_transport_type, get_language_string(14));
 }
 
 /**

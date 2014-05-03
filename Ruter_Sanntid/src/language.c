@@ -22,7 +22,11 @@ static const char *language_no[] = {
 	"Henter Avganger",
 	// departures.c
 	"Ingen Avganger For Øyeblikket",
-	"Kunne Ikke Hente Avganger"
+	"Kunne Ikke Hente Avganger",
+
+	// AppMessage Failure text
+	"Feil ved kommunikasjon med mobilen"
+
 
 };
 
@@ -48,7 +52,10 @@ static const char *language_en[] = {
 	"Getting Departures",
 	// departures.c
 	"No Departures At The moment",
-	"Could Not Get Departures"
+	"Could Not Get Departures",
+
+	// AppMessage Failure text
+	"Error Sending Message To Phone"
 
 };
 

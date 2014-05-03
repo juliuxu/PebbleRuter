@@ -21,7 +21,7 @@ static char *current_stopid;
  * Handler for when message could not get sent
  */
 void handle_get_departures_failure(void) {
-	update_departures_loading_text(current_transport_type, "Error Sending Message To Phone");
+	update_departures_loading_text(current_transport_type, get_language_string(14));
 }
 
 /**
