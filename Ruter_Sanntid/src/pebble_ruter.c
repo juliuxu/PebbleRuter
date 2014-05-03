@@ -6,6 +6,7 @@
 #include "windows/win-main.h"
 
 #include "libs/bitmap-loader.h"
+#include "libs/message-handler.h"
 
 /**
  * Init transport enum info
