@@ -82,7 +82,7 @@ var Ruter = (function() {
         case 404:
           return callback(new Error('NOT_FOUND'));
         default:
-          return callback(new ERROR('ERROR: ' + req.status));
+          return callback(new Error('ERROR: ' + req.status));
         }
       };
       req.send();
@@ -92,7 +92,7 @@ var Ruter = (function() {
      * Convert a timestamp to ruter time estimate
      */
     my.GetRuterTime = function(timestamp) {
-      remaining = timestamp - Date.now();
+      var remaining = timestamp - Date.now();
       remaining = Math.floor(remaining / 1000);
 
       if (remaining < 0) {
@@ -126,7 +126,7 @@ var Ruter = (function() {
      */
     my.GetRealTimeData = function (stopid, callback) {
       console.log("GetRealTimeData " + stopid);
-      get(base_url + 'RealTime/GetRealTimeData/' + stopid, {}, callback)
+      get(base_url + 'RealTime/GetRealTimeData/' + stopid, {}, callback);
     };
 
     /**
@@ -159,12 +159,12 @@ var Ruter = (function() {
 
         callback(null, X, Y);
 
-      };
+      }
 
       function error(err) {
         console.warn('getCurrentPosition ERROR(' + err.code + '): ' + err.message);
         callback('ERROR(' + err.code + '): ' + err.message);
-      };
+      }
 
       console.log('Get Location');
       navigator.geolocation.getCurrentPosition(success, error, location_options);
@@ -231,7 +231,7 @@ var Ruter = (function() {
         my.GetRealTimeData(stopid, group);          
       }
       else {
-        my.GetRealTimeDataByTransportType(stopid, ttype, group)
+        my.GetRealTimeDataByTransportType(stopid, ttype, group);
       }
 
       function group(err, data) {
@@ -299,15 +299,15 @@ var Ruter = (function() {
 
            // console.log(data[dir][line][0].PublishedLineName + " " + data[dir][line][0].DestinationDisplay);
 
-            departure_times = [];
-            departure_timestamps = [];
+            var departure_times = [];
+            var departure_timestamps = [];
 
             for (var departure in data[dir][line]) {
               // Convert asp.net date to js date
               var server_date = data[dir][line][departure].ExpectedDepartureTime;
               var d = new Date(parseFloat(server_date.replace("/Date(", "").replace(")/", "")));
 
-              departure_times.push(my.GetRuterTime(d.getTime()))
+              departure_times.push(my.GetRuterTime(d.getTime()));
               departure_timestamps.push(d.getTime());
             }
             // console.log(JSON.stringify(departure_times, null, 4));
