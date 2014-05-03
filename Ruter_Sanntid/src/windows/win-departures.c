@@ -24,7 +24,13 @@ static LoadingLayer *transport_type_to_loadinglayer_map[NUM_REALTIME_TRANSPORT_T
 /**
  * The last time the departures where updated
  */
-static char last_refresh_time[6] = "n/a";
+static char last_refresh_time[9] = "n/a";
+
+/**
+ * Refresh every 30 sec
+ */
+#define REFRESH_TIMEOUT 30000
+AppTimer *refresh_timer;
 
 /**
  * Get transport type from window pointer,
@@ -206,27 +212,22 @@ static void window_unload(Window *window) {
 }
 
 /**
- * Update every minute
+ * Refresh automaticly
  */
-static bool first_minute_tick = true;
-
-static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
-  if (first_minute_tick) {
-    first_minute_tick = false;
-    return;
-  }
-
+static void app_timer_refresh_callback(void *data) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Automaticly Refreshing Departures");
   refresh_departures();
+
+  // Continue refreshing
+  app_timer_register(30000, app_timer_refresh_callback, NULL);
 }
 
 static void window_appear(Window *window) {
-  first_minute_tick = true;
-  tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
+  app_timer_register(30000, app_timer_refresh_callback, NULL);
 }
 
 static void window_disappear(Window *window) {
-  tick_timer_service_unsubscribe();
+  app_timer_cancel(refresh_timer);
 }
 
 

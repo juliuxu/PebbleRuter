@@ -48,14 +48,16 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
 
 				// Add the time on the last departure we send
 				if (index == departuresdata.length-1) {
-					var hourminute;
+					var hourminuteseconds;
 					var date = new Date();
-			        hourminute = (date.getHours()<10?'0':'') + date.getHours();
-			        hourminute += ":";
-			        hourminute += (date.getMinutes()<10?'0':'') + date.getMinutes();
+			        hourminuteseconds = (date.getHours()<10?'0':'') + date.getHours();
+			        hourminuteseconds += ":";
+			        hourminuteseconds += (date.getMinutes()<10?'0':'') + date.getMinutes();
+			        hourminuteseconds += ":";
+			        hourminuteseconds += (date.getSeconds()<10?'0':'') + date.getSeconds();
 
-					messageDict["PUT_DEPARTURE_TIME"] = hourminute;
-					console.log("Time Now: " + hourminute);
+					messageDict["PUT_DEPARTURE_TIME"] = hourminuteseconds;
+					console.log("Time Now: " + hourminuteseconds);
 
 				}
 
