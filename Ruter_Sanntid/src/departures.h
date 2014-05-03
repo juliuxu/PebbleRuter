@@ -3,7 +3,7 @@
 
 #include "pebble_ruter.h"
 
-#define MAX_DEPARTURES 10
+#define MAX_DEPARTURES 16
 
 struct LineDestination {
 
