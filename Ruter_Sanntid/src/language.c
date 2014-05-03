@@ -37,7 +37,7 @@ static const char *language_en[] = {
 	"Tram",
 	"Bus",
 	"Train",
-	"Boat", // Ferry?
+	"Ferry",
 
 	// win-stops.c
 	"Getting Location",
