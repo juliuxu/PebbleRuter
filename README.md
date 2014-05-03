@@ -16,9 +16,7 @@ Important that phone time is correct!
 * Optimize stop text
 	- Make it scroll to read the whole text 
 
-* Handle other errors
-	- Unable to send message to phone
-		- Resend
+* Use ruter font FF DIN?
 
 * More user friendly
 	- Handle javascript not returning a status
