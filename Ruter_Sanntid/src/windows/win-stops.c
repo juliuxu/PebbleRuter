@@ -24,6 +24,13 @@ static MenuLayer *transport_type_to_menulayer_map[NUM_REALTIME_TRANSPORT_TYPES];
 static LoadingLayer *transport_type_to_loadinglayer_map[NUM_REALTIME_TRANSPORT_TYPES];
 
 /**
+ * Timeout after sending a command to the phone
+ */
+#define COMMAND_TIMEOUT 10000
+static AppTimer *command_timeout_timer = NULL;
+
+
+/**
  * Get transport type from window pointer,
  * used by callback functions to know what kind of window they are dealing with
  */
@@ -48,6 +55,11 @@ void refresh_stops_window(realtime_transport_type_t ttype) {
 
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
   layer_hide(transport_type_to_loadinglayer_map[ttype]);
+
+  if (command_timeout_timer != NULL) {
+    app_timer_cancel(command_timeout_timer);
+    command_timeout_timer = NULL;
+  }
 }
 
 /**
@@ -60,6 +72,11 @@ void update_stops_loading_text(realtime_transport_type_t ttype, char *text) {
   }
 
   loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
+
+  if (command_timeout_timer != NULL) {
+    app_timer_cancel(command_timeout_timer);
+    command_timeout_timer = NULL;
+  }
 }
 
 /** 
@@ -171,6 +188,16 @@ static void window_unload(Window *window) {
   loading_layer_destroy(transport_type_to_loadinglayer_map[ttype]);
 }
 
+/**
+ * Notify the user on command timeout
+ */
+static void app_timer_command_timeout_callback(void *data) {
+
+  LoadingLayer *loading_layer = (LoadingLayer *) data;
+  loading_layer_set_text(loading_layer, get_language_string(15));
+
+}
+
 void create_stops_window(realtime_transport_type_t ttype) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Create stops windows %d", ttype);
 
@@ -198,4 +225,7 @@ void show_stops_window(realtime_transport_type_t ttype, bool animated) {
   window_stack_push(transport_type_to_window_map[ttype], animated);
   layer_show(transport_type_to_loadinglayer_map[ttype]);
   handle_get_stops(ttype);
+
+  // Set command timeout timer
+  command_timeout_timer = app_timer_register(COMMAND_TIMEOUT, app_timer_command_timeout_callback, transport_type_to_loadinglayer_map[ttype]);
 }
