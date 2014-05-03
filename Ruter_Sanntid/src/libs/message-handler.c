@@ -54,11 +54,15 @@ static void send_next_message(void);
  */
 dict_entry_t **dict_entries_create(uint8_t dicts_length) {
 
+	uint8_t i;
+
 	// Allocate the pointer to the dicts
 	dict_entry_t **dicts = (dict_entry_t **) malloc(sizeof(dict_entry_t *) * dicts_length);
 
 	// Allocate the dicts
-	*dicts = (dict_entry_t *) malloc(sizeof(dict_entry_t) * dicts_length);
+	for(i=0;i<dicts_length;i++) {
+		dicts[i] = (dict_entry_t *) malloc(sizeof(dict_entry_t));
+	}
 
 	return dicts;
 }
@@ -189,17 +193,18 @@ void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_cal
 static void destroy_message(message_t *message) {
 // APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
 
+	// Free the dicts, and possible a cstring
 	uint8_t i;
 	for(i=0;i<message->dicts_length;i++) {
 		if (message->dicts[i]->type == CSTRING) {
 			free(message->dicts[i]->value.cstring);
 		}
+		free(message->dicts[i]);
 	}
 
-	// Free the dicts
-	free( *(message->dicts) );
 	// Free the pointer to the dicts
 	free( message->dicts);
+
 	// Free the message
 	free(message);
 
