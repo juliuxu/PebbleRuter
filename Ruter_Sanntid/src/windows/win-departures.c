@@ -30,7 +30,13 @@ static char last_refresh_time[9] = "n/a";
  * Refresh every 30 sec
  */
 #define REFRESH_TIMEOUT 30000
-AppTimer *refresh_timer;
+static AppTimer *refresh_timer;
+
+/**
+ * Timeout after sending a command to the phone
+ */
+#define COMMAND_TIMEOUT 10000
+static AppTimer *command_timeout_timer;
 
 /**
  * Get transport type from window pointer,
@@ -68,6 +74,8 @@ void refresh_departures_window(realtime_transport_type_t ttype) {
 
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
   layer_hide(transport_type_to_loadinglayer_map[ttype]);
+
+  app_timer_cancel(command_timeout_timer);
 }
 
 /**
@@ -80,6 +88,8 @@ void update_departures_loading_text(realtime_transport_type_t ttype, char *text)
   }
 
   loading_layer_set_text(transport_type_to_loadinglayer_map[ttype], text);
+
+  app_timer_cancel(command_timeout_timer);
 }
 
 /**
@@ -219,17 +229,23 @@ static void app_timer_refresh_callback(void *data) {
   refresh_departures();
 
   // Continue refreshing
-  app_timer_register(30000, app_timer_refresh_callback, NULL);
+  app_timer_register(REFRESH_TIMEOUT, app_timer_refresh_callback, NULL);
 }
 
 static void window_appear(Window *window) {
-  app_timer_register(30000, app_timer_refresh_callback, NULL);
+  app_timer_register(REFRESH_TIMEOUT, app_timer_refresh_callback, NULL);
 }
 
 static void window_disappear(Window *window) {
   app_timer_cancel(refresh_timer);
 }
 
+static void app_timer_command_timeout_callback(void *data) {
+
+  LoadingLayer *loading_layer = (LoadingLayer *) data;
+  loading_layer_set_text(loading_layer, get_language_string(15));
+
+}
 
 void create_departures_window(realtime_transport_type_t ttype) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Create departure window %d", ttype);
@@ -254,4 +270,7 @@ void show_departures_window(char *stopid, realtime_transport_type_t ttype, bool 
   window_stack_push(transport_type_to_window_map[ttype], animated);
   layer_show(transport_type_to_loadinglayer_map[ttype]);
   handle_get_departures(stopid, ttype);
+
+  // Set command timeout timer
+  app_timer_register(COMMAND_TIMEOUT, app_timer_command_timeout_callback, transport_type_to_loadinglayer_map[ttype]);
 }

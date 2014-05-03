@@ -27,6 +27,8 @@ static const char *language_no[] = {
 	// AppMessage Failure text
 	"Kunne ikke snakke med mobilen"
 
+	// Command Timeout text
+	"Fikk ikke svar fra mobilen",
 
 };
 
@@ -56,6 +58,9 @@ static const char *language_en[] = {
 
 	// AppMessage Failure text
 	"Error Sending Message To Phone"
+
+	// Command Timeout text
+	"Did not receive an answer from the phone",
 
 };
 
