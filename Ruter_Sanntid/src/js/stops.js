@@ -1,71 +1,71 @@
 function putStops(ttype, successCb, failureCb) {
-	// console.log("putStops " + ttype);
+  // console.log("putStops " + ttype);
 
-	// Convert the realtime type to travel type
-	var travel_type = Ruter.REALTIME_TO_TRAVEL[ttype];
+  // Convert the realtime type to travel type
+  var travel_type = Ruter.REALTIME_TO_TRAVEL[ttype];
 
-	// Get current location
-	Ruter.GetUTM32Location(function(err, X, Y) {
-		if (err === null) {
+  // Get current location
+  Ruter.GetUTM32Location(function(err, X, Y) {
+    if (err === null) {
 
-			// Notify that we got the location
-			MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype});
+      // Notify that we got the location
+      MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype});
 
-			// Get the closest stops
-			Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
+      // Get the closest stops
+      Ruter.GetClosestStopsByTransportType(X, Y, travel_type, function(err2, data) {
 
-				if (err2 === null) { 
-					//console.log("putStops: " + JSON.stringify(data, null, 4));
+        if (err2 === null) { 
+          //console.log("putStops: " + JSON.stringify(data, null, 4));
 
-					var stopsdata = [];
-					for (var stop in data) {
-						console.log(data[stop].ID + " " + data[stop].Name);
-						stopsdata.push(data[stop].ID);
-						stopsdata.push(data[stop].Name);
+          var stopsdata = [];
+          for (var stop in data) {
+            console.log(data[stop].ID + " " + data[stop].Name);
+            stopsdata.push(data[stop].ID);
+            stopsdata.push(data[stop].Name);
 
-					}
-					stopsdata.unshift(data.length);
+          }
+          stopsdata.unshift(data.length);
 
-					if (data.length ==) 0) {
-						// Notify that we got no stops
-						MessageQueue.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
-						successCb(null);
+          if (data.length ==) 0) {
+            // Notify that we got no stops
+            MessageQueue.sendAppMessage({"PUT_STOPS_EMPTY": ttype});
+            successCb(null);
 
-					}
-					else {
-						// 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
-						MessageQueue.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
-							function(e2){
-								successCb(e2);
-							},
-							function(e2){
-								failureCb(e2);
-							}
-						);
-					}
+          }
+          else {
+            // 3~3242424~Bislett~432424~Dalsberg~2334324~Majorstuen
+            MessageQueue.sendAppMessage({"PUT_STOPS": stopsdata.join("~")},
+              function(e2){
+                successCb(e2);
+              },
+              function(e2){
+                failureCb(e2);
+              }
+            );
+          }
 
-				}
-				else {
-					console.log("An error occured getting stops");
+        }
+        else {
+          console.log("An error occured getting stops");
 
-					// Notify that an error occurred
-					MessageQueue.sendAppMessage({"PUT_STOPS_ERROR": ttype});
+          // Notify that an error occurred
+          MessageQueue.sendAppMessage({"PUT_STOPS_ERROR": ttype});
 
-					console.log(err2);
-					failureCb(err2);
-				}
-			});
+          console.log(err2);
+          failureCb(err2);
+        }
+      });
 
-		}
-		else {
-			console.log("An error occured getting location");
+    }
+    else {
+      console.log("An error occured getting location");
 
-			// Notify that we didn't get the current location
-			MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_ERROR": ttype});
+      // Notify that we didn't get the current location
+      MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_ERROR": ttype});
 
-			failureCb(err);
-		}
+      failureCb(err);
+    }
 
-	});
+  });
 
 }
