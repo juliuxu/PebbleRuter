@@ -23,10 +23,7 @@ void handle_get_stops(realtime_transport_type_t ttype) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Requesting update of stops of type: %d", ttype);
 
 	// Allocate the pointer to the dicts
-	dict_entry_t **dicts = (dict_entry_t **) malloc(sizeof(dict_entry_t *) * 1);
-
-	// Allocate the dicts
-	*dicts = (dict_entry_t *) malloc(sizeof(dict_entry_t) * 1);
+	dict_entry_t **dicts = dict_entries_create(1);
 
 	dicts[0]->key = GET_STOPS;
 	dicts[0]->type = UINT8;

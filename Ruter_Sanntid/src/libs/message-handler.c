@@ -50,6 +50,20 @@ static void destroy_message(message_t *message);
 static void send_next_message(void);
 
 /**
+ * Create and return a pointer to a dict_entry_t array
+ */
+dict_entry_t **dict_entries_create(uint8_t dicts_length) {
+
+	// Allocate the pointer to the dicts
+	dict_entry_t **dicts = (dict_entry_t **) malloc(sizeof(dict_entry_t *) * dicts_length);
+
+	// Allocate the dicts
+	*dicts = (dict_entry_t *) malloc(sizeof(dict_entry_t) * dicts_length);
+
+	return dicts;
+}
+
+/**
  * AppMessage Callbacks
  */
 void message_handler_outbox_sent_handler(DictionaryIterator *iterator, void *context) {
