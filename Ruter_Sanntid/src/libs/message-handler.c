@@ -208,12 +208,12 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "send_next_message");
 	}
 
 	// See if the queue is empty
-	if (message == NULL) {
+	else if (message == NULL) {
 		return;
 	}
 
 	// See if the current message has anymore retries
-	if (message->retries <= 0) {
+	else if (message->retries <= 0) {
 		// Call the failure_callback
 		if (message->failure_callback != NULL) {
 			message->failure_callback();
