@@ -135,6 +135,7 @@ void handle_put_departure(DictionaryIterator *iter) {
 
 void handle_put_departure_empty(Tuple *tuple) {
 	update_departures_loading_text(tuple->value->uint8, get_language_string(12));
+	destroy_departures();
 	reload_menu_data(current_transport_type);
 }
 void handle_put_departure_error(Tuple *tuple) {
