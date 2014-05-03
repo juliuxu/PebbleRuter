@@ -25,7 +25,7 @@ static const char *language_no[] = {
 	"Kunne Ikke Hente Avganger",
 
 	// AppMessage Failure text
-	"Feil ved kommunikasjon med mobilen"
+	"Kunne ikke snakke med mobilen"
 
 
 };
