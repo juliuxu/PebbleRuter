@@ -83,7 +83,7 @@ char *strdup(const char *str) {
  * AppMessage Callbacks
  */
 void message_handler_outbox_sent_handler(DictionaryIterator *iterator, void *context) {
-// APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
+APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
 
 	// Should the message queue be empty, just return
 	if (message_queue == NULL) {
@@ -111,7 +111,7 @@ void message_handler_outbox_sent_handler(DictionaryIterator *iterator, void *con
 }
 
 void message_handler_outbox_failed_handler(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-// APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
+APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
 	// Set that we are done sending a message
 	messages_sending = false;
 
@@ -125,7 +125,7 @@ void message_handler_outbox_failed_handler(DictionaryIterator *iterator, AppMess
  * Add the message to the message queue and try to send it
  */
 void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_callback)(void), void (*failure_callback)(void)) {
-// APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
+APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
 
 	/**
 	 * Check if there is room in the message queue
@@ -191,7 +191,7 @@ void send_message(dict_entry_t **dicts, uint8_t dicts_length, void (*success_cal
  * Destroy a message
  */
 static void destroy_message(message_t *message) {
-// APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
+APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
 
 	// Free the dicts, and possible a cstring
 	uint8_t i;
