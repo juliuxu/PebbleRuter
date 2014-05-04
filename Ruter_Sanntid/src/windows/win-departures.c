@@ -36,7 +36,7 @@ static AppTimer *refresh_timer;
  * Timeout after sending a command to the phone
  */
 #define COMMAND_TIMEOUT 10000
-static AppTimer *command_timeout_timer;
+static AppTimer *command_timeout_timer = NULL;
 
 /**
  * Get transport type from window pointer,
@@ -256,10 +256,14 @@ static void window_disappear(Window *window) {
  * Notify the user on command timeout
  */
 static void app_timer_command_timeout_callback(void *data) {
+  realtime_transport_type_t *ttype = (realtime_transport_type_t *) data;
 
-  LoadingLayer *loading_layer = (LoadingLayer *) data;
-  loading_layer_set_text(loading_layer, get_language_string(15));
+  if (!window_stack_contains_window(transport_type_to_window_map[*ttype])) {
+    return;
+  }
 
+  loading_layer_set_text(transport_type_to_loadinglayer_map[*ttype], get_language_string(15));
+  command_timeout_timer = NULL;
 }
 
 void create_departures_window(realtime_transport_type_t ttype) {
@@ -287,5 +291,5 @@ void show_departures_window(char *stopid, realtime_transport_type_t ttype, bool 
   handle_get_departures(stopid, ttype);
 
   // Set command timeout timer
-  command_timeout_timer = app_timer_register(COMMAND_TIMEOUT, app_timer_command_timeout_callback, transport_type_to_loadinglayer_map[ttype]);
+  command_timeout_timer = app_timer_register(COMMAND_TIMEOUT, app_timer_command_timeout_callback, (void *) &realtime_transport_types[ttype]);
 }

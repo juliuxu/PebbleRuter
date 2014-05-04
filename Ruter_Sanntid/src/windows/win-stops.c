@@ -89,9 +89,7 @@ static uint16_t menu_get_num_sections_callback(MenuLayer* menu_layer, void *call
 static uint16_t menu_get_num_rows_callback(MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
   switch (section_index) {
     case MENU_SECTION_MAIN:
-
       return get_num_stops();
-
     default:
       return 0;
   }
@@ -199,10 +197,14 @@ static void window_disappear(Window *window) {
  * Notify the user on command timeout
  */
 static void app_timer_command_timeout_callback(void *data) {
+  realtime_transport_type_t *ttype = (realtime_transport_type_t *) data;
 
-  LoadingLayer *loading_layer = (LoadingLayer *) data;
-  loading_layer_set_text(loading_layer, get_language_string(15));
+  if (!window_stack_contains_window(transport_type_to_window_map[*ttype])) {
+    return;
+  }
 
+  loading_layer_set_text(transport_type_to_loadinglayer_map[*ttype], get_language_string(15));
+  command_timeout_timer = NULL;
 }
 
 void create_stops_window(realtime_transport_type_t ttype) {
@@ -235,5 +237,5 @@ void show_stops_window(realtime_transport_type_t ttype, bool animated) {
   handle_get_stops(ttype);
 
   // Set command timeout timer
-  command_timeout_timer = app_timer_register(COMMAND_TIMEOUT, app_timer_command_timeout_callback, transport_type_to_loadinglayer_map[ttype]);
+  command_timeout_timer = app_timer_register(COMMAND_TIMEOUT, app_timer_command_timeout_callback, (void *) &realtime_transport_types[ttype]);
 }
