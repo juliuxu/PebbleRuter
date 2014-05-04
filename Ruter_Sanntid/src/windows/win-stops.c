@@ -198,13 +198,13 @@ static void window_disappear(Window *window) {
  */
 static void app_timer_command_timeout_callback(void *data) {
   realtime_transport_type_t *ttype = (realtime_transport_type_t *) data;
+  command_timeout_timer = NULL;
 
   if (!window_stack_contains_window(transport_type_to_window_map[*ttype])) {
     return;
   }
 
   loading_layer_set_text(transport_type_to_loadinglayer_map[*ttype], get_language_string(15));
-  command_timeout_timer = NULL;
 }
 
 void create_stops_window(realtime_transport_type_t ttype) {
