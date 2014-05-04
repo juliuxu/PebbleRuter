@@ -111,7 +111,9 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_sent_handler");
 }
 
 void message_handler_outbox_failed_handler(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
+//APP_LOG(APP_LOG_LEVEL_DEBUG, "message_handler_outbox_failed_handler");
+APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Outbox Failed!: %s", translate_error(reason));
+
 	// Set that we are done sending a message
 	messages_sending = false;
 
