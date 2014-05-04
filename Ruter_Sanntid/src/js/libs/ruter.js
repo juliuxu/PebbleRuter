@@ -7,6 +7,8 @@
  *
  * TODO:
  *   - Use prototypes to filter data
+ *   - Specify number of proposals, walkingDistance
+ *   - Easier interface
  *
  */
 
