@@ -5,12 +5,8 @@
  *
  * Author: Julian Jark <julianj@ifi.uio.no>
  *
- * TODO:
- *   - Use prototypes to filter data
- *   - Specify number of proposals, walkingDistance
- *   - Easier interface
- *
  */
+
 
 var Ruter = (function() {
     var my = {};
@@ -51,10 +47,11 @@ var Ruter = (function() {
       4: 8,
     };
 
+
     /**
      * Get json data from an url + parameters
      */
-    function get(url, query, callback) {
+    function get(url, query, successCb, failureCb) {
 
       console.log("Get url: " + url + " + query: " + JSON.stringify(query, null, 4));
 
@@ -75,20 +72,20 @@ var Ruter = (function() {
       req.onload = function () {
         if (req.readyState === 4 && req.status === 200) {
           var response = JSON.parse(req.responseText);
-          return callback(null, response);
+          return successCb(response);
         }
         else {
-          return callback(new Error(req.status));
+          return failureCb(new Error(req.status));
         }
       };
       req.onerror = function () {
         switch (req.status) {
         case 0:
-          return callback(new Error('NOT_CONNECTED'));
+          return failureCb(new Error('NOT_CONNECTED'));
         case 404:
-          return callback(new Error('NOT_FOUND'));
+          return failureCb(new Error('NOT_FOUND'));
         default:
-          return callback(new Error('ERROR: ' + req.status));
+          return failureCb(new Error('ERROR: ' + req.status));
         }
       };
       req.send();
@@ -96,8 +93,9 @@ var Ruter = (function() {
 
     /**
      * Convert a timestamp to ruter time estimate
+     * Return the converted string
      */
-    my.GetRuterTime = function(timestamp) {
+    my.GetRuterTime = function(timestamp, nowString) {
       var remaining = timestamp - Date.now();
       remaining = Math.floor(remaining / 1000);
 
@@ -105,8 +103,13 @@ var Ruter = (function() {
         return "";
       }
       else if (remaining < 44) {
-        //return "now";
-        return "n\u00E5";
+        if (typeof(nowString) === 'undefined') {
+          //return "now";
+          return "n\u00E5";
+        }
+        else {
+          return nowString;
+        }
       }
       else if (remaining > 584) {
         var date = new Date(timestamp);
@@ -128,29 +131,9 @@ var Ruter = (function() {
     };
 
     /**
-     * Get realtime data for stopid
-     */
-    my.GetRealTimeData = function (stopid, callback) {
-      console.log("GetRealTimeData " + stopid);
-      get(base_url + 'RealTime/GetRealTimeData/' + stopid, {}, callback);
-    };
-
-    /**
-     * Get a list of stops by UTM32 coordinates
-     */
-    my.GetClosestStopsByCoordinates = function (X, Y, callback) {
-      var parameters = {
-        'coordinates': '(X='+X+',Y='+Y+')',
-        'proposals': '7',
-
-      };
-      get(base_url + 'Stop/GetClosestStopsByCoordinates/', parameters, callback);
-    };
-
-    /**
      * Get the current location in utm32 coordinates
      */
-    my.GetUTM32Location = function(callback) {
+    my.GetCurrentUTM32Location = function(successCb, failureCb) {
 
       // Get location
       function success(position) {
@@ -163,13 +146,12 @@ var Ruter = (function() {
 
         console.log('UTM32 X: ' + X + ' Y: ' + Y);
 
-        callback(null, X, Y);
-
+        successCb(X, Y);
       }
 
       function error(err) {
         console.warn('getCurrentPosition ERROR(' + err.code + '): ' + err.message);
-        callback('ERROR(' + err.code + '): ' + err.message);
+        failureCb('ERROR(' + err.code + '): ' + err.message);
       }
 
       console.log('Get Location');
@@ -177,221 +159,142 @@ var Ruter = (function() {
 
     };
 
+
     /**
-     * Get Closest stops by transportation type
-     * Use types from TRAVEL_TRANSPORT_TYPES
+     * Get a list of stops by UTM32 coordinates, Advanced
      */
-    my.GetClosestStopsByTransportType = function(X, Y, ttype, callback) {
+    my.GetClosestStopsAdvancedByCoordinates = function (X, Y, proposals, walkingDistance, successCb, failureCb) {
+      var parameters = {
+        'coordinates': '(X='+X+',Y='+Y+')',
+        'proposals': proposals,
+        'walkingDistance': walkingDistance,
 
-      my.GetClosestStopsByCoordinates(X, Y, function(err, data) {
+      };
+      get(base_url + 'Stop/GetClosestStopsAdvancedByCoordinates/', parameters, function(data) {
 
-        var stops = [];
-        for (var stop in data) {
-          //console.log("stop: " + stop + " Name: " + data[stop].Name);
+        var stops = data;
 
-          // Go trough all lines to determine if this stop has any lines with ttype transport type
-          for (var line in data[stop].Lines) {
-            if (data[stop].Lines[line].Transportation == ttype) {
-              stops.push(data[stop]);
-              break;
-            }
-          }
-
-        }
-
-        callback(err, stops);
-
-      });
-
-    };
-
-    /**
-    * Get Realtime Data from by transport type
-    * Use REALTIME_TRANSPORT_TYPES
-    */
-    my.GetRealTimeDataByTransportType = function(stopid, ttype, callback) {
-
-      my.GetRealTimeData(stopid, function(err, data) {
-
-        var departures = [];
-        for (var departure in data) {
-          if (data[departure].VehicleMode == ttype) {
-            departures.push(data[departure]);
-          }
-        }
-
-        callback(err, departures);
-
-      });
-
-    };
-
-    /**
-    * Group realtime departures by line and direction
-    * If ttype is not null, only departures with ttype transport type will be returned
-    */
-    my.GetRealTimeDataGrouped = function(stopid, ttype, callback) {
-      console.log("GetRealTimeDataGrouped " + stopid);
-
-      if (ttype === null) {
-        my.GetRealTimeData(stopid, group);          
-      }
-      else {
-        my.GetRealTimeDataByTransportType(stopid, ttype, group);
-      }
-
-      function group(err, data) {
-        //console.log("Group data: " + JSON.stringify(data, null, 4));
-        var departures = {};
-        for (var departure in data) {
-
-          // Concat direction linename and destination to create a unique key
-          var key = data[departure].DirectionRef + data[departure].PublishedLineName + data[departure].DestinationDisplay;
-
-         // console.log(key);
-
-          if (departures.hasOwnProperty(key)) {
-            departures[key].push(data[departure]);
-          }
-          else {
-            departures[key] = [data[departure]];            
-          }
-        }
-        callback(err, departures);
-      }
-
-    };
-
-    /**
-    * Group Realtime Data by Direction (and lines)
-    */
-    my.GetRealTimeDataGroupedByDirection = function(stopid, ttype, callback) {
-      console.log("GetRealTimeDataGroupedByDirection " + stopid);
-
-      my.GetRealTimeDataGrouped(stopid, ttype, function(err, data){
-        var departures = {};
-        for (var line in data) {
-
-          var key = data[line][0].DirectionRef;
-
-          // console.log(key);
-
-          if (departures.hasOwnProperty(key)) {
-            departures[key].push(data[line]);
-          }
-          else {
-            departures[key] = [data[line]];            
-          }
-        }
-
-        callback(err, departures);
-      });
-
-    };
-
-    /**
-     * Get Ordered Departures in a simple format
-     */
-    my.SimpleGetOrderedDepartures = function(stopid, ttype, callback) {
-      console.log("SimpleGetOrderedDepartures " + stopid);
-
-      my.GetRealTimeDataGroupedByDirection(stopid, ttype, function(err, data) {
-        //console.log(JSON.stringify(data, null, 4));
-        var res = {};
-        for (var dir in data) {
-          res[dir] = [];
-
-          for (var line in data[dir]) {
-
-           // console.log(data[dir][line][0].PublishedLineName + " " + data[dir][line][0].DestinationDisplay);
-
-            var departure_times = [];
-            var departure_timestamps = [];
-
-            for (var departure in data[dir][line]) {
-              // Convert asp.net date to js date
-              var server_date = data[dir][line][departure].ExpectedDepartureTime;
-              var d = new Date(parseFloat(server_date.replace("/Date(", "").replace(")/", "")));
-
-              departure_times.push(my.GetRuterTime(d.getTime()));
-              departure_timestamps.push(d.getTime());
-            }
-            // console.log(JSON.stringify(departure_times, null, 4));
-
-            res[dir].push(
-              {
-                'PublishedLineName': data[dir][line][0].PublishedLineName,
-                'DestinationDisplay': data[dir][line][0].DestinationDisplay,
-                'DepartureTimes': departure_times,
-                'DepartureTimestamps': departure_timestamps,
-
-                // Extra
-                'DestinationName': data[dir][line][0].DestinationName,
-                'LineRef': data[dir][line][0].LineRef,
+        /**
+         * Be able to filter by transport type
+         */
+        stops.filterByTransport = function(ttype) {
+          return this.filter(function(element) {
+            if (element.hasOwnProperty('Lines')) {
+              for (var i=0;i<element.Lines.length;i++) {
+                if (element.Lines[i].hasOwnProperty('Transportation') && element.Lines[i].Transportation == ttype) {
+                  return true;
+                }
               }
-            );
+            }
+            return false;
+          });
+        };
+        successCb(stops);
+
+      }, failureCb);
+    };
+
+    /**
+     * Get a list of stops by UTM32 coordinates
+     */
+    my.GetClosestStopsByCoordinates = function (X, Y, successCb, failureCb) {
+      my.GetClosestStopsAdvancedByCoordinates(X, Y, 7, 1200, successCb, failureCb);
+    };
+
+    /**
+     * Get realtime data for stopid
+     */
+    my.GetRealTimeData = function (stopid, successCb, failureCb) {
+      console.log("GetRealTimeData " + stopid);
+      get(base_url + 'RealTime/GetRealTimeData/' + stopid, {}, function(data) {
+
+        var departures = data;
+
+        // Set up departure prototype functions
+
+        /**
+         * Be able to filter by transport type
+         */
+        departures.filterByTransport = function(ttype) {
+          return this.filter(function(element) {
+            return (element.hasOwnProperty('VehicleMode') && element.VehicleMode === ttype);
+          });
+        };
+
+        /**
+         * Be able to group by line+destination
+         */
+        departures.groupByLineDestination = function() {
+
+          var groupedDepartures = {};
+
+          for (var i=0;i<this.length;i++) {
+            if (!(this[i].hasOwnProperty('DirectionRef') && this[i].hasOwnProperty('PublishedLineName') && this[i].hasOwnProperty('DestinationName'))) {
+              continue;
+            }
+
+            var key = this[i].DirectionRef + this[i].PublishedLineName + this[i].DestinationName;
+
+            if (groupedDepartures.hasOwnProperty(key)) {
+              groupedDepartures[key].push(this[i]);
+            }
+            else {
+              groupedDepartures[key] = [this[i]];
+            }
 
           }
 
-        }
-        callback(err, res);
+          /**
+           * Be able to group by direction
+           */
+          groupedDepartures.groupByDirection = function() {
+            var groupedDirectionDepartures = {};
 
-      });
+            for (var key in this) {
+              if (!this[key].hasOwnProperty("DirectionRef")) {
+                continue;
+              }
 
+              var key2 = this[key].DirectionRef;
+              if (groupedDirectionDepartures.hasOwnProperty(key2)) {
+                groupedDirectionDepartures[key2].push(this[key]);
+              }
+              else {
+                groupedDirectionDepartures[key2] = [this[key]];
+              }
+
+            }
+
+            /**
+             * Be able to ungroup
+             */
+            groupedDepartures.unGroupByDirection = function() {
+              var unGroupedByDirection = {};
+              for (var key in this) {
+                for (var key2 in this[key]) {
+                  unGroupedByDirection[key2] = this[key][key2];
+                }
+              }
+            };
+
+            return groupedDirectionDepartures;
+          };
+          /**
+           * Be able to sort by direction
+           */
+          groupedDepartures.sortByDirection = function() {
+            return this.groupByDirection().unGroupByDirection();
+          };
+
+          return groupedDepartures;
+        };
+
+
+        successCb(departures);
+
+      }, failureCb);
     };
 
     return my;
 
 }());
-
-/*
-  {
-    "OperatorRef": "Sporvognsdrift", 
-    "VisitNumber": 19, 
-    "AimedDepartureTime": "/Date(1398376380000+0200)/", 
-    "Delay": "PT37S", 
-    "DestinationRef": 3012324, 
-    "PublishedLineName": "18", 
-    "Monitored": true, 
-    "ArrivalBoardingActivity": null, 
-    "AimedArrivalTime": "/Date(1398376380000+0200)/", 
-    "TrainBlockPart": null, 
-    "ExpectedDepartureTime": "/Date(1398376417000+0200)/", 
-    "LineRef": "18", 
-    "FramedVehicleJourneyRef": {
-      "DataFrameRef": "2014-04-24", 
-      "DatedVehicleJourneyRef": "18003"
-    }, 
-    "DirectionRef": "2", 
-    "ExpectedArrivalTime": "/Date(1398376417000+0200)/", 
-    "InCongestion": false, 
-    "DestinationDisplay": "Rikshospitalet", 
-    "VehicleAtStop": false, 
-    "DestinationName": "Rikshospitalet", 
-    "DeparturePlatformName": "12", 
-    "Extensions": {
-      "Deviations": [
-        {
-          "Header": "Trikk 18 og 19: Buss for trikk Ljabru\u2013Kastellet-Ljabru", 
-          "ID": 25457
-        }
-      ], 
-      "OccupancyData": {
-        "OccupancyAvailable": false, 
-        "OccupancyPercentage": 20
-      }
-    }, 
-    "OriginName": "Br\u00e5ten [trikk]", 
-    "ViaName1": null, 
-    "OriginRef": "3010850", 
-    "VehicleFeatureRef": "lowFloor", 
-    "VehicleRef": "200144", 
-    "BlockRef": "1717", 
-    "StopVisitNote": null, 
-    "DirectionName": "2", 
-    "DepartureBoardingActivity": null, 
-    "VehicleMode": 3, 
-    "VehicleJourneyName": ""
-  }, 
-
-*/
