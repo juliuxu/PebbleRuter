@@ -244,7 +244,7 @@ var Ruter = (function() {
           }
 
           /**
-           * Add Departure Times
+           * Add Relevant Data
            */
           for (var key in groupedDepartures) {
             if (groupedDepartures.hasOwnProperty(key)) {
@@ -260,6 +260,10 @@ var Ruter = (function() {
                   departureTimestamps.push(d.getTime());
                 }
               }
+              groupedDepartures[key].PublishedLineName = groupedDepartures[key][0].PublishedLineName;
+              groupedDepartures[key].DestinationName = groupedDepartures[key][0].DestinationName;
+              groupedDepartures[key].LineRef = groupedDepartures[key][0].LineRef;
+
               groupedDepartures[key].departureTimes = departureTimes;
               groupedDepartures[key].departureTimestamps = departureTimestamps;
             }
@@ -303,6 +307,7 @@ var Ruter = (function() {
           };
           /**
            * Be able to sort by direction
+           * TODO: Sort with js sort
            */
           groupedDepartures.sortByDirection = function() {
             return this.groupByDirection().unGroupByDirection();
