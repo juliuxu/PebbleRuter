@@ -227,7 +227,6 @@ var Ruter = (function() {
         departures.groupByLineDestination = function() {
 
           var groupedDepartures = {};
-
           for (var i=0;i<this.length;i++) {
             if (!(this[i].hasOwnProperty('DirectionRef') && this[i].hasOwnProperty('PublishedLineName') && this[i].hasOwnProperty('DestinationName'))) {
               continue;
@@ -245,24 +244,43 @@ var Ruter = (function() {
           }
 
           /**
+           * Add Departure Times
+           */
+          for (var key in groupedDepartures) {
+            if (groupedDepartures.hasOwnProperty(key)) {
+              departureTimes = [];
+              departureTimestamps = [];
+              for (var i=0;i<groupedDepartures[key].length;i++) {
+                if (groupedDepartures[key][i].hasOwnProperty("ExpectedDepartureTime")) {
+                  // Convert asp.net date to js date
+                  var server_date = groupedDepartures[key][i].ExpectedDepartureTime;
+                  var d = new Date(parseFloat(server_date.replace("/Date(", "").replace(")/", "")));
+
+                  departureTimes.push(my.GetRuterTime(d.getTime()));
+                  departureTimestamps.push(d.getTime());
+                }
+              }
+              groupedDepartures[key].departureTimes = departureTimes;
+              groupedDepartures[key].departureTimestamps = departureTimestamps;
+            }
+          }
+
+          /**
            * Be able to group by direction
            */
           groupedDepartures.groupByDirection = function() {
             var groupedDirectionDepartures = {};
 
             for (var key in this) {
-              if (!this[key].hasOwnProperty("DirectionRef")) {
-                continue;
+              if (this[key].hasOwnProperty("DirectionRef")) {
+                var key2 = this[key].DirectionRef;
+                if (groupedDirectionDepartures.hasOwnProperty(key2)) {
+                  groupedDirectionDepartures[key2].push(this[key]);
+                }
+                else {
+                  groupedDirectionDepartures[key2] = [this[key]];
+                }
               }
-
-              var key2 = this[key].DirectionRef;
-              if (groupedDirectionDepartures.hasOwnProperty(key2)) {
-                groupedDirectionDepartures[key2].push(this[key]);
-              }
-              else {
-                groupedDirectionDepartures[key2] = [this[key]];
-              }
-
             }
 
             /**
@@ -271,8 +289,12 @@ var Ruter = (function() {
             groupedDepartures.unGroupByDirection = function() {
               var unGroupedByDirection = {};
               for (var key in this) {
-                for (var key2 in this[key]) {
-                  unGroupedByDirection[key2] = this[key][key2];
+                if (this.hasOwnProperty(key)) {
+                  for (var key2 in this[key]) {
+                    if (this[key].hasOwnProperty(key2)) {
+                      unGroupedByDirection[key2] = this[key][key2];
+                    }
+                  }
                 }
               }
             };
