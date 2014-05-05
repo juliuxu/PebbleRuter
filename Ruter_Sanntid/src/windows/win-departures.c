@@ -35,7 +35,7 @@ static AppTimer *refresh_timer;
 /**
  * Timeout after sending a command to the phone
  */
-#define COMMAND_TIMEOUT 10000
+#define COMMAND_TIMEOUT 15000
 static AppTimer *command_timeout_timer = NULL;
 
 /**
