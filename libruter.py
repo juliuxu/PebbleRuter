@@ -65,9 +65,15 @@ def place_findplacesbycounties(name, counties):
     return json.loads(get_contents(url))
 
 
-def stop_getcloseststopsbycoordinates(x, y, propsals=5):
+def stop_getcloseststopsbycoordinates(x, y, propsals=7):
     url = API_BASE_URL + "Stop/GetClosestStopsByCoordinates/" + \
         "?coordinates=(X={0},Y={1})&proposals={2}".format(x, y, propsals)
+    return json.loads(get_contents(url))
+
+
+def stop_getcloseststopsadvancedbycoordinates(x, y, walkingDistance=1200, propsals=7):
+    url = API_BASE_URL + "Stop/GetClosestStopsAdvancedByCoordinates/" + \
+        "?coordinates=(X={0},Y={1})&proposals={2}&walkingDistance={3}".format(x, y, propsals, walkingDistance)
     return json.loads(get_contents(url))
 
 
@@ -86,7 +92,7 @@ def get_nearest_by_transport_type(x, y, ttype):
     Get nearest stops by transport types, i.e filter out all other stops
     """
 
-    stops = stop_getcloseststopsbycoordinates(x, y, propsals=7)
+    stops = stop_getcloseststopsadvancedbycoordinates(x, y, 1200, 25)
 
     bus_stops = []
 
@@ -204,7 +210,11 @@ if __name__ == '__main__':
 
     # print json.dumps(place_findplaces("Nationall"), indent=2)
 
-    print json.dumps(stop_getcloseststopsbycoordinates(575327, 6623414, 5), indent=2)
+    # print json.dumps(stop_getcloseststopsbycoordinates(596762, 6644420, 5), indent=2)
+
+    stops = stop_getcloseststopsadvancedbycoordinates(596762, 6644420, 1200, 7)
+    print json.dumps(stops, indent=2)
+    print len(stops)
 
     # print json.dumps(realtime_getalldepartures(3010030), indent=2)
     # print len(realtime_getalldepartures(3010030))

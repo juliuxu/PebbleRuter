@@ -1,30 +1,30 @@
 function putDepartures(stopid, ttype, successCb, failureCb) {
   console.log("putDepartures " + ttype);
 
-  Ruter.SimpleGetOrderedDepartures(stopid, ttype, function(err, data) {
-
-    if (err === null) { 
+  Ruter.GetRealTimeData(stopid, ttype,
+    function(data) {
       // console.log("putDepartures: " + JSON.stringify(data, null, 4));
 
-      var departuresdata = [];
-      for (var dir in data) {
-        for (var departure in data[dir]) {
-          console.log(data[dir][departure].PublishedLineName + " " + data[dir][departure].DestinationDisplay);
+      data = data.filterByTransport(ttype);
+      data = data.groupByLineDestination();
 
-          departuresdata.push([
-            data[dir][departure].PublishedLineName,
-            data[dir][departure].DestinationDisplay,
-            data[dir][departure].DepartureTimes.join(" ")
+      var departuresdata = [];
+      for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+          departuresdata.push(
+            [
+              data[key].PublishedLineName,
+              data[key].DestinationName,
+              data[key].DepartureTimes.join(" ")
             ].join("~")
           );
+          console.log(data[key].PublishedLineName + " " + data[key].DestinationDisplay);
         }
-
       }
 
       if (departuresdata.length === 0) {
         // Send empty message?
-        MessageQueue.sendAppMessage({"PUT_DEPARTURE_EMPTY": ttype});
-        successCb(null);
+        MessageQueue.sendAppMessage({"PUT_DEPARTURE_EMPTY": ttype}, successCb, failureCb);
         return;
       }
 
@@ -75,12 +75,11 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
       };
       sendArray(0);
 
-    }
-    else {
+    },
+    function(e) {
       console.log("An error occured getting departures");
-      console.log(err);
       MessageQueue.sendAppMessage({"PUT_DEPARTURE_ERROR": ttype});
-      failureCb(err);
+      failureCb(e);
     }
   });
 
