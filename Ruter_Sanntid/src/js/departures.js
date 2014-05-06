@@ -1,7 +1,7 @@
 function putDepartures(stopid, ttype, successCb, failureCb) {
   console.log("putDepartures " + ttype);
 
-  Ruter.GetRealTimeData(stopid, ttype,
+  Ruter.GetRealTimeData(stopid,
     function(data) {
       // console.log("putDepartures: " + JSON.stringify(data, null, 4));
 

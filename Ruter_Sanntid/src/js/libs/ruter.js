@@ -213,15 +213,6 @@ var Ruter = (function() {
         // Set up departure prototype functions
 
         /**
-         * Be able to filter by transport type
-         */
-        departures.filterByTransport = function(ttype) {
-          return this.filter(function(element) {
-            return (element.hasOwnProperty('VehicleMode') && element.VehicleMode === ttype);
-          });
-        };
-
-        /**
          * Be able to group by line+destination
          */
         departures.groupByLineDestination = function() {
@@ -316,6 +307,16 @@ var Ruter = (function() {
           return groupedDepartures;
         };
 
+        /**
+         * Be able to filter by transport type
+         */
+        departures.filterByTransport = function(ttype) {
+          res = this.filter(function(element) {
+            return (element.hasOwnProperty('VehicleMode') && element.VehicleMode === ttype);
+          });
+          res.groupByLineDestination = this.groupByLineDestination;
+          return res;
+        };
 
         successCb(departures);
 
