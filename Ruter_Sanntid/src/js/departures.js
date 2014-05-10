@@ -15,10 +15,10 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
             [
               data[key].PublishedLineName,
               data[key].DestinationName,
-              data[key].DepartureTimes.join(" ")
+              data[key].departureTimes.join(" ")
             ].join("~")
           );
-          console.log(data[key].PublishedLineName + " " + data[key].DestinationDisplay);
+          console.log(data[key].PublishedLineName + " " + data[key].DestinationName);
         }
       }
 
@@ -81,6 +81,6 @@ function putDepartures(stopid, ttype, successCb, failureCb) {
       MessageQueue.sendAppMessage({"PUT_DEPARTURE_ERROR": ttype});
       failureCb(e);
     }
-  });
+  );
 
 }

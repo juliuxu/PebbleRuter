@@ -134,8 +134,8 @@ var Ruter = (function() {
      * Get the current location in utm32 coordinates
      */
     my.GetCurrentUTM32Location = function(successCb, failureCb) {
+      console.log("GetCurrentUTM32Location");
 
-      // Get location
       function success(position) {
 
         // Convert to UTM32 using jscoord
@@ -154,7 +154,6 @@ var Ruter = (function() {
         failureCb('ERROR(' + err.code + '): ' + err.message);
       }
 
-      console.log('Get Location');
       navigator.geolocation.getCurrentPosition(success, error, location_options);
 
     };
@@ -199,6 +198,7 @@ var Ruter = (function() {
      */
     my.GetClosestStopsByCoordinates = function (X, Y, successCb, failureCb) {
       my.GetClosestStopsAdvancedByCoordinates(X, Y, 7, 1200, successCb, failureCb);
+      return;
     };
 
     /**

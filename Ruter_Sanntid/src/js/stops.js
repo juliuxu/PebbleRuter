@@ -1,5 +1,5 @@
 function putStops(ttype, successCb, failureCb) {
-  // console.log("putStops " + ttype);
+  console.log("putStops " + ttype);
 
   // Convert the realtime type to travel type
   var travel_type = Ruter.REALTIME_TO_TRAVEL[ttype];
@@ -12,7 +12,7 @@ function putStops(ttype, successCb, failureCb) {
       MessageQueue.sendAppMessage({"PUT_STOPS_LOCATION_SUCCESS": ttype});
 
       // Get the closest stops
-      Ruter.GetClosestStopsAdvancedByCoordinates(X, Y, proposals, walkingDistance, 
+      Ruter.GetClosestStopsAdvancedByCoordinates(X, Y, 20, 1200, 
         function(data) {
           //console.log("putStops: " + JSON.stringify(data, null, 4));
 
