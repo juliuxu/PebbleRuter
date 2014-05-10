@@ -210,8 +210,6 @@ var Ruter = (function() {
 
         var departures = data;
 
-        // Set up departure prototype functions
-
         /**
          * Be able to group by line+destination
          */
@@ -239,8 +237,8 @@ var Ruter = (function() {
            */
           for (var key in groupedDepartures) {
             if (groupedDepartures.hasOwnProperty(key)) {
-              departureTimes = [];
-              departureTimestamps = [];
+              var departureTimes = [];
+              var departureTimestamps = [];
               for (var i=0;i<groupedDepartures[key].length;i++) {
                 if (groupedDepartures[key][i].hasOwnProperty("ExpectedDepartureTime")) {
                   // Convert asp.net date to js date
@@ -254,55 +252,12 @@ var Ruter = (function() {
               groupedDepartures[key].PublishedLineName = groupedDepartures[key][0].PublishedLineName;
               groupedDepartures[key].DestinationName = groupedDepartures[key][0].DestinationName;
               groupedDepartures[key].LineRef = groupedDepartures[key][0].LineRef;
+              groupedDepartures[key].DirectionRef = groupedDepartures[key][0].DirectionRef;
 
               groupedDepartures[key].departureTimes = departureTimes;
               groupedDepartures[key].departureTimestamps = departureTimestamps;
             }
           }
-
-          /**
-           * Be able to group by direction
-           */
-          groupedDepartures.groupByDirection = function() {
-            var groupedDirectionDepartures = {};
-
-            for (var key in this) {
-              if (this[key].hasOwnProperty("DirectionRef")) {
-                var key2 = this[key].DirectionRef;
-                if (groupedDirectionDepartures.hasOwnProperty(key2)) {
-                  groupedDirectionDepartures[key2].push(this[key]);
-                }
-                else {
-                  groupedDirectionDepartures[key2] = [this[key]];
-                }
-              }
-            }
-
-            /**
-             * Be able to ungroup
-             */
-            groupedDepartures.unGroupByDirection = function() {
-              var unGroupedByDirection = {};
-              for (var key in this) {
-                if (this.hasOwnProperty(key)) {
-                  for (var key2 in this[key]) {
-                    if (this[key].hasOwnProperty(key2)) {
-                      unGroupedByDirection[key2] = this[key][key2];
-                    }
-                  }
-                }
-              }
-            };
-
-            return groupedDirectionDepartures;
-          };
-          /**
-           * Be able to sort by direction
-           * TODO: Sort with js sort
-           */
-          groupedDepartures.sortByDirection = function() {
-            return this.groupByDirection().unGroupByDirection();
-          };
 
           return groupedDepartures;
         };
@@ -311,7 +266,7 @@ var Ruter = (function() {
          * Be able to filter by transport type
          */
         departures.filterByTransport = function(ttype) {
-          res = this.filter(function(element) {
+          var res = this.filter(function(element) {
             return (element.hasOwnProperty('VehicleMode') && element.VehicleMode === ttype);
           });
           res.groupByLineDestination = this.groupByLineDestination;
