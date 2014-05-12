@@ -14,7 +14,7 @@
 #include "message-handler.h"
 
 #define RETRIES 3
-#define MAX_MESSAGES_IN_QUEUE 100
+#define MAX_MESSAGES_IN_QUEUE 10
 
 /**
  * Message Struct
@@ -154,15 +154,16 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "send_message");
 	 * Check if there is room in the message queue
 	 */
 	if (!(num_messages < MAX_MESSAGES_IN_QUEUE)) {
-		// APP_LOG(APP_LOG_LEVEL_WARNING, "Message Queue Is Full!");
+		APP_LOG(APP_LOG_LEVEL_WARNING, "Message Queue Is Full!");
 
 		uint8_t i;
 		for(i=0;i<dicts_length;i++) {
 			if (dicts[i]->type == CSTRING) {
 				free(dicts[i]->value.cstring);
 			}
+			free(dicts[i]);
 		}
-		free(*dicts);
+		free(dicts);
 
 		// Call the failure_callback
 		if (failure_callback != NULL) {
@@ -226,7 +227,7 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "destroy_message");
 	}
 
 	// Free the pointer to the dicts
-	free( message->dicts);
+	free(message->dicts);
 
 	// Free the message
 	free(message);
