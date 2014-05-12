@@ -71,10 +71,8 @@ void refresh_departures_window(realtime_transport_type_t ttype) {
   if (!window_stack_contains_window(transport_type_to_window_map[ttype])) {
     return;
   }
-
   menu_layer_reload_data(transport_type_to_menulayer_map[ttype]);
   layer_hide(transport_type_to_loadinglayer_map[ttype]);
-
   if (command_timeout_timer != NULL) {
     app_timer_cancel(command_timeout_timer);
     command_timeout_timer = NULL;
@@ -170,7 +168,7 @@ static void menu_draw_row_callback(GContext* ctx, const Layer *cell_layer, MenuI
 static void menu_select_click_callback(MenuLayer* menu_layer, MenuIndex* cell_index, void* callback_context) {
   switch (cell_index->section) {
     case MENU_SECTION_MAIN:
-      //refresh_departures();
+    //  refresh_departures();
     break;
 
   }
