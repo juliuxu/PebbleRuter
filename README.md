@@ -1,7 +1,8 @@
 # Ruter Application for the Pebble Smartwatch
-## Name
-English Name: Ruter Realtime
-Norwegian Name: Ruter Sanntid
+
+## English Name: Ruter Realtime
+
+## Norwegian Name: Ruter Sanntid
 
 ## Description
 Ruter Sanntid finds the nearest public transportation stop and displays realtime departure times.
