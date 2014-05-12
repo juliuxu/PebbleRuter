@@ -18,11 +18,6 @@ Important that phone time is correct!
 
 * Use ruter font FF DIN?
 
-* More user friendly
-	- Handle javascript not returning a status
-	  - Either make sure it always does
-	  - Or set a timer
-
 * Make updated header always visible
 
 * Add settings
