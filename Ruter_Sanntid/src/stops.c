@@ -54,10 +54,13 @@ void handle_put_stops(Tuple *tuple) {
 	char **strings = splittoarray(text, length, '~', &num_strings);
 
 	num_ruter_stops = satoi(strings[0]);
+	if (num_ruter_stops > MAX_STOPS) {
+		num_ruter_stops = MAX_STOPS;
+	}
 
 	int i;
 	int strings_index;
-	for (i=0, strings_index=1;i<num_ruter_stops && i<MAX_STOPS;i++, strings_index+=2) {
+	for (i=0, strings_index=1;i<num_ruter_stops;i++, strings_index+=2) {
 		APP_LOG(APP_LOG_LEVEL_DEBUG, "Add Stop: %s %s", strings[strings_index], strings[strings_index+1]);
 
 		ruter_stops[i].id = malloc(strlen(strings[strings_index]));

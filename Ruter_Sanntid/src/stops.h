@@ -3,7 +3,7 @@
 
 #include "pebble_ruter.h"
 
-#define MAX_STOPS 10
+#define MAX_STOPS 16
 
 struct Stop {
 
