@@ -107,7 +107,7 @@ void handle_put_departure(DictionaryIterator *iter) {
 	free(text);
 
 	// Check if this was the last departure
-	if (index + 1 == length) {
+	if (index + 1 == length || index + 1 == MAX_DEPARTURES) {
 
 		// See if the timestamp is set
 		Tuple* t_departure_time = dict_find(iter, PUT_DEPARTURE_TIME);
