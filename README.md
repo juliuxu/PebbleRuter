@@ -14,6 +14,8 @@ Important that phone time is correct!
 
 ## Todo / Ideas
 
+* See if possible to send all departures in one AppMessage
+
 * Optimize stop text
 	- Make it scroll to read the whole text 
 
