@@ -63,6 +63,7 @@ void handle_put_departure(DictionaryIterator *iter) {
 	uint8_t index = t_departure_index->value->uint8;
 	uint8_t length = t_departure_length->value->uint8;
 
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Add line_destination_t[%d] of %d", index, length);
 
 	// Check if this is the first of more to come
 	if (index == 0) {
@@ -106,10 +107,7 @@ void handle_put_departure(DictionaryIterator *iter) {
 	free(text);
 
 	// Check if this was the last departure
-	// Or if we cannot accept any more
-	if (index + 1 == length ||
-		index + 1 == MAX_DEPARTURES
-		) {
+	if (index + 1 == length) {
 
 		// See if the timestamp is set
 		Tuple* t_departure_time = dict_find(iter, PUT_DEPARTURE_TIME);
@@ -130,7 +128,6 @@ void handle_put_departure(DictionaryIterator *iter) {
 	else {
 		num_ruter_departures = index + 1;
 	}
-
 }
 
 void handle_put_departure_empty(Tuple *tuple) {
@@ -175,4 +172,5 @@ void destroy_departures(void) {
 		ruter_departures[i].departuretimes = NULL;
 	}
 	num_ruter_departures = 0;
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "Destroyed departures");
 }

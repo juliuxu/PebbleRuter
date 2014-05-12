@@ -32,13 +32,13 @@ Pebble.addEventListener("appmessage",
 
     if(e.payload.hasOwnProperty("GET_STOPS")) {
       console.log("GET_STOPS");
+      proccessingCommand = true;     
       putStops(e.payload.GET_STOPS, successCb, failureCb);
-      proccessingCommand = true;
     }
     if(e.payload.hasOwnProperty("GET_DEPARTURES")) {
       console.log("GET_DEPARTURES");
-      putDepartures(e.payload.GET_DEPARTURES_STOPID, e.payload.GET_DEPARTURES, successCb, failureCb);
       proccessingCommand = true;
+      putDepartures(e.payload.GET_DEPARTURES_STOPID, e.payload.GET_DEPARTURES, successCb, failureCb);
     }
 
 
