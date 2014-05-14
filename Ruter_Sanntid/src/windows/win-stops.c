@@ -26,7 +26,7 @@ static LoadingLayer *transport_type_to_loadinglayer_map[NUM_REALTIME_TRANSPORT_T
 /**
  * Timeout after sending a command to the phone
  */
-#define COMMAND_TIMEOUT 15000
+#define COMMAND_TIMEOUT 10000
 static AppTimer *command_timeout_timer = NULL;
 
 
