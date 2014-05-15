@@ -38,3 +38,6 @@ Important that phone time is correct!
 * Use less memory, dynamicly allocate just what we need
 
 * Countdown timer for departure
+
+## Known Bugs
+* Hang then crash when loading departures

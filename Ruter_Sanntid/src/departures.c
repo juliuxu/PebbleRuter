@@ -161,7 +161,6 @@ void destroy_departures(void) {
 		if (ruter_departures[i].line == NULL) {
 			continue;
 		}
-
 		free(ruter_departures[i].line);
 		free(ruter_departures[i].destination);
 		free(ruter_departures[i].departuretimes);
